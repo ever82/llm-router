@@ -1,0 +1,2036 @@
+
+╔══════════════════════════════════════════╗
+║     LLM Reverse Proxy v2.0 已启动         ║
+║     http://localhost:4000                ║
+╚══════════════════════════════════════════╝
+
+后端列表:
+  1. [DashScope-Qwen] https://coding.dashscope.aliyuncs.com/apps/anthropic → qwen3.6-plus
+  2. [Z.AI-GLM] https://api.z.ai/api/anthropic → glm-5.1
+  3. [MiniMax] https://api.minimaxi.com/anthropic → MiniMax-M2.7
+
+状态面板:   http://localhost:4000/proxy-status
+Token 统计: http://localhost:4000/proxy-stats
+按 Ctrl+C 停止
+
+  🔗 新会话 claude-1 (port 53755)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-1)
+  🔗 新会话 claude-2 (port 53758)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-2)
+  🔗 新会话 claude-3 (port 53760)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-3)
+  🔗 新会话 claude-4 (port 53762)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-4)
+  ✓ [DashScope-Qwen] 200 src=claude-2
+  ✓ [MiniMax] 200 src=claude-4
+  ✓ [MiniMax] 200 src=claude-3
+  🔗 新会话 claude-5 (port 53773)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-5)
+  ✓ [Z.AI-GLM] 200 src=claude-1
+  🔗 新会话 claude-6 (port 53780)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-6)
+  ✓ [DashScope-Qwen] 200 src=claude-5
+  🔗 新会话 claude-7 (port 53787)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-7)
+  ✓ [DashScope-Qwen] 200 src=claude-6
+  🔗 新会话 claude-8 (port 53788)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-8)
+    📊 tokens: in=149 out=335 cache=17035 total=17519
+  🔗 新会话 claude-9 (port 53793)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-9)
+  ✓ [DashScope-Qwen] 200 src=claude-7
+  🔗 新会话 claude-10 (port 53797)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-10)
+  ✓ [DashScope-Qwen] 200 src=claude-8
+  🔗 新会话 claude-11 (port 53802)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-11)
+  🔗 新会话 claude-12 (port 53803)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-12)
+    📊 tokens: in=149 out=456 cache=24964 total=25569
+  ✓ [DashScope-Qwen] 200 src=claude-11
+  🔗 新会话 claude-13 (port 53812)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-13)
+  🔗 新会话 claude-14 (port 53815)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-14)
+  🔗 新会话 claude-15 (port 53816)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-15)
+  🔗 新会话 claude-16 (port 53819)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-16)
+  ✓ [DashScope-Qwen] 200 src=claude-13
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-6)
+  🔗 新会话 claude-17 (port 53825)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-17)
+  ✓ [DashScope-Qwen] 200 src=claude-14
+  ✓ [DashScope-Qwen] 200 src=claude-16
+  ✓ [DashScope-Qwen] 200 src=claude-6
+  🔗 新会话 claude-18 (port 53834)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-18)
+  🔗 新会话 claude-19 (port 53835)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-19)
+  🔗 新会话 claude-20 (port 53836)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-20)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-19)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-20)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-6)
+  🔗 新会话 claude-21 (port 53860)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-21)
+  ✓ [DashScope-Qwen] 200 src=claude-18
+  🔗 新会话 claude-22 (port 53862)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-22)
+  🔗 新会话 claude-23 (port 53864)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-23)
+  ✓ [Z.AI-GLM] 200 src=claude-19
+  🔗 新会话 claude-24 (port 53867)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-24)
+  ✓ [Z.AI-GLM] 200 src=claude-20
+  🔗 新会话 claude-25 (port 53870)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-25)
+  ✓ [Z.AI-GLM] 200 src=claude-21
+  ✓ [Z.AI-GLM] 200 src=claude-6
+  🔗 新会话 claude-26 (port 53874)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-26)
+  🔗 新会话 claude-27 (port 53876)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-27)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-13)
+  ✓ [Z.AI-GLM] 200 src=claude-23
+  ✓ [MiniMax] 200 src=claude-22
+  🔗 新会话 claude-28 (port 53881)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-28)
+  🔗 新会话 claude-29 (port 53884)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-29)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-26)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-18)
+  ✓ [Z.AI-GLM] 200 src=claude-29
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-27)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-29)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-28)
+  ✓ [MiniMax] 200 src=claude-18
+  ✓ [DashScope-Qwen] 200 src=claude-17
+  🔗 新会话 claude-30 (port 53892)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-30)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-8)
+  🔗 新会话 claude-31 (port 53894)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-31)
+  ✓ [MiniMax] 200 src=claude-13
+  ✓ [Z.AI-GLM] 200 src=claude-9
+  ✓ [MiniMax] 200 src=claude-26
+    📊 tokens: in=2680 out=36 cache=17035 total=19751
+  🔗 新会话 claude-32 (port 53873)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-32)
+    📊 tokens: in=5589 out=405 cache=19712 total=25706
+    📊 tokens: in=3058 out=238 cache=22672 total=25968
+  ✓ [MiniMax] 200 src=claude-31
+  ✓ [MiniMax] 200 src=claude-30
+  🔗 新会话 claude-33 (port 53899)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-33)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-17)
+  ✓ [MiniMax] 200 src=claude-32
+  ✓ [Z.AI-GLM] 200 src=claude-15
+    📊 tokens: in=5313 out=384 cache=19712 total=25409
+  🔗 新会话 claude-34 (port 53902)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-34)
+    📊 tokens: in=2881 out=103 cache=22835 total=25819
+  ✓ [MiniMax] 200 src=claude-24
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-31)
+  ✓ [MiniMax] 200 src=claude-33
+  ✓ [Z.AI-GLM] 200 src=claude-12
+  ✓ [MiniMax] 200 src=claude-25
+    📊 tokens: in=2782 out=257 cache=22688 total=25727
+  ✓ [MiniMax] 200 src=claude-34
+  ✓ [Z.AI-GLM] 200 src=claude-10
+    📊 tokens: in=5468 out=445 cache=19712 total=25625
+  ✓ [MiniMax] 200 src=claude-31
+  🔗 新会话 claude-35 (port 53907)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-35)
+  ✓ [MiniMax] 200 src=claude-8
+  🔗 新会话 claude-36 (port 53909)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-36)
+    📊 tokens: in=5003 out=151 cache=22677 total=27831
+  ✓ [MiniMax] 200 src=claude-35
+  ✓ [MiniMax] 200 src=claude-36
+  🔗 新会话 claude-37 (port 53915)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-37)
+  ✓ [MiniMax] 200 src=claude-28
+  🔗 新会话 claude-38 (port 53916)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-38)
+  ✓ [MiniMax] 200 src=claude-29
+  🔗 新会话 claude-39 (port 53918)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-39)
+    📊 tokens: in=2980 out=259 cache=13310 total=16549
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-32)
+    📊 tokens: in=149 out=369 cache=22677 total=23195
+    📊 tokens: in=2859 out=66 cache=22677 total=25602
+  ✓ [MiniMax] 200 src=claude-38
+  ✓ [MiniMax] 200 src=claude-37
+  ✓ [MiniMax] 200 src=claude-39
+  ✓ [MiniMax] 200 src=claude-17
+  ✓ [MiniMax] 200 src=claude-32
+  ✓ [MiniMax] 200 src=claude-27
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-36)
+    📊 tokens: in=2953 out=391 cache=22806 total=26150
+  ✓ [MiniMax] 200 src=claude-36
+  🔗 新会话 claude-40 (port 53930)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-40)
+  🔗 新会话 claude-41 (port 53935)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-41)
+    📊 tokens: in=149 out=352 cache=24815 total=25316
+  ✓ [MiniMax] 200 src=claude-40
+    📊 tokens: in=5583 out=144 cache=22677 total=28404
+    📊 tokens: in=69643 out=189 cache=17035 total=86867
+    📊 tokens: in=3317 out=201 cache=22672 total=26190
+    📊 tokens: in=3420 out=319 cache=22835 total=26574
+  ✓ [MiniMax] 200 src=claude-41
+  🔗 新会话 claude-42 (port 53938)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-42)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-32)
+  🔗 新会话 claude-43 (port 53940)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-43)
+    📊 tokens: in=149 out=410 cache=24969 total=25528
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-31)
+  ✓ [MiniMax] 200 src=claude-42
+  ✓ [MiniMax] 200 src=claude-43
+    📊 tokens: in=149 out=350 cache=24964 total=25463
+  ✓ [MiniMax] 200 src=claude-32
+  ✓ [MiniMax] 200 src=claude-31
+  🔗 新会话 claude-44 (port 53945)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-44)
+  🔗 新会话 claude-45 (port 53946)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-45)
+  🔗 新会话 claude-46 (port 53947)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-46)
+    📊 tokens: in=149 out=407 cache=25127 total=25683
+    📊 tokens: in=4474 out=431 cache=23437 total=28342
+    📊 tokens: in=6255 out=70 cache=22677 total=29002
+  🔗 新会话 claude-47 (port 53950)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-47)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-8)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-32)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-17)
+  ✓ [MiniMax] 200 src=claude-45
+  🔗 新会话 claude-48 (port 53952)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-48)
+    📊 tokens: in=3069 out=333 cache=22677 total=26079
+  ✓ [MiniMax] 200 src=claude-44
+  ✓ [MiniMax] 200 src=claude-46
+  🔗 新会话 claude-49 (port 53954)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-49)
+  ✓ [MiniMax] 200 src=claude-47
+  ✓ [MiniMax] 200 src=claude-32
+  ✓ [MiniMax] 200 src=claude-48
+    📊 tokens: in=2710 out=317 cache=22688 total=25715
+  🔗 新会话 claude-50 (port 53955)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-50)
+  ✓ [MiniMax] 200 src=claude-49
+  ✓ [MiniMax] 200 src=claude-17
+    📊 tokens: in=149 out=400 cache=25127 total=25676
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-41)
+  ✓ [MiniMax] 200 src=claude-50
+  🔗 新会话 claude-51 (port 53960)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-51)
+  ✓ [MiniMax] 200 src=claude-8
+    📊 tokens: in=3058 out=172 cache=22688 total=25918
+  ✓ [MiniMax] 200 src=claude-41
+    📊 tokens: in=149 out=409 cache=25099 total=25657
+  🔗 新会话 claude-52 (port 53962)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-52)
+    📊 tokens: in=6370 out=139 cache=22677 total=29186
+  ✓ [MiniMax] 200 src=claude-51
+    📊 tokens: in=70141 out=112 cache=22694 total=92947
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-32)
+    📊 tokens: in=4565 out=272 cache=22835 total=27672
+  ✓ [MiniMax] 200 src=claude-52
+    📊 tokens: in=2979 out=276 cache=22806 total=26061
+    📊 tokens: in=2936 out=436 cache=22835 total=26207
+  🔗 新会话 claude-53 (port 53968)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-53)
+    📊 tokens: in=149 out=66 cache=25099 total=25314
+    📊 tokens: in=2922 out=261 cache=22806 total=25989
+  ✓ [MiniMax] 200 src=claude-32
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-49)
+  🔗 新会话 claude-54 (port 53972)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-54)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-31)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-17)
+  ✓ [MiniMax] 200 src=claude-53
+  🔗 新会话 claude-55 (port 53973)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-55)
+    📊 tokens: in=149 out=389 cache=24969 total=25507
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-51)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 2/3 src=claude-51)
+    📊 tokens: in=149 out=384 cache=25099 total=25632
+    📊 tokens: in=3861 out=114 cache=22806 total=26781
+  🔗 新会话 claude-56 (port 53977)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-56)
+  ✓ [MiniMax] 200 src=claude-54
+  ✓ [MiniMax] 200 src=claude-49
+    📊 tokens: in=3047 out=312 cache=22688 total=26047
+  ✓ [MiniMax] 200 src=claude-31
+  ✓ [MiniMax] 200 src=claude-55
+  ✓ [MiniMax] 200 src=claude-17
+    📊 tokens: in=149 out=384 cache=24815 total=25348
+    📊 tokens: in=5856 out=246 cache=23437 total=29539
+  ✓ [DashScope-Qwen] 200 src=claude-51
+    📊 tokens: in=149 out=492 cache=24964 total=25605
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-41)
+  🔗 新会话 claude-57 (port 53985)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-57)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-8)
+    📊 tokens: in=6641 out=171 cache=22677 total=29489
+    📊 tokens: in=3601 out=64 cache=22672 total=26337
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-32)
+    📊 tokens: in=3236 out=135 cache=22806 total=26177
+    📊 tokens: in=3201 out=111 cache=22672 total=25984
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-55)
+  ✓ [DashScope-Qwen] 200 src=claude-56
+  ✓ [DashScope-Qwen] 200 src=claude-57
+  🔗 新会话 claude-58 (port 53996)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-58)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-49)
+  🔗 新会话 claude-59 (port 54001)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-59)
+  ✓ [DashScope-Qwen] 200 src=claude-41
+  ✓ [DashScope-Qwen] 200 src=claude-8
+    📊 tokens: in=5427 out=183 cache=22835 total=28445
+  ✓ [DashScope-Qwen] 200 src=claude-32
+  ✓ [DashScope-Qwen] 200 src=claude-58
+  ✓ [DashScope-Qwen] 200 src=claude-59
+  ✓ [DashScope-Qwen] 200 src=claude-49
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-31)
+  ✓ [DashScope-Qwen] 200 src=claude-55
+  🔗 新会话 claude-60 (port 54025)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-60)
+    📊 tokens: in=70279 out=228 cache=22694 total=93201
+  🔗 新会话 claude-61 (port 54027)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-61)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-57)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-61)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-57)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-41)
+  ✓ [DashScope-Qwen] 200 src=claude-31
+  ✓ [DashScope-Qwen] 200 src=claude-60
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-58)
+  🔗 新会话 claude-62 (port 54034)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-62)
+    📊 tokens: in=3387 out=422 cache=22835 total=26644
+  🔗 新会话 claude-63 (port 54036)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-63)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-32)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-59)
+  🔗 新会话 claude-64 (port 54040)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-64)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-53)
+  ✓ [Z.AI-GLM] 200 src=claude-63
+  🔗 新会话 claude-65 (port 54044)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-65)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-60)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-8)
+  ✓ [Z.AI-GLM] 200 src=claude-59
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-59)
+  ✓ [Z.AI-GLM] 200 src=claude-32
+  🔗 新会话 claude-66 (port 54053)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-66)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-65)
+  ✓ [Z.AI-GLM] 200 src=claude-64
+  🔗 新会话 claude-67 (port 54055)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-67)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 3/3 src=claude-65)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-67)
+  ✓ [Z.AI-GLM] 200 src=claude-57
+  🔗 新会话 claude-68 (port 54056)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-68)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-66)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-59)
+  🔗 新会话 claude-69 (port 54057)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-69)
+  🔗 新会话 claude-70 (port 54058)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-70)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-57)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-31)
+  ✓ [DashScope-Qwen] 200 src=claude-68
+  🔗 新会话 claude-71 (port 54061)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-71)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-71)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-71)
+  ✓ [DashScope-Qwen] 200 src=claude-69
+  ✓ [DashScope-Qwen] 200 src=claude-70
+  ✓ [DashScope-Qwen] 200 src=claude-57
+  ✓ [Z.AI-GLM] 200 src=claude-71
+  ✓ [DashScope-Qwen] 200 src=claude-31
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-71)
+  🔗 新会话 claude-72 (port 54062)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-72)
+  ✓ [DashScope-Qwen] 200 src=claude-67
+    📊 tokens: in=6 out=99 cache=26135 total=26240
+  ✓ [DashScope-Qwen] 200 src=claude-65
+    📊 tokens: in=6 out=93 cache=26186 total=26285
+  🔗 新会话 claude-73 (port 54063)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-73)
+  🔗 新会话 claude-74 (port 54054)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-74)
+  🔗 新会话 claude-75 (port 54064)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-75)
+  🔗 新会话 claude-76 (port 54065)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-76)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-71)
+  ✓ [Z.AI-GLM] 200 src=claude-72
+  🔗 新会话 claude-77 (port 54072)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-77)
+  🔗 新会话 claude-78 (port 54067)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-78)
+  ✓ [Z.AI-GLM] 200 src=claude-53
+  🔗 新会话 claude-79 (port 54074)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-79)
+  ✓ [Z.AI-GLM] 200 src=claude-74
+  ✓ [DashScope-Qwen] 200 src=claude-66
+    📊 tokens: in=6 out=83 cache=31215 total=31304
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-67)
+  🔗 新会话 claude-80 (port 54077)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-80)
+  ✓ [Z.AI-GLM] 200 src=claude-73
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-73)
+  🔗 新会话 claude-81 (port 54082)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-81)
+  ✓ [Z.AI-GLM] 200 src=claude-75
+  🔗 新会话 claude-82 (port 54085)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-82)
+  🔗 新会话 claude-83 (port 54087)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-83)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-79)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-80)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-79)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-73)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-81)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-80)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-83)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-82)
+  🔗 新会话 claude-84 (port 54090)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-84)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-73)
+  ✓ [Z.AI-GLM] 200 src=claude-81
+  🔗 新会话 claude-85 (port 54093)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-85)
+  ✓ [Z.AI-GLM] 200 src=claude-80
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-66)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-85)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 3/3 src=claude-85)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-66)
+  ✓ [Z.AI-GLM] 200 src=claude-84
+  🔗 新会话 claude-86 (port 54097)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-86)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-83)
+  ✓ [Z.AI-GLM] 200 src=claude-58
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-82)
+  ✓ [Z.AI-GLM] 200 src=claude-79
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  🔗 新会话 claude-87 (port 54102)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-87)
+  ✓ [DashScope-Qwen] 200 src=claude-67
+    📊 tokens: in=6 out=51 cache=27085 total=27142
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  ✓ [DashScope-Qwen] 200 src=claude-78
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-73)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 3/3 src=claude-66)
+  🔗 新会话 claude-88 (port 54076)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-88)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-69)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-88)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-69)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-58)
+  🔗 新会话 claude-89 (port 54084)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-89)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-69)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-58)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-88)
+  🔗 新会话 claude-90 (port 54086)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-90)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-89)
+  ✓ [Z.AI-GLM] 200 src=claude-76
+  🔗 新会话 claude-91 (port 54107)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-91)
+  🔗 新会话 claude-92 (port 54092)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-92)
+  ✓ [Z.AI-GLM] 200 src=claude-8
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-86)
+  ✓ [DashScope-Qwen] 200 src=claude-59
+    📊 tokens: in=6 out=277 cache=26227 total=26510
+  ✓ [DashScope-Qwen] 200 src=claude-77
+    📊 tokens: in=6 out=128 cache=26135 total=26269
+  ✓ [Z.AI-GLM] 200 src=claude-58
+  🔗 新会话 claude-93 (port 54110)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-93)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-90)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-90)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 3/3 src=claude-89)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  🔗 新会话 claude-94 (port 54071)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-94)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  🔗 新会话 claude-95 (port 54113)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-95)
+  ✓ [Z.AI-GLM] 200 src=claude-91
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-91)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-92)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 2/3 src=claude-94)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-92)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-94)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  ✓ [Z.AI-GLM] 200 src=claude-88
+  ✓ [DashScope-Qwen] 200 src=claude-71
+    📊 tokens: in=6 out=185 cache=26135 total=26326
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-67)
+  ✓ [Z.AI-GLM] 200 src=claude-60
+  ✓ [Z.AI-GLM] 200 src=claude-62
+  ✓ [Z.AI-GLM] 200 src=claude-94
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-94)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-89)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-90)
+  ✓ [DashScope-Qwen] 200 src=claude-66
+    📊 tokens: in=6 out=77 cache=33600 total=33683
+  🔗 新会话 claude-96 (port 54094)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-96)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-67)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-60)
+  ✓ [DashScope-Qwen] 200 src=claude-73
+    📊 tokens: in=6 out=117 cache=26005 total=26128
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-92)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-31)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-94)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-89)
+  ✓ [DashScope-Qwen] 200 src=claude-87
+    📊 tokens: in=6 out=147 cache=25840 total=25993
+  ✓ [DashScope-Qwen] 200 src=claude-93
+    📊 tokens: in=6 out=83 cache=27093 total=27182
+  ✓ [Z.AI-GLM] 200 src=claude-96
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-66)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-90)
+  🔗 新会话 claude-97 (port 54109)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-97)
+  ✓ [Z.AI-GLM] 200 src=claude-41
+  ✓ [DashScope-Qwen] 200 src=claude-60
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-71)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-71)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-71)
+  ✓ [DashScope-Qwen] 200 src=claude-31
+  🔗 新会话 claude-98 (port 54126)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-98)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-78)
+  ✓ [DashScope-Qwen] 200 src=claude-97
+  ✓ [Z.AI-GLM] 200 src=claude-98
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-98)
+  🔗 新会话 claude-99 (port 54131)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-99)
+  ✓ [DashScope-Qwen] 200 src=claude-92
+    📊 tokens: in=6 out=96 cache=23586 total=23688
+  ✓ [DashScope-Qwen] 200 src=claude-89
+    📊 tokens: in=6 out=90 cache=26797 total=26893
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-98)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-92)
+  ✓ [Z.AI-GLM] 200 src=claude-78
+  🔗 新会话 claude-100 (port 54133)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-100)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-89)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-100)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-89)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-89)
+  ✓ [Z.AI-GLM] 200 src=claude-99
+  🔗 新会话 claude-101 (port 54136)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-101)
+  🔗 新会话 claude-102 (port 54134)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-102)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 3/3 src=claude-100)
+  ✓ [DashScope-Qwen] 200 src=claude-86
+    📊 tokens: in=6 out=265 cache=27135 total=27406
+  🔗 新会话 claude-103 (port 54137)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-103)
+  🔗 新会话 claude-104 (port 54138)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-104)
+  ✓ [DashScope-Qwen] 200 src=claude-94
+    📊 tokens: in=6 out=131 cache=26623 total=26760
+  ✓ [DashScope-Qwen] 200 src=claude-66
+    📊 tokens: in=6 out=87 cache=33700 total=33793
+  🔗 新会话 claude-105 (port 54122)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-105)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-97)
+  ✓ [DashScope-Qwen] 200 src=claude-92
+  ✓ [Z.AI-GLM] 200 src=claude-102
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-101)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-102)
+  ✓ [Z.AI-GLM] 200 src=claude-89
+  🔗 新会话 claude-106 (port 54143)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-106)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  ✓ [Z.AI-GLM] 200 src=claude-103
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-41)
+  ✓ [Z.AI-GLM] 200 src=claude-91
+  ✓ [Z.AI-GLM] 200 src=claude-97
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-97)
+  ✓ [Z.AI-GLM] 200 src=claude-104
+  🔗 新会话 claude-107 (port 54147)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-107)
+  🔗 新会话 claude-108 (port 54132)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-108)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-97)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 3/3 src=claude-97)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-107)
+  ✓ [DashScope-Qwen] 200 src=claude-67
+    📊 tokens: in=6 out=243 cache=27230 total=27479
+  ✓ [DashScope-Qwen] 200 src=claude-98
+    📊 tokens: in=6 out=88 cache=27361 total=27455
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-98)
+  🔗 新会话 claude-109 (port 54150)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-109)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-107)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-31)
+  ✓ [DashScope-Qwen] 200 src=claude-41
+  ✓ [Z.AI-GLM] 200 src=claude-98
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-98)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-97)
+  ✓ [Z.AI-GLM] 200 src=claude-109
+  🔗 新会话 claude-110 (port 54155)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-110)
+  🔗 新会话 claude-111 (port 54156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-111)
+  🔗 新会话 claude-112 (port 54158)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-112)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-110)
+  🔗 新会话 claude-113 (port 54146)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-113)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-111)
+  ✓ [DashScope-Qwen] 200 src=claude-102
+    📊 tokens: in=6 out=107 cache=23586 total=23699
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-102)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-92)
+  ✓ [Z.AI-GLM] 200 src=claude-111
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-111)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-113)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 3/3 src=claude-113)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  ✓ [Z.AI-GLM] 200 src=claude-102
+  ✓ [Z.AI-GLM] 200 src=claude-92
+  🔗 新会话 claude-114 (port 54161)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-114)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-92)
+  ✓ [DashScope-Qwen] 200 src=claude-90
+    📊 tokens: in=6 out=333 cache=26186 total=26525
+  🔗 新会话 claude-115 (port 54163)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-115)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-111)
+  ✓ [Z.AI-GLM] 200 src=claude-69
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 3/3 src=claude-111)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-92)
+  ✓ [DashScope-Qwen] 200 src=claude-98
+    📊 tokens: in=6 out=69 cache=27621 total=27696
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-114)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-98)
+  ✓ [DashScope-Qwen] 200 src=claude-31
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-114)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-98)
+  ✓ [DashScope-Qwen] 200 src=claude-97
+    📊 tokens: in=6 out=95 cache=27472 total=27573
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 1/3 src=claude-113)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  ✓ [Z.AI-GLM] 200 src=claude-115
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-115)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-60)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-98)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 2/3 src=claude-113)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-97)
+  ✓ [Z.AI-GLM] 200 src=claude-71
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-71)
+  🔗 新会话 claude-116 (port 54168)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-116)
+  🔗 新会话 claude-117 (port 54160)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-117)
+  ✓ [Z.AI-GLM] 200 src=claude-98
+  🔗 新会话 claude-118 (port 54174)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-118)
+  ✓ [Z.AI-GLM] 200 src=claude-60
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 3/3 src=claude-113)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-60)
+  ✓ [Z.AI-GLM] 200 src=claude-97
+  🔗 新会话 claude-119 (port 54177)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-119)
+  ✓ [DashScope-Qwen] 200 src=claude-101
+    📊 tokens: in=6 out=207 cache=26473 total=26686
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 2/3 src=claude-119)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 3/3 src=claude-119)
+  ✓ [Z.AI-GLM] 200 src=claude-71
+  ✓ [DashScope-Qwen] 200 src=claude-106
+    📊 tokens: in=6 out=228 cache=27068 total=27302
+  🔗 新会话 claude-120 (port 54180)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-120)
+  ✓ [Z.AI-GLM] 200 src=claude-116
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-118)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-116)
+  ✓ [DashScope-Qwen] 200 src=claude-108
+    📊 tokens: in=6 out=196 cache=102614 total=102816
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-117)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-120)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=false (attempt 3/3 src=claude-120)
+  🔗 新会话 claude-121 (port 54184)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-121)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  ✓ [DashScope-Qwen] 200 src=claude-92
+    📊 tokens: in=6 out=102 cache=26749 total=26857
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-121)
+  🔗 新会话 claude-122 (port 54176)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-122)
+  ✓ [DashScope-Qwen] 200 src=claude-111
+    📊 tokens: in=6 out=106 cache=27504 total=27616
+  🔗 新会话 claude-123 (port 54179)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-123)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-111)
+  ✓ [Z.AI-GLM] 200 src=claude-121
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-121)
+  🔗 新会话 claude-124 (port 54188)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-124)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-122)
+  ✓ [Z.AI-GLM] 200 src=claude-105
+  ✓ [Z.AI-GLM] 200 src=claude-111
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-111)
+  ✓ [DashScope-Qwen] 200 src=claude-112
+    📊 tokens: in=6 out=267 cache=26757 total=27030
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-105)
+  🔗 新会话 claude-125 (port 54192)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-125)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-121)
+  ✓ [Z.AI-GLM] 200 src=claude-124
+  ✓ [DashScope-Qwen] 200 src=claude-117
+    📊 tokens: in=6 out=93 cache=26841 total=26940
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-124)
+  ✓ [DashScope-Qwen] 200 src=claude-116
+    📊 tokens: in=6 out=90 cache=37533 total=37629
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-117)
+  🔗 新会话 claude-126 (port 54196)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-126)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-126)
+  🔗 新会话 claude-127 (port 54197)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-127)
+  ✓ [DashScope-Qwen] 200 src=claude-105
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-126)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-127)
+  ✓ [DashScope-Qwen] 200 src=claude-125
+  ✓ [DashScope-Qwen] 200 src=claude-117
+  ✓ [DashScope-Qwen] 200 src=claude-118
+    📊 tokens: in=6 out=107 cache=28191 total=28304
+  ✓ [Z.AI-GLM] 200 src=claude-126
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-126)
+  ✓ [Z.AI-GLM] 200 src=claude-127
+  🔗 新会话 claude-128 (port 54205)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-128)
+  ✓ [DashScope-Qwen] 200 src=claude-113
+    📊 tokens: in=6 out=243 cache=26603 total=26852
+  ✓ [DashScope-Qwen] 200 src=claude-111
+    📊 tokens: in=6 out=95 cache=27819 total=27920
+  ✓ [DashScope-Qwen] 200 src=claude-122
+    📊 tokens: in=6 out=95 cache=27598 total=27699
+  ✓ [DashScope-Qwen] 200 src=claude-60
+    📊 tokens: in=6 out=241 cache=27447 total=27694
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-126)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-128)
+  ✓ [Z.AI-GLM] 200 src=claude-95
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-105)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-122)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-111)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-60)
+  ✓ [DashScope-Qwen] 200 src=claude-121
+    📊 tokens: in=6 out=142 cache=27179 total=27327
+  ✓ [DashScope-Qwen] 200 src=claude-111
+  ✓ [Z.AI-GLM] 200 src=claude-115
+  ✓ [DashScope-Qwen] 200 src=claude-60
+  ✓ [DashScope-Qwen] 200 src=claude-105
+  ✓ [DashScope-Qwen] 200 src=claude-122
+  🔗 新会话 claude-129 (port 54209)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-129)
+  🔗 新会话 claude-130 (port 54210)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-130)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-117)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-117)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-125)
+  ✓ [DashScope-Qwen] 200 src=claude-126
+    📊 tokens: in=6 out=74 cache=26261 total=26341
+  ✓ [DashScope-Qwen] 200 src=claude-124
+    📊 tokens: in=6 out=232 cache=28267 total=28505
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-126)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-124)
+  ✓ [DashScope-Qwen] 200 src=claude-128
+    📊 tokens: in=6 out=129 cache=26767 total=26902
+  ✓ [Z.AI-GLM] 200 src=claude-61
+  ✓ [Z.AI-GLM] 200 src=claude-110
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-61)
+  ✓ [DashScope-Qwen] 200 src=claude-129
+  ✓ [MiniMax] 200 src=claude-126
+  ✓ [DashScope-Qwen] 200 src=claude-130
+  ✓ [Z.AI-GLM] 200 src=claude-123
+  🔗 新会话 claude-131 (port 54219)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-131)
+  ✓ [MiniMax] 200 src=claude-61
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-111)
+  ✓ [MiniMax] 200 src=claude-117
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+  ✓ [MiniMax] 200 src=claude-125
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-60)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-105)
+    📊 tokens: in=3003 out=92 cache=22688 total=25783
+  ✓ [MiniMax] 200 src=claude-122
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-126)
+    📊 tokens: in=3433 out=103 cache=22688 total=26224
+  ✓ [MiniMax] 200 src=claude-131
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-61)
+  🔗 新会话 claude-132 (port 54229)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-132)
+  🔗 新会话 claude-133 (port 54231)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-133)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-129)
+  ✓ [MiniMax] 200 src=claude-126
+    📊 tokens: in=10848 out=94 cache=22672 total=33614
+  ✓ [MiniMax] 200 src=claude-111
+  ✓ [MiniMax] 200 src=claude-124
+    📊 tokens: in=4416 out=109 cache=22677 total=27202
+    📊 tokens: in=3711 out=152 cache=22672 total=26535
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-130)
+  ✓ [MiniMax] 200 src=claude-61
+  ✓ [MiniMax] 200 src=claude-133
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+    📊 tokens: in=4692 out=119 cache=22688 total=27499
+  ✓ [MiniMax] 200 src=claude-129
+  ✓ [MiniMax] 200 src=claude-60
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-131)
+  ✓ [MiniMax] 200 src=claude-105
+  ✓ [MiniMax] 200 src=claude-122
+  ✓ [MiniMax] 200 src=claude-130
+  ✓ [MiniMax] 200 src=claude-132
+    📊 tokens: in=3473 out=107 cache=22835 total=26415
+    📊 tokens: in=6032 out=98 cache=22677 total=28807
+    📊 tokens: in=5091 out=135 cache=22835 total=28061
+    📊 tokens: in=4547 out=76 cache=22677 total=27300
+    📊 tokens: in=6201 out=125 cache=22806 total=29132
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-60)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+  ✓ [MiniMax] 200 src=claude-131
+    📊 tokens: in=3994 out=106 cache=22677 total=26777
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-133)
+    📊 tokens: in=18844 out=158 cache=22677 total=41679
+    📊 tokens: in=3558 out=171 cache=22688 total=26417
+  ✓ [MiniMax] 200 src=claude-60
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-105)
+    📊 tokens: in=4419 out=192 cache=22688 total=27299
+  ✓ [MiniMax] 200 src=claude-122
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-130)
+  ✓ [MiniMax] 200 src=claude-133
+    📊 tokens: in=4730 out=174 cache=22672 total=27576
+  🔗 新会话 claude-134 (port 54247)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-134)
+  🔗 新会话 claude-135 (port 54249)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-135)
+  🔗 新会话 claude-136 (port 54248)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-136)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-61)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-132)
+    📊 tokens: in=4640 out=73 cache=22677 total=27390
+    📊 tokens: in=3179 out=369 cache=22688 total=26236
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-126)
+  ✓ [MiniMax] 200 src=claude-134
+  ✓ [MiniMax] 200 src=claude-135
+    📊 tokens: in=3659 out=87 cache=22835 total=26581
+  ✓ [MiniMax] 200 src=claude-105
+    📊 tokens: in=6176 out=126 cache=22677 total=28979
+  ✓ [MiniMax] 200 src=claude-130
+  ✓ [MiniMax] 200 src=claude-136
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-133)
+  ✓ [MiniMax] 200 src=claude-132
+  ✓ [MiniMax] 200 src=claude-122
+  ✓ [MiniMax] 200 src=claude-126
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-129)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-60)
+    📊 tokens: in=12045 out=229 cache=22688 total=34962
+    📊 tokens: in=20494 out=104 cache=22677 total=43275
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-131)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-105)
+  ✓ [MiniMax] 200 src=claude-133
+  ✓ [MiniMax] 200 src=claude-60
+    📊 tokens: in=5071 out=144 cache=22806 total=28021
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-135)
+    📊 tokens: in=3570 out=138 cache=22688 total=26396
+  ✓ [MiniMax] 200 src=claude-131
+    📊 tokens: in=4911 out=115 cache=22677 total=27703
+    📊 tokens: in=6426 out=179 cache=22672 total=29277
+  🔗 新会话 claude-137 (port 54269)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-137)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-134)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+    📊 tokens: in=3768 out=92 cache=22835 total=26695
+    📊 tokens: in=10965 out=141 cache=22672 total=33778
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-126)
+    📊 tokens: in=5666 out=195 cache=22672 total=28533
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-133)
+  ✓ [MiniMax] 200 src=claude-134
+    📊 tokens: in=5190 out=140 cache=22677 total=28007
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-130)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-132)
+  ✓ [MiniMax] 200 src=claude-122
+  ✓ [MiniMax] 200 src=claude-135
+  ✓ [MiniMax] 200 src=claude-133
+  ✓ [MiniMax] 200 src=claude-132
+  ✓ [MiniMax] 200 src=claude-130
+    📊 tokens: in=7185 out=122 cache=22672 total=29979
+  ✓ [MiniMax] 200 src=claude-105
+  ✓ [MiniMax] 200 src=claude-137
+    📊 tokens: in=6563 out=278 cache=22677 total=29518
+    📊 tokens: in=5705 out=115 cache=22677 total=28497
+    📊 tokens: in=4390 out=94 cache=22835 total=27319
+    📊 tokens: in=7805 out=62 cache=22835 total=30702
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-60)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+    📊 tokens: in=21666 out=99 cache=22677 total=44442
+    📊 tokens: in=5353 out=109 cache=22677 total=28139
+  🔗 新会话 claude-138 (port 54277)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-138)
+  ✓ [MiniMax] 200 src=claude-61
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-133)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-137)
+  ✓ [MiniMax] 200 src=claude-129
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-130)
+  ✓ [MiniMax] 200 src=claude-126
+  ✓ [MiniMax] 200 src=claude-60
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-105)
+  ✓ [MiniMax] 200 src=claude-122
+  ✓ [MiniMax] 200 src=claude-133
+  ✓ [MiniMax] 200 src=claude-137
+    📊 tokens: in=6582 out=174 cache=22672 total=29428
+    📊 tokens: in=4890 out=72 cache=22688 total=27650
+    📊 tokens: in=5864 out=58 cache=22677 total=28599
+  ✓ [MiniMax] 200 src=claude-105
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-132)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-61)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-122)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-132)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-122)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-61)
+  ✓ [MiniMax] 200 src=claude-138
+  ✓ [MiniMax] 200 src=claude-130
+    📊 tokens: in=6858 out=143 cache=22677 total=29678
+  🔗 新会话 claude-139 (port 54314)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-139)
+    📊 tokens: in=12777 out=504 cache=22688 total=35969
+    📊 tokens: in=7896 out=164 cache=22835 total=30895
+    📊 tokens: in=4501 out=137 cache=22835 total=27473
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-60)
+    📊 tokens: in=4846 out=180 cache=22688 total=27714
+    📊 tokens: in=22229 out=133 cache=22677 total=45039
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-105)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-133)
+    📊 tokens: in=14127 out=180 cache=22672 total=36979
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-137)
+  🔗 新会话 claude-140 (port 54327)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-140)
+  ✓ [Z.AI-GLM] 200 src=claude-105
+  🔗 新会话 claude-141 (port 54330)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-141)
+    📊 tokens: in=6328 out=313 cache=22806 total=29447
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-135)
+  ✓ [Z.AI-GLM] 200 src=claude-137
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-137)
+    📊 tokens: in=10124 out=199 cache=22677 total=33000
+  ✓ [Z.AI-GLM] 200 src=claude-140
+  🔗 新会话 claude-142 (port 54334)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-142)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-141)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-130)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-137)
+  ✓ [Z.AI-GLM] 200 src=claude-135
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-142)
+  ✓ [Z.AI-GLM] 200 src=claude-61
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-61)
+  🔗 新会话 claude-143 (port 54345)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-143)
+  🔗 新会话 claude-144 (port 54349)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-144)
+  ✓ [Z.AI-GLM] 200 src=claude-139
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-139)
+  ✓ [DashScope-Qwen] 200 src=claude-130
+  🔗 新会话 claude-145 (port 54355)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-145)
+  ✓ [DashScope-Qwen] 200 src=claude-142
+    📊 tokens: in=6 out=92 cache=33527 total=33625
+  🔗 新会话 claude-146 (port 54357)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-146)
+  ✓ [DashScope-Qwen] 200 src=claude-143
+    📊 tokens: in=6 out=106 cache=26135 total=26247
+  🔗 新会话 claude-147 (port 54344)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-147)
+  ✓ [DashScope-Qwen] 200 src=claude-144
+  ✓ [DashScope-Qwen] 200 src=claude-141
+    📊 tokens: in=6 out=75 cache=38105 total=38186
+  🔗 新会话 claude-148 (port 54360)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-148)
+    📊 tokens: in=6489 out=522 cache=22688 total=29699
+  ✓ [DashScope-Qwen] 200 src=claude-61
+    📊 tokens: in=6 out=156 cache=26209 total=26371
+  🔗 新会话 claude-149 (port 54361)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-149)
+  ✓ [DashScope-Qwen] 200 src=claude-146
+  ✓ [DashScope-Qwen] 200 src=claude-139
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-130)
+  ✓ [DashScope-Qwen] 200 src=claude-147
+  ✓ [DashScope-Qwen] 200 src=claude-145
+  🔗 新会话 claude-150 (port 54364)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-150)
+  ✓ [DashScope-Qwen] 200 src=claude-148
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-144)
+  ✓ [DashScope-Qwen] 200 src=claude-149
+  ✓ [DashScope-Qwen] 200 src=claude-130
+  ✓ [Z.AI-GLM] 200 src=claude-122
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-122)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-61)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-122)
+  ✓ [DashScope-Qwen] 200 src=claude-137
+    📊 tokens: in=6 out=282 cache=32420 total=32708
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-122)
+  ✓ [DashScope-Qwen] 200 src=claude-150
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-137)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-148)
+  ✓ [DashScope-Qwen] 200 src=claude-144
+  ✓ [Z.AI-GLM] 200 src=claude-132
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-130)
+  ✓ [DashScope-Qwen] 200 src=claude-61
+  ✓ [Z.AI-GLM] 200 src=claude-130
+  🔗 新会话 claude-151 (port 54377)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-151)
+  ✓ [Z.AI-GLM] 200 src=claude-133
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-133)
+  ✓ [Z.AI-GLM] 200 src=claude-137
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-144)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-137)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-147)
+  ✓ [Z.AI-GLM] 200 src=claude-144
+  🔗 新会话 claude-152 (port 54386)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-152)
+  ✓ [Z.AI-GLM] 200 src=claude-137
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-137)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-152)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-61)
+  ✓ [Z.AI-GLM] 200 src=claude-60
+  ✓ [Z.AI-GLM] 200 src=claude-147
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-147)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-145)
+  🔗 新会话 claude-153 (port 54395)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-153)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-60)
+  ✓ [Z.AI-GLM] 200 src=claude-151
+  🔗 新会话 claude-154 (port 54403)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-154)
+  ✓ [DashScope-Qwen] 200 src=claude-61
+  🔗 新会话 claude-155 (port 54405)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-155)
+  🔗 新会话 claude-156 (port 54408)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  ✓ [DashScope-Qwen] 200 src=claude-153
+  ✓ [DashScope-Qwen] 200 src=claude-145
+  ✓ [DashScope-Qwen] 200 src=claude-60
+  ✓ [Z.AI-GLM] 200 src=claude-122
+  ✓ [DashScope-Qwen] 200 src=claude-154
+  ✓ [Z.AI-GLM] 200 src=claude-133
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-122)
+  ✓ [DashScope-Qwen] 200 src=claude-155
+  🔗 新会话 claude-157 (port 54414)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-157)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-153)
+  🔗 新会话 claude-158 (port 54416)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-158)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-133)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-158)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-133)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-158)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-61)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-133)
+  🔗 新会话 claude-159 (port 54424)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-159)
+  ✓ [DashScope-Qwen] 200 src=claude-122
+  ✓ [DashScope-Qwen] 200 src=claude-157
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-155)
+  ✓ [DashScope-Qwen] 200 src=claude-153
+  ✓ [Z.AI-GLM] 200 src=claude-159
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-159)
+  ✓ [Z.AI-GLM] 200 src=claude-137
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-156)
+  ✓ [DashScope-Qwen] 200 src=claude-152
+    📊 tokens: in=6 out=326 cache=40642 total=40974
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-60)
+  ✓ [Z.AI-GLM] 200 src=claude-148
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-148)
+  ✓ [Z.AI-GLM] 200 src=claude-155
+  🔗 新会话 claude-160 (port 54434)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-160)
+  ✓ [DashScope-Qwen] 200 src=claude-147
+    📊 tokens: in=6 out=345 cache=31903 total=32254
+  ✓ [Z.AI-GLM] 200 src=claude-148
+  🔗 新会话 claude-161 (port 54436)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-161)
+  ✓ [Z.AI-GLM] 200 src=claude-60
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-60)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-147)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-160)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-60)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-161)
+  ✓ [Z.AI-GLM] 200 src=claude-158
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-157)
+  ✓ [DashScope-Qwen] 200 src=claude-157
+  ✓ [Z.AI-GLM] 200 src=claude-159
+  ✓ [Z.AI-GLM] 200 src=claude-147
+  ✓ [DashScope-Qwen] 200 src=claude-161
+    📊 tokens: in=6 out=85 cache=50216 total=50307
+  ✓ [DashScope-Qwen] 200 src=claude-60
+    📊 tokens: in=6 out=117 cache=32566 total=32689
+  ✓ [DashScope-Qwen] 200 src=claude-160
+    📊 tokens: in=6 out=188 cache=31446 total=31640
+  🔗 新会话 claude-162 (port 54462)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-162)
+  🔗 新会话 claude-163 (port 54465)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-163)
+  🔗 新会话 claude-164 (port 54467)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  🔗 新会话 claude-165 (port 54468)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  🔗 新会话 claude-166 (port 54464)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  🔗 新会话 claude-167 (port 54474)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-167)
+  ✓ [DashScope-Qwen] 200 src=claude-162
+  ✓ [DashScope-Qwen] 200 src=claude-163
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ✓ [DashScope-Qwen] 200 src=claude-167
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  ✓ [Z.AI-GLM] 200 src=claude-133
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-162)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-163)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-133)
+  🔗 新会话 claude-168 (port 54494)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-168)
+  ✓ [DashScope-Qwen] 200 src=claude-162
+  ✓ [DashScope-Qwen] 200 src=claude-163
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  ✓ [DashScope-Qwen] 200 src=claude-133
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  ✓ [DashScope-Qwen] 200 src=claude-168
+  🔗 新会话 claude-169 (port 54500)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-169)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  ✓ [DashScope-Qwen] 200 src=claude-169
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-133)
+  ✓ [Z.AI-GLM] 200 src=claude-156
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  ✓ [Z.AI-GLM] 200 src=claude-61
+  ✓ [DashScope-Qwen] 200 src=claude-133
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  🔗 新会话 claude-170 (port 54517)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-170)
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-61)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-163)
+  → [DashScope-Qwen] POST /v1/messages/count_tokens?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-169)
+  ✓ [DashScope-Qwen] 404 src=claude-169
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-169)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  ✓ [DashScope-Qwen] 200 src=claude-61
+  ✓ [DashScope-Qwen] 200 src=claude-163
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ✓ [DashScope-Qwen] 200 src=claude-170
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-169
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-163)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  🔗 新会话 claude-171 (port 54532)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-171)
+  ✓ [DashScope-Qwen] 200 src=claude-163
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-170)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  ✓ [DashScope-Qwen] 200 src=claude-171
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-61)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  ✓ [DashScope-Qwen] 200 src=claude-61
+  ✓ [DashScope-Qwen] 200 src=claude-170
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-163)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  🔗 新会话 claude-172 (port 54549)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-163
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  🔗 新会话 claude-173 (port 54563)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  🔗 新会话 claude-174 (port 54564)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-174)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  ✓ [DashScope-Qwen] 200 src=claude-174
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  🔗 新会话 claude-175 (port 54570)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-175)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  🔗 新会话 claude-176 (port 54572)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-176)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  ✓ [DashScope-Qwen] 200 src=claude-175
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  ✓ [DashScope-Qwen] 200 src=claude-176
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-175)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ✓ [DashScope-Qwen] 200 src=claude-175
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  🔗 新会话 claude-177 (port 54609)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-177)
+  🔗 新会话 claude-178 (port 54606)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-178)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  ✓ [DashScope-Qwen] 200 src=claude-177
+  ✓ [DashScope-Qwen] 200 src=claude-178
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-178)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  🔗 新会话 claude-179 (port 54631)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-179)
+  ✓ [DashScope-Qwen] 200 src=claude-178
+  🔗 新会话 claude-180 (port 54632)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-180)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-180
+  ✓ [DashScope-Qwen] 200 src=claude-179
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  🔗 新会话 claude-181 (port 54642)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-181)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  🔗 新会话 claude-182 (port 54645)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-182)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-180)
+  🔗 新会话 claude-183 (port 54651)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-183)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ✓ [DashScope-Qwen] 200 src=claude-182
+  🔗 新会话 claude-184 (port 54653)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-184)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-164)
+  ✓ [DashScope-Qwen] 200 src=claude-180
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [DashScope-Qwen] 200 src=claude-183
+  ✓ [DashScope-Qwen] 200 src=claude-164
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  ✓ [Z.AI-GLM] 200 src=claude-184
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-182)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  🔗 新会话 claude-185 (port 54685)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-185)
+  ✓ [DashScope-Qwen] 200 src=claude-182
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  ✓ [Z.AI-GLM] 200 src=claude-181
+  🔗 新会话 claude-186 (port 54694)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-186)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  🔗 新会话 claude-187 (port 54699)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-187)
+  ✓ [DashScope-Qwen] 200 src=claude-186
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  ✓ [DashScope-Qwen] 200 src=claude-187
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-186)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  🔗 新会话 claude-188 (port 54714)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-188)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-183)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  ✓ [DashScope-Qwen] 200 src=claude-186
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  🔗 新会话 claude-189 (port 54752)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-189)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-186)
+  ✓ [Z.AI-GLM] 200 src=claude-185
+  🔗 新会话 claude-190 (port 54761)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-190)
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  ✓ [DashScope-Qwen] 200 src=claude-186
+  ✓ [DashScope-Qwen] 200 src=claude-190
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  🔗 新会话 claude-191 (port 54804)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-191)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  🔗 新会话 claude-192 (port 54827)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-192)
+  ✓ [DashScope-Qwen] 200 src=claude-183
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-186)
+  🔗 新会话 claude-193 (port 54834)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-193)
+  ✓ [Z.AI-GLM] 200 src=claude-188
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-188)
+  ✓ [DashScope-Qwen] 200 src=claude-191
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  ✓ [DashScope-Qwen] 200 src=claude-186
+  🔗 新会话 claude-194 (port 54846)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-194)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [Z.AI-GLM] 200 src=claude-193
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-193)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-191)
+    📊 tokens: in=12226 out=32 cache=22400 total=34658
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-193)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-173)
+  ✓ [DashScope-Qwen] 200 src=claude-191
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+    📊 tokens: in=20185 out=345 cache=25152 total=45682
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-185)
+  ✓ [DashScope-Qwen] 200 src=claude-173
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-183)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-156)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-186)
+  ✓ [DashScope-Qwen] 200 src=claude-193
+    📊 tokens: in=6 out=59 cache=42811 total=42876
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-193)
+  ✓ [DashScope-Qwen] 200 src=claude-165
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-186
+  ✓ [DashScope-Qwen] 200 src=claude-183
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-191)
+  ✓ [DashScope-Qwen] 200 src=claude-156
+  🔗 新会话 claude-195 (port 54919)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-195)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-165)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-165)
+  ✓ [DashScope-Qwen] 200 src=claude-193
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-173)
+  ✓ [MiniMax] 200 src=claude-185
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-186)
+  ✓ [DashScope-Qwen] 200 src=claude-191
+  ✓ [DashScope-Qwen] 200 src=claude-195
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-156)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-166)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-195)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-191)
+  ✓ [MiniMax] 200 src=claude-165
+    📊 tokens: in=22850 out=144 cache=22672 total=45666
+  ✓ [MiniMax] 200 src=claude-186
+  ✓ [MiniMax] 200 src=claude-173
+  ✓ [Z.AI-GLM] 200 src=claude-189
+  🔗 新会话 claude-196 (port 54939)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-196)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-185)
+  ✓ [Z.AI-GLM] 200 src=claude-188
+  ✓ [Z.AI-GLM] 200 src=claude-192
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-183)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-192)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-188)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-172)
+  ✓ [MiniMax] 200 src=claude-195
+  ✓ [MiniMax] 200 src=claude-156
+  ✓ [MiniMax] 200 src=claude-166
+  🔗 新会话 claude-197 (port 54963)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-197)
+  ✓ [MiniMax] 200 src=claude-191
+    📊 tokens: in=15477 out=72 cache=22677 total=38226
+    📊 tokens: in=3290 out=80 cache=17035 total=20405
+  ✓ [MiniMax] 200 src=claude-196
+  ✓ [MiniMax] 200 src=claude-192
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-195)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-166)
+    📊 tokens: in=16906 out=147 cache=22806 total=39859
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-186)
+  ✓ [MiniMax] 200 src=claude-188
+    📊 tokens: in=31259 out=113 cache=22688 total=54060
+    📊 tokens: in=23536 out=186 cache=22806 total=46528
+    📊 tokens: in=6683 out=69 cache=22835 total=29587
+  ✓ [MiniMax] 200 src=claude-166
+  ✓ [MiniMax] 200 src=claude-195
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-173)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-191)
+  ✓ [MiniMax] 200 src=claude-186
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-156)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-193)
+  ✓ [Z.AI-GLM] 200 src=claude-194
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-194)
+  ✓ [MiniMax] 200 src=claude-185
+    📊 tokens: in=8011 out=89 cache=22835 total=30935
+  ✓ [MiniMax] 200 src=claude-191
+    📊 tokens: in=10930 out=96 cache=22835 total=33861
+    📊 tokens: in=3392 out=66 cache=22861 total=26319
+  ✓ [MiniMax] 200 src=claude-197
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-195)
+  ✓ [MiniMax] 200 src=claude-183
+  ✓ [MiniMax] 200 src=claude-156
+  ✓ [MiniMax] 200 src=claude-193
+    📊 tokens: in=17221 out=163 cache=22806 total=40190
+  ✓ [MiniMax] 200 src=claude-195
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-186)
+  ✓ [MiniMax] 200 src=claude-194
+    📊 tokens: in=11429 out=94 cache=22672 total=34195
+  ✓ [MiniMax] 200 src=claude-173
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-197)
+    📊 tokens: in=16207 out=187 cache=22677 total=39071
+    📊 tokens: in=3772 out=79 cache=22861 total=26712
+  ✓ [MiniMax] 200 src=claude-172
+    📊 tokens: in=31445 out=141 cache=22688 total=54274
+    📊 tokens: in=17456 out=118 cache=22688 total=40262
+    📊 tokens: in=72385 out=161 cache=22694 total=95240
+  ✓ [MiniMax] 200 src=claude-197
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-166)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-195)
+    📊 tokens: in=30872 out=110 cache=22806 total=53788
+  🔗 新会话 claude-198 (port 54988)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-198)
+    📊 tokens: in=7410 out=229 cache=22835 total=30474
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-193)
+    📊 tokens: in=21385 out=125 cache=22688 total=44198
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-156)
+  ✓ [MiniMax] 200 src=claude-186
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-194)
+  ✓ [MiniMax] 200 src=claude-195
+  ✓ [MiniMax] 200 src=claude-166
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-191)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-183)
+  ✓ [MiniMax] 200 src=claude-193
+    📊 tokens: in=11809 out=100 cache=22672 total=34581
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-197)
+  ✓ [MiniMax] 200 src=claude-156
+    📊 tokens: in=28217 out=92 cache=22806 total=51115
+    📊 tokens: in=21888 out=153 cache=22677 total=44718
+    📊 tokens: in=16423 out=76 cache=22677 total=39176
+    📊 tokens: in=3893 out=113 cache=22861 total=26867
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-186)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-166)
+  ✓ [MiniMax] 200 src=claude-191
+  ✓ [MiniMax] 200 src=claude-194
+  ✓ [MiniMax] 200 src=claude-197
+  ✓ [MiniMax] 200 src=claude-198
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-172)
+  ✓ [MiniMax] 200 src=claude-183
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-195)
+  🔗 新会话 claude-199 (port 55006)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-199)
+  ✓ [MiniMax] 200 src=claude-166
+    📊 tokens: in=31650 out=104 cache=22688 total=54442
+  ✓ [MiniMax] 200 src=claude-195
+  ✓ [MiniMax] 200 src=claude-172
+    📊 tokens: in=26131 out=73 cache=22672 total=48876
+    📊 tokens: in=23178 out=381 cache=22672 total=46231
+    📊 tokens: in=12554 out=127 cache=22672 total=35353
+  🔗 新会话 claude-200 (port 55011)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-200)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-197)
+  🔗 新会话 claude-201 (port 55012)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-201)
+    📊 tokens: in=72899 out=149 cache=22694 total=95742
+    📊 tokens: in=22995 out=133 cache=22688 total=45816
+  ✓ [MiniMax] 200 src=claude-199
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-156)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-194)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-183)
+  ✓ [MiniMax] 200 src=claude-197
+  ✓ [MiniMax] 200 src=claude-156
+  ✓ [MiniMax] 200 src=claude-194
+    📊 tokens: in=4036 out=168 cache=22861 total=27065
+  ✓ [MiniMax] 200 src=claude-200
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-195)
+    📊 tokens: in=18469 out=91 cache=22672 total=41232
+    📊 tokens: in=22194 out=182 cache=22677 total=45053
+  ✓ [MiniMax] 200 src=claude-183
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-172)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-199)
+    📊 tokens: in=31059 out=70 cache=22806 total=53935
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-200)
+  ✓ [MiniMax] 200 src=claude-201
+  ✓ [MiniMax] 200 src=claude-186
+  ✓ [MiniMax] 200 src=claude-195
+  🔗 新会话 claude-202 (port 55024)
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 1/3 src=claude-202)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 2/3 src=claude-202)
+  ✓ [MiniMax] 200 src=claude-172
+  ✓ [MiniMax] 200 src=claude-199
+    📊 tokens: in=14027 out=61 cache=22806 total=36894
+  ✓ [MiniMax] 200 src=claude-200
+    📊 tokens: in=73112 out=113 cache=22694 total=95919
+    📊 tokens: in=23531 out=209 cache=22688 total=46428
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-201)
+    📊 tokens: in=32759 out=185 cache=22688 total=55632
+    📊 tokens: in=30679 out=86 cache=22806 total=53571
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-186)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-194)
+    📊 tokens: in=9669 out=480 cache=22835 total=32984
+    📊 tokens: in=12784 out=192 cache=22672 total=35648
+    📊 tokens: in=4368 out=123 cache=22861 total=27352
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-197)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-195)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-156)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-191)
+    📊 tokens: in=17732 out=656 cache=22688 total=41076
+    📊 tokens: in=18686 out=99 cache=22672 total=41457
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-183)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-199)
+  ✓ [Z.AI-GLM] 200 src=claude-195
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-195)
+    📊 tokens: in=27783 out=1568 cache=22677 total=52028
+  ✓ [Z.AI-GLM] 200 src=claude-156
+  🔗 新会话 claude-203 (port 55043)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-203)
+    📊 tokens: in=33123 out=142 cache=22806 total=56071
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-165)
+  ✓ [Z.AI-GLM] 200 src=claude-183
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-183)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-203)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-195)
+  ✓ [Z.AI-GLM] 200 src=claude-165
+  🔗 新会话 claude-204 (port 55051)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-204)
+  ✓ [Z.AI-GLM] 200 src=claude-191
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-191)
+    📊 tokens: in=16543 out=467 cache=22677 total=39687
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-183)
+  ✓ [Z.AI-GLM] 200 src=claude-199
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-199)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+    📊 tokens: in=22462 out=298 cache=22677 total=45437
+  ✓ [DashScope-Qwen] 200 src=claude-203
+    📊 tokens: in=6 out=80 cache=61544 total=61630
+  ✓ [DashScope-Qwen] 200 src=claude-195
+    📊 tokens: in=6 out=130 cache=26983 total=27119
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  🔗 新会话 claude-205 (port 55090)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-205)
+  🔗 新会话 claude-206 (port 55091)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-206)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-195)
+  ✓ [DashScope-Qwen] 200 src=claude-204
+    📊 tokens: in=6 out=136 cache=56047 total=56189
+  🔗 新会话 claude-207 (port 55096)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-207)
+  ✓ [DashScope-Qwen] 200 src=claude-205
+  ✓ [DashScope-Qwen] 200 src=claude-191
+    📊 tokens: in=6 out=151 cache=30861 total=31018
+  ✓ [DashScope-Qwen] 200 src=claude-195
+  ✓ [DashScope-Qwen] 200 src=claude-206
+  ✓ [DashScope-Qwen] 200 src=claude-183
+    📊 tokens: in=6 out=110 cache=104463 total=104579
+  ✓ [DashScope-Qwen] 200 src=claude-207
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-191)
+  🔗 新会话 claude-208 (port 55106)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-208)
+  ✓ [Z.AI-GLM] 200 src=claude-186
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-186)
+  ✓ [Z.AI-GLM] 200 src=claude-201
+  ✓ [DashScope-Qwen] 200 src=claude-208
+  ✓ [DashScope-Qwen] 200 src=claude-191
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-201)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-207)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-195)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-183)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-195)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-195)
+  ✓ [DashScope-Qwen] 200 src=claude-199
+    📊 tokens: in=6 out=318 cache=44534 total=44858
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-191)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-199)
+  ✓ [DashScope-Qwen] 200 src=claude-201
+  ✓ [DashScope-Qwen] 200 src=claude-207
+  ✓ [DashScope-Qwen] 200 src=claude-186
+  → [Z.AI-GLM] POST /v1/messages/count_tokens?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-166)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-208)
+  ✓ [Z.AI-GLM] 200 src=claude-197
+  ✓ [DashScope-Qwen] 200 src=claude-183
+  ✓ [Z.AI-GLM] 200 src=claude-199
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-199)
+  ✓ [Z.AI-GLM] 200 src=claude-166
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-166)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-199)
+  🔗 新会话 claude-209 (port 55123)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-209)
+  ✓ [Z.AI-GLM] 200 src=claude-208
+  🔗 新会话 claude-210 (port 55125)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-210)
+  ✓ [Z.AI-GLM] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-207)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-207)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-207)
+  🔗 新会话 claude-211 (port 55128)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-211)
+  ✓ [DashScope-Qwen] 200 src=claude-209
+  ✓ [Z.AI-GLM] 200 src=claude-211
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-211)
+  ✓ [Z.AI-GLM] 200 src=claude-202
+    📊 tokens: in=33484 out=1847 cache=0 total=35331
+  ✓ [Z.AI-GLM] 200 src=claude-194
+  ✓ [DashScope-Qwen] 200 src=claude-210
+    📊 tokens: in=6 out=79 cache=31491 total=31576
+  🔗 新会话 claude-212 (port 55124)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-212)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-194)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-186)
+  ✓ [Z.AI-GLM] 200 src=claude-212
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-212)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-172)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-183)
+  ✓ [DashScope-Qwen] 200 src=claude-199
+    📊 tokens: in=6 out=142 cache=45580 total=45728
+  ✓ [Z.AI-GLM] 200 src=claude-186
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-186)
+  ✓ [Z.AI-GLM] 200 src=claude-194
+  🔗 新会话 claude-213 (port 55142)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-213)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+    📊 tokens: in=6 out=109 cache=42644 total=42759
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-212)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-199)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [Z.AI-GLM] 200 src=claude-172
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-209)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-186)
+  ✓ [Z.AI-GLM] 200 src=claude-183
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-183)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-213)
+  ✓ [DashScope-Qwen] 200 src=claude-212
+    📊 tokens: in=6 out=65 cache=31682 total=31753
+  ✓ [DashScope-Qwen] 200 src=claude-199
+  ✓ [DashScope-Qwen] 200 src=claude-209
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-212)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-212)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-212)
+  ✓ [Z.AI-GLM] 200 src=claude-195
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-186
+    📊 tokens: in=6 out=82 cache=63388 total=63476
+  🔗 新会话 claude-214 (port 55155)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-214)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-186)
+  ✓ [Z.AI-GLM] 200 src=claude-166
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-166)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-209)
+    📊 tokens: in=3358 out=538 cache=34624 total=38520
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-195)
+  ✓ [Z.AI-GLM] 200 src=claude-209
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-166)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-209)
+  ✓ [Z.AI-GLM] 200 src=claude-191
+  ✓ [Z.AI-GLM] 200 src=claude-195
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 1/3 src=claude-195)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-199)
+  🔗 新会话 claude-215 (port 55165)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-215)
+  ✓ [Z.AI-GLM] 200 src=claude-207
+  🔗 新会话 claude-216 (port 55167)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-216)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+    📊 tokens: in=6 out=354 cache=50456 total=50816
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-207)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-201)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+    📊 tokens: in=6 out=77 cache=53009 total=53092
+  ✓ [DashScope-Qwen] 200 src=claude-199
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-195
+    📊 tokens: in=6 out=123 cache=29030 total=29159
+  ✓ [DashScope-Qwen] 200 src=claude-209
+    📊 tokens: in=6 out=125 cache=35017 total=35148
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-209)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-195)
+  ✓ [DashScope-Qwen] 200 src=claude-216
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-195)
+  ⏳ [DashScope-Qwen] 冷却 60s
+  ✗ [DashScope-Qwen] 429 Rate Limited → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=MiniMax-M2.7 stream=true (attempt 2/3 src=claude-209)
+  ✓ [DashScope-Qwen] 200 src=claude-215
+  ✓ [DashScope-Qwen] 200 src=claude-201
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-209)
+  ⏳ [MiniMax] 冷却 60s
+  ✗ [MiniMax] 429 Rate Limited → fallback
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 3/3 src=claude-195)
+  ✓ [DashScope-Qwen] 200 src=claude-183
+    📊 tokens: in=6 out=222 cache=107322 total=107550
+  ✓ [DashScope-Qwen] 200 src=claude-213
+    📊 tokens: in=6 out=347 cache=34635 total=34988
+  ✓ [DashScope-Qwen] 200 src=claude-207
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [Z.AI-GLM] 200 src=claude-209
+  🔗 新会话 claude-217 (port 55181)
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=false (attempt 1/3 src=claude-217)
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [Z.AI-GLM] POST /v1/messages?beta=true model=glm-5.1 stream=true (attempt 1/3 src=claude-183)
+  ⏳ [Z.AI-GLM] 冷却 60s
+  ✗ [Z.AI-GLM] 429 Rate Limited → fallback
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=false (attempt 2/3 src=claude-217)
+  🔗 新会话 claude-218 (port 55187)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-218)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  🔗 新会话 claude-219 (port 55191)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-219)
+  ✓ [Z.AI-GLM] 200 src=claude-212
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-207)
+  ✓ [Z.AI-GLM] 200 src=claude-195
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-201)
+  ✓ [DashScope-Qwen] 200 src=claude-218
+  ✓ [DashScope-Qwen] 200 src=claude-219
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-195)
+  ✓ [Z.AI-GLM] 200 src=claude-214
+  ✓ [DashScope-Qwen] 200 src=claude-217
+    📊 tokens: in=6 out=110 cache=35205 total=35321
+  ✓ [DashScope-Qwen] 200 src=claude-207
+  🔗 新会话 claude-220 (port 55196)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-220)
+  ✓ [DashScope-Qwen] 200 src=claude-201
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-214)
+  ✓ [DashScope-Qwen] 200 src=claude-195
+  ✓ [Z.AI-GLM] 200 src=claude-183
+  ✓ [DashScope-Qwen] 200 src=claude-220
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-172)
+  🔗 新会话 claude-221 (port 55202)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-221)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-166)
+  ✓ [DashScope-Qwen] 200 src=claude-172
+  ✓ [DashScope-Qwen] 200 src=claude-214
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-195)
+  🔗 新会话 claude-222 (port 55208)
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-222)
+  ✓ [DashScope-Qwen] 200 src=claude-221
+  ✓ [DashScope-Qwen] 200 src=claude-166
+  → [DashScope-Qwen] POST /v1/messages?beta=true model=qwen3.6-plus stream=true (attempt 1/3 src=claude-207)
+  ✓ [Z.AI-GLM] 200 src=claude-186
+  ✓ [DashScope-Qwen] 200 src=claude-195
