@@ -1,0 +1,5 @@
+config.json
+data/
+stats.json
+*.pid
+node_modules/
