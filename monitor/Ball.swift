@@ -3,24 +3,46 @@ import Foundation
 
 // ─── 配置 ──────────────────────────────────────────────
 let MONITOR_URL = "http://localhost:4000/proxy-status"
-let POLL_INTERVAL = 2.0 // 秒
-let BALL_SIZE: CGFloat = 72
-let CORNER_RADIUS: CGFloat = BALL_SIZE / 2
+let POLL_INTERVAL = 2.0
+let SMOOTH_ALPHA = 0.35
+let ACTIVE_WINDOW: Double = 15.0
+let BALL_SIZE: CGFloat = 82
+
+// ─── 颜色 ──────────────────────────────────────────────
+let GREEN_IN   = NSColor(red: 0.25, green: 0.73, blue: 0.31, alpha: 1)
+let BLUE_OUT   = NSColor(red: 0.35, green: 0.65, blue: 1.0, alpha: 1)
+let DIM        = NSColor(white: 0.35, alpha: 1)
+let RED        = NSColor.systemRed
+let BORDER_OFF = NSColor(white: 0.15, alpha: 1)
+let BORDER_ON  = NSColor.systemGreen.withAlphaComponent(0.8)
+let BORDER_ERR = NSColor.systemRed.withAlphaComponent(0.8)
+let TODAY_CLR  = NSColor(red: 1.0, green: 0.85, blue: 0.0, alpha: 1)
 
 // ─── 悬浮球窗口 ────────────────────────────────────────
 class FloatingBall: NSPanel {
-  private var speedLabel: NSTextField!
-  private var unitLabel: NSTextField!
-  private var todayLabel: NSTextField!
+  private var line1: CATextLayer!
+  private var line2: CATextLayer!
+  private var line3: CATextLayer!
+  private var bgLayer: CAShapeLayer!
   private var ringLayer: CAShapeLayer!
   private var isDragging = false
   private var dragOffset = NSPoint()
 
+  // 速度追踪
+  private var lastInput: Int = -1
+  private var lastOutput: Int = -1
+  private var lastPollTime: Date = Date()
+  private var smoothIn: Double = 0.0
+  private var smoothOut: Double = 0.0
+  private var lastActiveTime: Date?
+
+  private var todayTotal: Int = 0
+  private var hasError = false
+
   init() {
-    // 获取屏幕尺寸，右上角定位
     let screen = NSScreen.main!.visibleFrame
-    let x = screen.maxX - BALL_SIZE - 12
-    let y = screen.maxY - BALL_SIZE - 12
+    let x = screen.maxX - BALL_SIZE - 14
+    let y = screen.origin.y + 12
 
     super.init(
       contentRect: NSRect(x: x, y: y, width: BALL_SIZE, height: BALL_SIZE),
@@ -32,12 +54,10 @@ class FloatingBall: NSPanel {
     self.isFloatingPanel = true
     self.level = .floating
     self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-    self.isMovableByWindowBackground = false
-    self.hasShadow = true
+    self.isMovableByWindowBackground = true
+    self.hasShadow = false
     self.backgroundColor = .clear
     self.isOpaque = false
-    self.titleVisibility = .hidden
-    self.titlebarAppearsTransparent = true
 
     buildUI()
     startPolling()
@@ -46,52 +66,49 @@ class FloatingBall: NSPanel {
   private func buildUI() {
     let view = self.contentView!
     view.wantsLayer = true
-    view.layer?.backgroundColor = NSColor(white: 0.06, alpha: 0.92).cgColor
-    view.layer?.cornerRadius = CORNER_RADIUS
+    view.layer?.backgroundColor = NSColor.clear.cgColor
 
-    // 发光边框
+    // 实心圆背景
+    bgLayer = CAShapeLayer()
+    bgLayer.path = CGPath(ellipseIn: NSRect(x: 0, y: 0, width: BALL_SIZE, height: BALL_SIZE), transform: nil)
+    bgLayer.fillColor = NSColor(white: 0.06, alpha: 0.92).cgColor
+    view.layer?.addSublayer(bgLayer!)
+
+    // 边框
     ringLayer = CAShapeLayer()
-    ringLayer.path = CGPath(ellipseIn: NSRect(x: 2, y: 2, width: BALL_SIZE - 4, height: BALL_SIZE - 4), transformIn: nil)
+    ringLayer.path = CGPath(ellipseIn: NSRect(x: 2, y: 2, width: BALL_SIZE - 4, height: BALL_SIZE - 4), transform: nil)
     ringLayer.fillColor = nil
-    ringLayer.strokeColor = NSColor(white: 0.3, alpha: 1).cgColor
+    ringLayer.strokeColor = BORDER_OFF.cgColor
     ringLayer.lineWidth = 2
     view.layer?.addSublayer(ringLayer!)
 
-    // 速度数字
-    speedLabel = NSTextField(labelWithString: "--")
-    speedLabel.font = NSFont.monospacedSystemFont(ofSize: 15, weight: .bold)
-    speedLabel.textColor = .systemGreen
-    speedLabel.alignment = .center
-    speedLabel.frame = NSRect(x: 0, y: 28, width: BALL_SIZE, height: 22)
-    view.addSubview(speedLabel)
-
-    // 单位
-    unitLabel = NSTextField(labelWithString: "t/s")
-    unitLabel.font = NSFont.systemFont(ofSize: 8, weight: .medium)
-    unitLabel.textColor = NSColor(white: 0.4, alpha: 1)
-    unitLabel.alignment = .center
-    unitLabel.frame = NSRect(x: 0, y: 18, width: BALL_SIZE, height: 14)
-    view.addSubview(unitLabel)
-
-    // 今日累计
-    todayLabel = NSTextField(labelWithString: "")
-    todayLabel.font = NSFont.systemFont(ofSize: 7, weight: .regular)
-    todayLabel.textColor = NSColor(white: 0.35, alpha: 1)
-    todayLabel.alignment = .center
-    todayLabel.frame = NSRect(x: 0, y: 5, width: BALL_SIZE, height: 12)
-    view.addSubview(todayLabel)
+    // 三行：从上到下
+    line1 = makeTextLayer(layer: view.layer!, y: BALL_SIZE - 30, fontSize: 13, weight: .bold)
+    line2 = makeTextLayer(layer: view.layer!, y: BALL_SIZE - 48, fontSize: 10, weight: .semibold)
+    line3 = makeTextLayer(layer: view.layer!, y: BALL_SIZE - 62, fontSize: 10, weight: .semibold)
   }
 
-  // ─── 轮询代理状态 ──────────────────────────────────
+  private func makeTextLayer(layer: CALayer, y: CGFloat, fontSize: CGFloat, weight: NSFont.Weight) -> CATextLayer {
+    let tl = CATextLayer()
+    tl.string = ""
+    tl.font = NSFont.monospacedSystemFont(ofSize: fontSize, weight: weight) as CFTypeRef
+    tl.fontSize = fontSize
+    tl.foregroundColor = DIM.cgColor
+    tl.alignmentMode = .center
+    tl.frame = CGRect(x: 0, y: y, width: BALL_SIZE, height: fontSize + 6)
+    tl.isWrapped = false
+    tl.truncationMode = .end
+    layer.addSublayer(tl)
+    return tl
+  }
+
+  // ─── 轮询 ──────────────────────────────────────────
   private func startPolling() {
     poll()
     Timer.scheduledTimer(withTimeInterval: POLL_INTERVAL, repeats: true) { [weak self] _ in
       self?.poll()
     }
   }
-
-  private var lastTotal: Int = 0
-  private var lastPollTime: Date = Date()
 
   private func poll() {
     guard let url = URL(string: MONITOR_URL) else { return }
@@ -102,6 +119,7 @@ class FloatingBall: NSPanel {
       guard let self = self else { return }
       DispatchQueue.main.async {
         if error != nil {
+          self.hasError = true
           self.showOffline()
           return
         }
@@ -109,30 +127,38 @@ class FloatingBall: NSPanel {
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let tokenUsage = json["token_usage"] as? [String: Any],
               let totals = tokenUsage["totals"] as? [String: Any] else {
+          self.hasError = true
           self.showOffline()
           return
         }
 
-        let total = totals["total"] as? Int ?? 0
-        let input = totals["input"] as? Int ?? 0
-        let output = totals["output"] as? Int ?? 0
-
-        // 计算速度
+        self.hasError = false
+        let curIn = (totals["input"] as? Int ?? 0) + (totals["cache_read"] as? Int ?? 0)
+        let curOut = totals["output"] as? Int ?? 0
         let now = Date()
-        let dt = now.timeIntervalSince(self.lastPollTime)
-        var speed = 0.0
-        if dt > 0 && self.lastTotal > 0 {
-          speed = Double(total - self.lastTotal) / dt
+
+        if self.lastInput >= 0 {
+          let dt = now.timeIntervalSince(self.lastPollTime)
+          if dt > 0 {
+            let rawIn = Double(curIn - self.lastInput) / dt
+            let rawOut = Double(curOut - self.lastOutput) / dt
+            self.smoothIn = SMOOTH_ALPHA * rawIn + (1 - SMOOTH_ALPHA) * self.smoothIn
+            self.smoothOut = SMOOTH_ALPHA * rawOut + (1 - SMOOTH_ALPHA) * self.smoothOut
+            if rawIn > 1 || rawOut > 1 {
+              self.lastActiveTime = now
+            }
+          }
         }
-        self.lastTotal = total
+
+        self.lastInput = curIn
+        self.lastOutput = curOut
         self.lastPollTime = now
 
-        // 今日总量
         let byDay = tokenUsage["byDay"] as? [String: Any]
         let todayKey = self.todayKey()
-        let todayTotal = (byDay?[todayKey] as? [String: Any])?["total"] as? Int ?? 0
+        self.todayTotal = (byDay?[todayKey] as? [String: Any])?["total"] as? Int ?? 0
 
-        self.updateDisplay(speed: speed, today: todayTotal)
+        self.updateDisplay()
       }
     }
     task.resume()
@@ -145,27 +171,58 @@ class FloatingBall: NSPanel {
     return f.string(from: Date())
   }
 
-  private func updateDisplay(speed: Double, today: Int) {
-    if speed < 0.5 {
-      speedLabel.stringValue = "0"
-      speedLabel.textColor = NSColor(white: 0.4, alpha: 1)
-      ringLayer?.strokeColor = NSColor(white: 0.2, alpha: 1).cgColor
-      NSApp.dockTile.badgeLabel = nil
+  private func updateDisplay() {
+    if hasError { return }
+
+    let idleSec = lastActiveTime.map { Date().timeIntervalSince($0) } ?? Double.greatestFiniteMagnitude
+    let isActive = idleSec < ACTIVE_WINDOW
+    let speedActive = isActive && (smoothIn > 0.5 || smoothOut > 0.5)
+
+    if speedActive {
+      ringLayer?.strokeColor = BORDER_ON.cgColor
     } else {
-      speedLabel.stringValue = String(format: "%.1f", speed)
-      speedLabel.textColor = .systemGreen
-      ringLayer?.strokeColor = NSColor.systemGreen.withAlphaComponent(0.6).cgColor
-      NSApp.dockTile.badgeLabel = String(format: "%.0f", speed)
+      ringLayer?.strokeColor = BORDER_OFF.cgColor
+      smoothIn *= 0.5
+      smoothOut *= 0.5
     }
-    todayLabel.stringValue = fmtTokens(today)
+
+    // 第一行：今日总数（始终金色醒目）
+    line1.string = fmtTokens(todayTotal)
+    line1.fontSize = 13
+    line1.foregroundColor = TODAY_CLR.cgColor
+
+    // 第二行：输入速度
+    if isActive {
+      line2.string = "+ \(fmtSpeed(smoothIn))"
+      line2.foregroundColor = GREEN_IN.cgColor
+    } else {
+      line2.string = "--"
+      line2.foregroundColor = DIM.cgColor
+    }
+
+    // 第三行：输出速度
+    if isActive {
+      line3.string = "- \(fmtSpeed(smoothOut))"
+      line3.foregroundColor = BLUE_OUT.cgColor
+    } else {
+      line3.string = "--"
+      line3.foregroundColor = DIM.cgColor
+    }
   }
 
   private func showOffline() {
-    speedLabel.stringValue = "OFF"
-    speedLabel.textColor = .systemRed
-    ringLayer?.strokeColor = NSColor.systemRed.withAlphaComponent(0.6).cgColor
-    todayLabel.stringValue = ""
-    NSApp.dockTile.badgeLabel = nil
+    line1.string = "OFF"
+    line1.foregroundColor = RED.cgColor
+    line2.string = ""
+    line3.string = ""
+    ringLayer?.strokeColor = BORDER_ERR.cgColor
+  }
+
+  private func fmtSpeed(_ n: Double) -> String {
+    if n >= 1_000_000 { return String(format: "%.1fM", n / 1_000_000) }
+    if n >= 1_000 { return String(format: "%.1fK", n / 1_000) }
+    if n >= 1 { return String(format: "%.0f", n) }
+    return "0"
   }
 
   private func fmtTokens(_ n: Int) -> String {
@@ -204,13 +261,13 @@ class FloatingBall: NSPanel {
   }
 }
 
-// ─── AppDelegate ────────────────────────────────────────
+// ─── AppDelegate ───────────────────────────────────────
 class AppDelegate: NSObject, NSApplicationDelegate {
   var ball: FloatingBall!
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     let app = NSApplication.shared
-    app.setActivationPolicy(.accessory) // 不显示 Dock 图标
+    app.setActivationPolicy(.accessory)
     ball = FloatingBall()
     ball.orderFrontRegardless()
     RunLoop.current.run()

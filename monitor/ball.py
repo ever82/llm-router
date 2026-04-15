@@ -27,6 +27,8 @@ BALL_W = 82
 BALL_H = 82
 
 # ─── 颜色 ──────────────────────────────────────────────
+# 透明色：仅用于 Windows 窗口透明（macOS 不支持，会被忽略）
+TRANSPARENT = "#0d0d1a"  # 与任何球体颜色不同的魔术色
 BG_DARK    = "#0d1117"
 BG_BALL    = "#161b22"
 BORDER_OFF = "#21262d"
@@ -45,6 +47,12 @@ class FloatingBall:
         self.root.title("TokenBall")
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
+        # Windows 透明色：窗口背景变为完全透明，圆外不再露出黑角
+        try:
+            self.root.attributes("-transparentcolor", TRANSPARENT)
+        except tk.TclError:
+            pass  # macOS / Linux 不支持，忽略
+        self.root.configure(bg=TRANSPARENT)
 
         # 初始位置：右上角
         sw = self.root.winfo_screenwidth()
@@ -52,12 +60,11 @@ class FloatingBall:
         x = sw - BALL_W - 14
         y = sh - BALL_H - 50
         self.root.geometry(f"{BALL_W}x{BALL_H}+{x}+{y}")
-        self.root.configure(bg=BG_DARK)
 
         # Canvas
         self.canvas = tk.Canvas(
             self.root, width=BALL_W, height=BALL_H,
-            bg=BG_DARK, highlightthickness=0, bd=0
+            bg=TRANSPARENT, highlightthickness=0, bd=0
         )
         self.canvas.pack(fill="both", expand=True)
 
