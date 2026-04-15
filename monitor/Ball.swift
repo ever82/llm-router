@@ -18,6 +18,14 @@ let BORDER_ON  = NSColor.systemGreen.withAlphaComponent(0.8)
 let BORDER_ERR = NSColor.systemRed.withAlphaComponent(0.8)
 let TODAY_CLR  = NSColor(red: 1.0, green: 0.85, blue: 0.0, alpha: 1)
 
+// ─── 自定义 View：修复光标为箭头 ──────────────────────
+class BallView: NSView {
+  override func resetCursorRects() {
+    super.resetCursorRects()
+    addCursorRect(bounds, cursor: .arrow)
+  }
+}
+
 // ─── 悬浮球窗口 ────────────────────────────────────────
 class FloatingBall: NSPanel {
   private var line1: CATextLayer!
@@ -54,7 +62,7 @@ class FloatingBall: NSPanel {
     self.isFloatingPanel = true
     self.level = .floating
     self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-    self.isMovableByWindowBackground = true
+    self.isMovableByWindowBackground = false
     self.hasShadow = false
     self.backgroundColor = .clear
     self.isOpaque = false
@@ -64,8 +72,9 @@ class FloatingBall: NSPanel {
   }
 
   private func buildUI() {
-    let view = self.contentView!
+    let view = BallView(frame: NSRect(x: 0, y: 0, width: BALL_SIZE, height: BALL_SIZE))
     view.wantsLayer = true
+    self.contentView = view
     view.layer?.backgroundColor = NSColor.clear.cgColor
 
     // 实心圆背景
@@ -266,11 +275,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var ball: FloatingBall!
 
   func applicationDidFinishLaunching(_ notification: Notification) {
-    let app = NSApplication.shared
-    app.setActivationPolicy(.accessory)
+    NSApplication.shared.setActivationPolicy(.accessory)
     ball = FloatingBall()
     ball.orderFrontRegardless()
-    RunLoop.current.run()
   }
 }
 
