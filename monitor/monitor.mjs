@@ -1,43 +1,58 @@
 #!/usr/bin/env node
 
 /**
- * Token Monitor — TUI Dashboard + 悬浮球
+ * Token Monitor v2 — TUI Dashboard + 悬浮球
  *
  * 用法:
- *   node monitor.mjs          # 完整 Dashboard
- *   node monitor.mjs --ball   # 悬浮球模式（单行速度）
+ *   node monitor.mjs          # Dashboard
+ *   node monitor.mjs --ball   # 悬浮球模式
  *
  * 键盘:
- *   1/2/3/4  切换周期（小时/天/周/月）
+ *   1/2/3/4  切换周期（时/天/周/月）
+ *   ←/→      翻页（上一周期/下一周期）
  *   d        打开 Dashboard（球模式下）
  *   q        退出
  */
 
-import http from 'node:http';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
+import { DatabaseSync } from 'node:sqlite';
 
 // ─── 配置 ──────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROXY_URL = 'http://localhost:4000';
-const DATA_DIR = resolve(__dirname, '..', 'data');
-const DATA_FILE = resolve(DATA_DIR, 'timeseries.json');
+const DB_PATH = resolve(__dirname, '..', 'proxy.db');
 const POLL_MS = 3000;
-const SAVE_MS = 30000;
+const FLUSH_MS = 30000;
 const BALL_MODE = process.argv.includes('--ball');
-const MAX_BARS = 30;
-const CHART_ROWS = 18;
 
-if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
+// 中国时区偏移（UTC+8，单位 ms）
+const TZ_OFFSET = 8 * 60 * 60 * 1000;
+
+// 周期配置
+const PERIOD_CONFIG = {
+  hour:  { maxBars: 24, label: '按小时', unit: 'h' },
+  day:   { maxBars: 30, label: '按天',   unit: 'd' },
+  week:  { maxBars: 52, label: '按周',   unit: 'w' },
+  month: { maxBars: 12, label: '按月',   unit: 'm' },
+};
+
+// ─── SQLite ────────────────────────────────────────────
+let db = null;
+try {
+  db = new DatabaseSync(DB_PATH, { create: true });
+  db.exec('PRAGMA journal_mode = WAL');
+} catch {
+  console.warn('  ⚠ SQLite 不可用，仅使用内存统计');
+}
 
 // ─── ANSI 工具 ─────────────────────────────────────────
 const C = {
   reset: '\x1b[0m', bold: '\x1b[1m', dim: '\x1b[2m',
   green: '\x1b[32m', yellow: '\x1b[33m', blue: '\x1b[34m',
   red: '\x1b[31m', cyan: '\x1b[36m', magenta: '\x1b[35m',
-  bgGreen: '\x1b[42m', bgBlue: '\x1b[44m', bgYellow: '\x1b[43m',
 };
 const clr = (s, c) => `${c}${s}${C.reset}`;
 const hideCursor = () => process.stdout.write('\x1b[?25l');
@@ -46,130 +61,209 @@ const clearScreen = () => process.stdout.write('\x1b[2J\x1b[H');
 const moveCursor = (row, col) => process.stdout.write(`\x1b[${row};${col}H`);
 const eraseLine = () => process.stdout.write('\x1b[2K\r');
 
+// ─── 中国时区日期工具 ──────────────────────────────────
+function cnDate(d = new Date()) {
+  return new Date(d.getTime() + TZ_OFFSET);
+}
+function cnHourKey(d = new Date()) {
+  const c = cnDate(d);
+  return `${c.getUTCFullYear()}-${String(c.getUTCMonth()+1).padStart(2,'0')}-${String(c.getUTCDate()).padStart(2,'0')}T${String(c.getUTCHours()).padStart(2,'0')}`;
+}
+function cnDayKey(d = new Date()) {
+  const c = cnDate(d);
+  return `${c.getUTCFullYear()}-${String(c.getUTCMonth()+1).padStart(2,'0')}-${String(c.getUTCDate()).padStart(2,'0')}`;
+}
+function cnWeekKey(d = new Date()) {
+  const c = cnDate(d);
+  c.setUTCHours(0, 0, 0, 0);
+  const dayOfWeek = c.getUTCDay();
+  const monday = new Date(c);
+  monday.setUTCDate(c.getUTCDate() - ((dayOfWeek + 6) % 7));
+  const w1 = new Date(monday.getUTCFullYear(), 0, 4);
+  const wn = 1 + Math.round(((monday - w1) / 86400000 - 3 + ((w1.getDay() + 6) % 7)) / 7);
+  return `${monday.getUTCFullYear()}-W${String(wn).padStart(2, '0')}`;
+}
+function cnMonthKey(d = new Date()) {
+  const c = cnDate(d);
+  return `${c.getUTCFullYear()}-${String(c.getUTCMonth()+1).padStart(2,'0')}`;
+}
+
+// 生成连续的 key 列表（用于固定轴）
+function generateKeys(period, pageOffset) {
+  const keys = [];
+  const now = cnDate(new Date());
+  for (let i = 0; i < PERIOD_CONFIG[period].maxBars; i++) {
+    const d = new Date(now.getTime() - (PERIOD_CONFIG[period].maxBars - 1 + pageOffset) * getPeriodMs(period) + i * getPeriodMs(period));
+    switch (period) {
+      case 'hour':  keys.push(cnHourKey(d)); break;
+      case 'day':   keys.push(cnDayKey(d)); break;
+      case 'week':  keys.push(cnWeekKey(d)); break;
+      case 'month': keys.push(cnMonthKey(d)); break;
+    }
+  }
+  return keys;
+}
+
+function getPeriodMs(period) {
+  switch (period) {
+    case 'hour':  return 3600000;
+    case 'day':   return 86400000;
+    case 'week':  return 7 * 86400000;
+    case 'month': return 30 * 86400000;
+  }
+}
+
+function formatPeriodLabel(key, period) {
+  switch (period) {
+    case 'hour':  return key.slice(11) + ':00';
+    case 'day':   return key.slice(5);
+    case 'week':  return key.slice(5);
+    case 'month': return key.slice(5);
+  }
+  return key;
+}
+
+function periodPageLabel(period, pageOffset) {
+  if (period === 'day') {
+    const d = cnDate(new Date());
+    d.setDate(d.getDate() + pageOffset);
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+  }
+  if (period === 'hour') {
+    return '今天 24 小时';
+  }
+  if (period === 'week') {
+    return '今年 52 周';
+  }
+  if (period === 'month') {
+    return '今年 12 月';
+  }
+  return '';
+}
+
 // ─── 时间序列存储 ───────────────────────────────────────
 class TimeSeries {
   constructor() {
-    this.perHour = {};
-    this.perDay = {};
-    this.perWeek = {};
-    this.perMonth = {};
-    this.speedSamples = []; // { time, total }
+    // 内存缓冲区（未刷新的实时数据）
+    this.buffer = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
+    this.speedSamples = [];
     this.lastTotals = null;
-    this.load();
   }
 
-  load() {
-    try {
-      if (existsSync(DATA_FILE)) {
-        const d = JSON.parse(readFileSync(DATA_FILE, 'utf-8'));
-        this.perHour = d.perHour || {};
-        this.perDay = d.perDay || {};
-        this.perWeek = d.perWeek || {};
-        this.perMonth = d.perMonth || {};
-      }
-    } catch {}
-  }
-
-  save() {
-    try {
-      writeFileSync(DATA_FILE, JSON.stringify({
-        perHour: this.perHour,
-        perDay: this.perDay,
-        perWeek: this.perWeek,
-        perMonth: this.perMonth,
-      }, null, 2));
-    } catch {}
-  }
-
-  // 时间桶 key
-  hourKey(d = new Date()) { return d.toISOString().slice(0, 13); }
-  dayKey(d = new Date()) { return d.toISOString().slice(0, 10); }
-  weekKey(d = new Date()) {
-    const t = new Date(d);
-    t.setHours(0, 0, 0, 0);
-    t.setDate(t.getDate() + 3 - ((t.getDay() + 6) % 7));
-    const w1 = new Date(t.getFullYear(), 0, 4);
-    const wn = 1 + Math.round(((t - w1) / 86400000 - 3 + ((w1.getDay() + 6) % 7)) / 7);
-    return `${t.getFullYear()}-W${String(wn).padStart(2, '0')}`;
-  }
-  monthKey(d = new Date()) { return d.toISOString().slice(0, 7); }
-
-  // 记录一次增量
   record(input, output, cache) {
     const total = input + output + cache;
     if (total <= 0) return;
     const now = new Date();
     for (const [store, key] of [
-      ['perHour', this.hourKey(now)],
-      ['perDay', this.dayKey(now)],
-      ['perWeek', this.weekKey(now)],
-      ['perMonth', this.monthKey(now)],
+      ['perHour', cnHourKey(now)], ['perDay', cnDayKey(now)],
+      ['perWeek', cnWeekKey(now)], ['perMonth', cnMonthKey(now)],
     ]) {
-      if (!this[store][key]) this[store][key] = { input: 0, output: 0, cache: 0, total: 0 };
-      const b = this[store][key];
+      if (!this.buffer[store][key]) this.buffer[store][key] = { input: 0, output: 0, cache: 0, total: 0 };
+      const b = this.buffer[store][key];
       b.input += input; b.output += output; b.cache += cache; b.total += total;
     }
   }
 
-  // 获取指定周期的数据（最多 30 条）
-  getPeriod(period) {
-    let store;
-    switch (period) {
-      case 'hour':  store = this.perHour;  break;
-      case 'day':   store = this.perDay;   break;
-      case 'week':  store = this.perWeek;  break;
-      case 'month': store = this.perMonth; break;
-      default: return [];
+  flushToDB() {
+    if (!db) return;
+    try {
+      const upsert = db.prepare(`
+        INSERT INTO aggregated_stats (period_type, period_key, input_tokens, output_tokens, cache_read_tokens, request_count)
+        VALUES (?, ?, ?, ?, ?, 0)
+        ON CONFLICT(period_type, period_key, backend_id, model) DO UPDATE SET
+          input_tokens = input_tokens + ?, output_tokens = output_tokens + ?,
+          cache_read_tokens = cache_read_tokens + ?
+      `);
+      for (const period of ['hour', 'day', 'week', 'month']) {
+        const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
+        for (const [key, data] of Object.entries(this.buffer[storeKey])) {
+          upsert.run(period, key, data.input, data.output, data.cache, data.input, data.output, data.cache);
+        }
+      }
+      // 清空已刷新的缓冲区
+      this.buffer = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
+    } catch (err) {
+      console.warn('  ⚠ DB flush error:', err.message);
     }
-    const keys = Object.keys(store).sort().slice(-MAX_BARS);
-    return keys.map(k => ({
-      key: k,
-      label: formatPeriodLabel(k, period),
-      ...store[k],
-    }));
   }
 
-  // 更新速度采样
+  getPeriodData(period, pageOffset) {
+    const keys = generateKeys(period, pageOffset);
+    const results = [];
+
+    if (db) {
+      // 从 SQLite 查询 + 合并内存缓冲区
+      const periodTypeMap = { hour: 'hour', day: 'day', week: 'week', month: 'month' };
+      const pt = periodTypeMap[period];
+      const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
+      const query = db.prepare(`
+        SELECT period_key, input_tokens, output_tokens, cache_read_tokens
+        FROM aggregated_stats
+        WHERE period_type = ? AND period_key IN (${keys.map(() => '?').join(',')})
+      `);
+      const rows = query.all(pt, ...keys);
+      const rowMap = {};
+      for (const r of rows) rowMap[r.period_key] = r;
+
+      for (const k of keys) {
+        const dbRow = rowMap[k];
+        const bufData = this.buffer[storeKey]?.[k];
+        if (dbRow || bufData) {
+          results.push({
+            key: k,
+            label: formatPeriodLabel(k, period),
+            input: (dbRow?.input_tokens || 0) + (bufData?.input || 0),
+            output: (dbRow?.output_tokens || 0) + (bufData?.output || 0),
+            cache: (dbRow?.cache_read_tokens || 0) + (bufData?.cache || 0),
+            total: ((dbRow?.input_tokens || 0) + (dbRow?.output_tokens || 0) + (dbRow?.cache_read_tokens || 0))
+                 + ((bufData?.input || 0) + (bufData?.output || 0) + (bufData?.cache || 0)),
+          });
+        } else {
+          results.push({ key: k, label: formatPeriodLabel(k, period), input: 0, output: 0, cache: 0, total: 0 });
+        }
+      }
+    } else {
+      // 仅内存模式
+      const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
+      for (const k of keys) {
+        const data = this.buffer[storeKey]?.[k] || { input: 0, output: 0, cache: 0, total: 0 };
+        results.push({ key: k, label: formatPeriodLabel(k, period), ...data });
+      }
+    }
+
+    return results;
+  }
+
   updateSpeed(currentTotal) {
     const now = Date.now();
     this.speedSamples.push({ time: now, total: currentTotal });
     if (this.speedSamples.length > 40) this.speedSamples = this.speedSamples.slice(-40);
   }
-
   getSpeed() {
     const s = this.speedSamples;
     if (s.length < 2) return { perSec: 0, per10Sec: 0, isIdle: true };
-    const last = s[s.length - 1];
-    const prev = s[s.length - 2];
+    const last = s[s.length - 1], prev = s[s.length - 2];
     const dt = (last.time - prev.time) / 1000;
     const perSec = dt > 0 ? (last.total - prev.total) / dt : 0;
-    // 10 秒平均
     const tenSecAgo = s.filter(x => x.time >= last.time - 12000);
     let per10Sec = 0;
     if (tenSecAgo.length >= 2) {
       const dt10 = (tenSecAgo[tenSecAgo.length - 1].time - tenSecAgo[0].time) / 1000;
       per10Sec = dt10 > 0 ? (tenSecAgo[tenSecAgo.length - 1].total - tenSecAgo[0].total) / dt10 : 0;
     }
-    return {
-      perSec: Math.round(perSec * 10) / 10,
-      per10Sec: Math.round(per10Sec * 10) / 10,
-      isIdle: perSec < 0.5,
-    };
+    return { perSec: Math.round(perSec * 10) / 10, per10Sec: Math.round(per10Sec * 10) / 10, isIdle: perSec < 0.5 };
   }
-
   getTodayTotal() {
-    return this.perDay[this.dayKey()]?.total || 0;
+    const todayKey = cnDayKey();
+    if (db) {
+      const r = db.prepare(`
+        SELECT SUM(input_tokens) as i, SUM(output_tokens) as o, SUM(cache_read_tokens) as c
+        FROM aggregated_stats WHERE period_type = 'day' AND period_key = ?
+      `).get(todayKey);
+      if (r) return (r.i || 0) + (r.o || 0) + (r.c || 0);
+    }
+    return this.buffer.perDay[todayKey]?.total || 0;
   }
-}
-
-function formatPeriodLabel(key, period) {
-  switch (period) {
-    case 'hour':  return key.slice(11) + ':00'; // "17:00"
-    case 'day':   return key.slice(5);           // "04-14"
-    case 'week':  return key.slice(5);           // "W15"
-    case 'month': return key.slice(5);           // "04"
-  }
-  return key;
 }
 
 const ts = new TimeSeries();
@@ -177,7 +271,6 @@ const ts = new TimeSeries();
 // ─── 代理轮询 ──────────────────────────────────────────
 let proxyOnline = false;
 let backends = [];
-let lastPollTotals = null;
 
 async function poll() {
   try {
@@ -185,34 +278,24 @@ async function poll() {
     const data = await res.json();
     const totals = data.token_usage?.totals;
     backends = data.backends || [];
-
     if (totals) {
       const currentTotal = totals.total || 0;
       if (ts.lastTotals !== null && currentTotal >= ts.lastTotals.total) {
         const di = (totals.input || 0) - ts.lastTotals.input;
         const dout = (totals.output || 0) - ts.lastTotals.output;
         const dc = (totals.cache_read || 0) - ts.lastTotals.cache_read;
-        if (di > 0 || dout > 0 || dc > 0) {
-          ts.record(di, dout, dc);
-        }
+        if (di > 0 || dout > 0 || dc > 0) ts.record(di, dout, dc);
       }
-      ts.lastTotals = {
-        total: currentTotal,
-        input: totals.input || 0,
-        output: totals.output || 0,
-        cache_read: totals.cache_read || 0,
-      };
+      ts.lastTotals = { total: currentTotal, input: totals.input || 0, output: totals.output || 0, cache_read: totals.cache_read || 0 };
       ts.updateSpeed(currentTotal);
     }
     proxyOnline = true;
-  } catch {
-    proxyOnline = false;
-  }
+  } catch { proxyOnline = false; }
 }
 
 setInterval(poll, POLL_MS);
 poll();
-setInterval(() => ts.save(), SAVE_MS);
+setInterval(() => ts.flushToDB(), FLUSH_MS);
 
 // ─── 格式化 ────────────────────────────────────────────
 function fmtTokens(n) {
@@ -223,157 +306,132 @@ function fmtTokens(n) {
   return '0';
 }
 function fmtDate() {
-  return new Date().toLocaleString('zh-CN', { hour12: false });
+  return new Date().toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
 }
 
-// ─── 柱状图渲染 ────────────────────────────────────────
-function renderChart(period) {
-  const data = ts.getPeriod(period);
-  const termW = process.stdout.columns || 100;
-  const marginL = 8;
-  const marginR = 2;
-  const chartW = termW - marginL - marginR - 2;
+// ─── 柱状图渲染（横轴=量，纵轴=时间，水平条形图）─────────
+function renderChart(period, pageOffset) {
+  const data = ts.getPeriodData(period, pageOffset);
+  const termW = process.stdout.columns || 120;
+  const marginL = 8;  // 时间标签宽度
+  const chartW = termW - marginL - 2;
   const n = data.length;
 
-  if (n === 0) {
-    return `${' '.repeat(marginL)}  ${clr('暂无数据，等代理有流量后显示', C.dim)}`;
-  }
+  if (n === 0) return { lines: [`  ${clr('暂无数据', C.dim)}`] };
 
-  const maxVal = Math.max(...data.map(d => d.total || 0)) * 1.15 || 1;
+  const maxVal = Math.max(...data.map(d => d.total || 0), 1) * 1.15;
 
-  // 每个柱子的宽度
-  const gap = Math.max(2, Math.floor(chartW / n / 4));
-  const barW = Math.min(12, Math.max(4, Math.floor((chartW - gap * (n + 1)) / n)));
+  // 每行一个时间段，用水平条形图
+  const maxRows = Math.min(n, 26); // 最多显示26行
+  const visibleData = data.slice(-maxRows);
 
   const lines = [];
 
-  for (let row = 0; row < CHART_ROWS; row++) {
-    const threshold = maxVal * (CHART_ROWS - row) / CHART_ROWS;
-    let line = '';
+  // 标题行
+  lines.push(clr(`  ${maxVal >= 1_000_000 ? (maxVal/1_000_000).toFixed(1)+'M' : maxVal >= 1_000 ? (maxVal/1_000).toFixed(0)+'K' : maxVal.toFixed(0)}`.padStart(7), C.dim) + '  ' + clr('◄ 量 ────────────────────────────────────────', C.dim));
+  lines.push(' '.repeat(marginL) + '├' + '─'.repeat(chartW));
 
-    // Y 轴标签
-    const showLabel = row % Math.ceil(CHART_ROWS / 5) === 0;
-    if (showLabel) {
-      line += clr(fmtTokens(maxVal * (CHART_ROWS - row) / CHART_ROWS).padStart(6), C.dim) + ' ┤ ';
-    } else {
-      line += ' '.repeat(marginL) + '│ ';
-    }
+  for (const d of visibleData) {
+    const label = d.label.padEnd(6);
+    const total = d.total || 0;
+    const input = d.input || 0;
+    const output = d.output || 0;
+    const cache = d.cache || 0;
+    const barLen = total > 0 ? Math.max(1, Math.round((total / maxVal) * chartW)) : 0;
+    const inputLen = total > 0 ? Math.round((input / maxVal) * chartW) : 0;
+    const cacheLen = total > 0 ? Math.round((cache / maxVal) * chartW) : 0;
+    const outputLen = barLen - inputLen - cacheLen;
 
-    // 柱子
-    for (let i = 0; i < n; i++) {
-      const d = data[i];
-      const cacheH = (d.cache || 0) / maxVal * CHART_ROWS;
-      const inputH = (d.input || 0) / maxVal * CHART_ROWS;
-      const outputH = (d.output || 0) / maxVal * CHART_ROWS;
+    let bar = '';
+    if (cacheLen > 0) bar += clr('█'.repeat(cacheLen), C.yellow);
+    if (inputLen > 0) bar += clr('█'.repeat(inputLen), C.green);
+    if (outputLen > 0) bar += clr('█'.repeat(outputLen), C.blue);
+    bar += ' '.repeat(Math.max(0, barLen - bar.length));
 
-      const rowFromBottom = CHART_ROWS - row;
-      const rowTop = rowFromBottom;
-      const rowBot = rowFromBottom - 1;
-
-      if (rowTop <= 0) {
-        line += ' '.repeat(barW);
-      } else if (rowTop <= cacheH) {
-        line += clr('█'.repeat(barW), C.yellow);
-      } else if (rowTop <= cacheH + inputH) {
-        line += clr('█'.repeat(barW), C.green);
-      } else if (rowTop <= cacheH + inputH + outputH) {
-        line += clr('█'.repeat(barW), C.blue);
-      } else {
-        line += ' '.repeat(barW);
-      }
-      line += ' '.repeat(gap);
-    }
-    lines.push(line);
+    const totalStr = total > 0 ? clr(fmtTokens(total), C.dim) : clr('0', C.dim);
+    lines.push(clr(label, C.cyan) + ' │ ' + bar + ' ' + totalStr);
   }
 
-  // X 轴线
-  lines.push(' '.repeat(marginL) + '└' + '─'.repeat(chartW));
-
-  // X 轴标签
-  let labelLine = ' '.repeat(marginL + 1);
-  for (let i = 0; i < n; i++) {
-    const lbl = data[i].label || '';
-    const pad = Math.max(0, Math.floor((barW - lbl.length) / 2));
-    const truncated = lbl.length > barW ? lbl.slice(0, barW) : lbl;
-    labelLine += ' '.repeat(pad) + clr(truncated, C.dim) + ' '.repeat(barW - pad - truncated.length + gap);
-  }
-  lines.push(labelLine);
-
-  return lines.join('\n');
+  return { lines };
 }
 
 // ─── 后端状态表 ────────────────────────────────────────
 function renderBackends() {
-  if (backends.length === 0) return '  ' + clr('无法获取后端状态', C.dim);
-  const termW = process.stdout.columns || 100;
-  const lines = backends.map(b => {
+  if (backends.length === 0) return ['  ' + clr('无法获取后端状态', C.dim)];
+  return backends.map(b => {
     const name = b.name.padEnd(18);
     const req = (`${b.requests} req`).padEnd(10);
     const err = (`${b.errors} err`).padEnd(10);
     const cd = b.cooldown === '-' ? clr('  OK', C.green) : clr(`  冷却 ${b.cooldown}`, C.red);
     return `  ${name}  ${req}  ${err} ${cd}`;
   });
-  return lines.join('\n');
 }
 
 // ─── Dashboard 模式 ────────────────────────────────────
 let currentPeriod = 'hour';
-const periodNames = { hour: '按小时', day: '按天', week: '按周', month: '按月' };
+let pageOffset = 0;  // 翻页偏移（负数=往前翻）
 const periodOrder = ['hour', 'day', 'week', 'month'];
 const spinner = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'];
 let spinIdx = 0;
 
 function renderDashboard() {
   const speed = ts.getSpeed();
-  const termW = process.stdout.columns || 100;
-  const w = Math.min(termW, 100);
+  const termW = process.stdout.columns || 120;
+  const w = Math.min(termW, 120);
 
   clearScreen();
   const hLine = '─'.repeat(w);
   const dLine = '═'.repeat(w);
 
-  // 头部
-  console.log(clr(`╔${dLine}╗`, C.dim));
-  console.log(clr('║', C.dim) + clr('  Token Monitor', C.bold) + ' '.repeat(w - 38) + clr(fmtDate(), C.dim) + clr('  ║', C.dim));
-  const speedStr = speed.isIdle
-    ? clr('idle', C.dim)
-    : clr(`${speed.perSec} t/s`, C.green);
-  const proxyStr = proxyOnline ? clr('Online', C.green) : clr('Offline', C.red);
-  const todayStr = fmtTokens(ts.getTodayTotal());
-  console.log(clr('║', C.dim) + `  Speed: ${speedStr}  │  Today: ${clr(todayStr, C.cyan)}  │  Proxy: ${proxyStr}  │  Backends: ${backends.length}  `.padEnd(w + 1) + clr('║', C.dim));
-  console.log(clr(`╠${dLine}╣`, C.dim));
+  let row = 1;
 
-  // 周期选择器
+  // 头部
+  const header = clr(`╔${dLine}╗`, C.dim);
+  moveCursor(row++, 1); process.stdout.write(header);
+
+  const infoLine = `  Speed: ${speed.isIdle ? clr('idle', C.dim) : clr(`${speed.perSec} t/s`, C.green)}  │  Today: ${clr(fmtTokens(ts.getTodayTotal()), C.cyan)}  │  Proxy: ${proxyOnline ? clr('Online', C.green) : clr('Offline', C.red)}  │  Backends: ${backends.length}  `;
+  moveCursor(row++, 1); process.stdout.write(clr('║', C.dim) + clr('  Token Monitor', C.bold) + ' '.repeat(Math.max(1, w - 38 - fmtDate().length)) + clr(fmtDate(), C.dim) + clr('  ║', C.dim));
+
+  moveCursor(row++, 1); process.stdout.write(clr('║', C.dim) + infoLine.padEnd(w) + clr('║', C.dim));
+
+  // 周期选择器 + 翻页
   const periodBtns = periodOrder.map(p => {
-    const label = periodNames[p];
+    const label = PERIOD_CONFIG[p].label;
     const num = periodOrder.indexOf(p) + 1;
     if (p === currentPeriod) return ` [${num}]${clr(label, C.bold + C.green)} `;
     return ` [${num}]${label} `;
   }).join('');
-  console.log(clr('║', C.dim) + periodBtns.padEnd(w) + clr('║', C.dim));
-  console.log(clr('╠', C.dim) + hLine + clr('╣', C.dim));
+  const pageLabel = periodPageLabel(currentPeriod, pageOffset);
+  const navInfo = `  ${pageOffset < 0 ? clr('◀ 上一页', C.dim) : ''}${pageOffset === 0 ? '  当前' : ''}${pageOffset > 0 ? clr('下一页 ▶', C.dim) : ''}  ${clr(pageLabel, C.cyan)}  `;
+  moveCursor(row++, 1); process.stdout.write(clr('║', C.dim) + (periodBtns + navInfo).padEnd(w) + clr('║', C.dim));
 
-  // 图表
-  const chartLines = renderChart(currentPeriod);
-  for (const line of chartLines.split('\n')) {
-    const padded = line.length > w ? line.slice(0, w) : line.padEnd(w);
-    console.log(clr('║', C.dim) + ' ' + padded + clr('║', C.dim));
+  moveCursor(row++, 1); process.stdout.write(clr('╠' + '═'.repeat(w) + '╣', C.dim));
+
+  // 图表（水平条形图，占满宽度）
+  const { lines: chartLines } = renderChart(currentPeriod, pageOffset);
+  for (const line of chartLines) {
+    moveCursor(row++, 1); process.stdout.write(line);
   }
 
   // 图例
   const legend = `  ${clr('■', C.green)} Input   ${clr('■', C.blue)} Output   ${clr('■', C.yellow)} Cache`;
-  console.log(clr('║', C.dim) + legend.padEnd(w) + clr('║', C.dim));
-  console.log(clr('╠', C.dim) + hLine + clr('╣', C.dim));
+  moveCursor(row++, 1); process.stdout.write(legend);
+
+  moveCursor(row++, 1); process.stdout.write(clr(`╠${hLine}╣`, C.dim));
 
   // 后端状态
-  console.log(clr('║', C.dim) + '  ' + clr('Backend Status:', C.bold) + ' '.repeat(w - 19) + clr('║', C.dim));
-  for (const line of renderBackends().split('\n')) {
-    const padded = line.length > w ? line.slice(0, w) : line.padEnd(w);
-    console.log(clr('║', C.dim) + padded + clr('║', C.dim));
+  moveCursor(row++, 1); process.stdout.write(clr('║', C.dim) + '  ' + clr('Backend Status:', C.bold) + ' '.repeat(w - 19) + clr('║', C.dim));
+  for (const line of renderBackends()) {
+    moveCursor(row++, 1);
+    const padded = line.length > w - 2 ? line.slice(0, w - 2) : line.padEnd(w - 2);
+    process.stdout.write(clr('║', C.dim) + padded + clr('║', C.dim));
   }
 
-  console.log(clr(`╚${dLine}╝`, C.dim));
-  console.log(clr(`  ${spinner[spinIdx % spinner.length]}  按 1/2/3/4 切换周期  │  q 退出`, C.dim));
+  moveCursor(row++, 1); process.stdout.write(clr(`╚${dLine}╝`, C.dim));
+
+  // 底部提示
+  const tip = `  ${spinner[spinIdx % spinner.length]}  1/2/3/4 周期  │  ←/→ 翻页  │  q 退出`;
+  moveCursor(row++, 1); process.stdout.write(clr(tip, C.dim));
   spinIdx++;
 }
 
@@ -382,15 +440,10 @@ function renderBall() {
   const speed = ts.getSpeed();
   const s = spinner[spinIdx % spinner.length];
   spinIdx++;
-
   const speedStr = speed.isIdle ? clr('idle', C.dim) : clr(`${speed.perSec} t/s`, C.green);
   const proxyStr = proxyOnline ? '' : clr(' PROXY OFF', C.red);
-  const todayStr = fmtTokens(ts.getTodayTotal());
-
   eraseLine();
-  process.stdout.write(
-    `${clr(s, C.cyan)} ${speedStr}  │ Today: ${clr(todayStr, C.cyan)}  │ 10s avg: ${fmtTokens(speed.per10Sec)}/s${proxyStr}  ${clr('[d]ashboard [q]uit', C.dim)}`
-  );
+  process.stdout.write(`${clr(s, C.cyan)} ${speedStr}  │ Today: ${clr(fmtTokens(ts.getTodayTotal()), C.cyan)}  │ 10s: ${fmtTokens(speed.per10Sec)}/s${proxyStr}  ${clr('[d]ashboard [q]uit', C.dim)}`);
 }
 
 // ─── 键盘输入 ──────────────────────────────────────────
@@ -405,13 +458,10 @@ function setupStdin() {
 
   process.stdin.on('keypress', (str, key) => {
     if (key.name === 'q' || (key.ctrl && key.name === 'c')) {
-      ts.save();
-      showCursor();
-      clearScreen();
+      ts.flushToDB(); showCursor(); clearScreen();
       console.log(clr('Token Monitor 已停止。统计数据已保存。', C.dim));
       process.exit(0);
     }
-
     if (BALL_MODE) {
       if (key.name === 'd' || key.name === 'return') {
         try {
@@ -420,10 +470,12 @@ function setupStdin() {
         } catch {}
       }
     } else {
-      if (key.name === '1') { currentPeriod = 'hour'; renderDashboard(); }
-      if (key.name === '2') { currentPeriod = 'day'; renderDashboard(); }
-      if (key.name === '3') { currentPeriod = 'week'; renderDashboard(); }
-      if (key.name === '4') { currentPeriod = 'month'; renderDashboard(); }
+      if (key.name === '1') { currentPeriod = 'hour'; pageOffset = 0; renderDashboard(); }
+      if (key.name === '2') { currentPeriod = 'day';   pageOffset = 0; renderDashboard(); }
+      if (key.name === '3') { currentPeriod = 'week';  pageOffset = 0; renderDashboard(); }
+      if (key.name === '4') { currentPeriod = 'month'; pageOffset = 0; renderDashboard(); }
+      if (key.name === 'left')  { pageOffset = Math.max(pageOffset - 1, -50); renderDashboard(); }
+      if (key.name === 'right') { pageOffset = Math.min(pageOffset + 1, 0);   renderDashboard(); }
     }
   });
 }
@@ -431,8 +483,6 @@ function setupStdin() {
 // ─── 启动 ──────────────────────────────────────────────
 async function main() {
   hideCursor();
-
-  // 先完成第一次轮询
   await poll();
 
   if (BALL_MODE) {
@@ -449,7 +499,6 @@ async function main() {
 
 main();
 
-// 优雅退出
-process.on('SIGINT', () => { ts.save(); showCursor(); process.exit(0); });
-process.on('SIGTERM', () => { ts.save(); showCursor(); process.exit(0); });
-process.on('SIGTSTP', () => { ts.save(); showCursor(); process.kill(process.pid, 'SIGSTOP'); });
+process.on('SIGINT', () => { ts.flushToDB(); showCursor(); process.exit(0); });
+process.on('SIGTERM', () => { ts.flushToDB(); showCursor(); process.exit(0); });
+process.on('SIGTSTP', () => { ts.flushToDB(); showCursor(); process.kill(process.pid, 'SIGSTOP'); });

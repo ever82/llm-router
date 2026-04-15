@@ -7,9 +7,10 @@
 import http from 'node:http';
 import https from 'node:https';
 import { Transform } from 'node:stream';
-import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { DatabaseSync } from 'node:sqlite';
 
 // ─── 配置加载 ────────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -21,8 +22,6 @@ if (!existsSync(configPath)) {
 const config = JSON.parse(readFileSync(configPath, 'utf-8'));
 const PORT = config.port || 4000;
 const PROXY_AUTH_TOKEN = config.proxy_auth_token || 'sk-proxy-change-me';
-const STATS_FILE = resolve(__dirname, 'stats.json');
-const STATS_SAVE_INTERVAL = 30_000;
 
 // ─── 可重试的错误类型 ────────────────────────────────────────
 const RETRYABLE_ERROR_TYPES = new Set([
@@ -31,64 +30,213 @@ const RETRYABLE_ERROR_TYPES = new Set([
   'internal_error', 'capacity_limit',
 ]);
 
-// ─── Token 统计 ──────────────────────────────────────────────
-class TokenTracker {
+// ─── Token 统计 → SQLite ──────────────────────────────────
+const DB_PATH = resolve(__dirname, 'proxy.db');
+let db = null;
+
+function initDB() {
+  try {
+    db = new DatabaseSync(DB_PATH, { create: true });
+    db.exec('PRAGMA journal_mode = WAL');
+    db.exec('PRAGMA foreign_keys = ON');
+    // 确保表存在（支持首次运行无 schema 的情况）
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS backends (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE,
+        base_url TEXT NOT NULL, model TEXT NOT NULL, auth_header TEXT DEFAULT NULL,
+        weight REAL DEFAULT 1.0, cooldown_secs INTEGER DEFAULT 60,
+        total_requests INTEGER DEFAULT 0, total_errors INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now'))
+      );
+      CREATE TABLE IF NOT EXISTS requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, backend_id INTEGER REFERENCES backends(id) ON DELETE SET NULL,
+        session_id TEXT, model_requested TEXT, model_actual TEXT,
+        status_code INTEGER, attempt INTEGER DEFAULT 1,
+        input_tokens INTEGER DEFAULT 0, output_tokens INTEGER DEFAULT 0, cache_read_tokens INTEGER DEFAULT 0,
+        error_type TEXT DEFAULT NULL, is_fallback INTEGER DEFAULT 0, duration_ms INTEGER DEFAULT NULL,
+        timestamp TEXT NOT NULL DEFAULT (datetime('now')), created_at TEXT DEFAULT (datetime('now'))
+      );
+      CREATE TABLE IF NOT EXISTS sessions (
+        session_id TEXT PRIMARY KEY, backend_id INTEGER REFERENCES backends(id) ON DELETE SET NULL,
+        first_seen TEXT NOT NULL DEFAULT (datetime('now')), last_seen TEXT NOT NULL DEFAULT (datetime('now')),
+        request_count INTEGER DEFAULT 0, total_tokens INTEGER DEFAULT 0
+      );
+      CREATE TABLE IF NOT EXISTS errors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, request_id INTEGER REFERENCES requests(id) ON DELETE SET NULL,
+        backend_id INTEGER REFERENCES backends(id) ON DELETE SET NULL,
+        error_type TEXT NOT NULL, error_message TEXT DEFAULT NULL,
+        attempt INTEGER DEFAULT 1, is_retryable INTEGER DEFAULT 1,
+        timestamp TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+      CREATE TABLE IF NOT EXISTS aggregated_stats (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, period_type TEXT NOT NULL, period_key TEXT NOT NULL,
+        backend_id INTEGER REFERENCES backends(id) ON DELETE SET NULL, model TEXT DEFAULT NULL,
+        input_tokens INTEGER DEFAULT 0, output_tokens INTEGER DEFAULT 0, cache_read_tokens INTEGER DEFAULT 0,
+        request_count INTEGER DEFAULT 0,
+        UNIQUE(period_type, period_key, backend_id, model)
+      );
+      CREATE INDEX IF NOT EXISTS idx_requests_timestamp ON requests(timestamp);
+      CREATE INDEX IF NOT EXISTS idx_requests_backend_id ON requests(backend_id);
+      CREATE INDEX IF NOT EXISTS idx_requests_model ON requests(model_actual);
+      CREATE INDEX IF NOT EXISTS idx_sessions_last_seen ON sessions(last_seen);
+      CREATE INDEX IF NOT EXISTS idx_aggregated_lookup ON aggregated_stats(period_type, period_key, backend_id, model);
+    `);
+    console.log('  📦 SQLite 数据库已就绪');
+  } catch (err) {
+    console.warn('  ⚠ SQLite 初始化失败，统计将仅存于内存:', err.message);
+    db = null;
+  }
+}
+initDB();
+
+function cnNow() {
+  return new Date(Date.now() + 8 * 3600000).toISOString().replace('T', ' ').slice(0, 19);
+}
+
+// ─── TokenDB：写入 SQLite + 内存聚合（兼容 /proxy-status）─
+class TokenDB {
   constructor() {
     this.startedAt = new Date().toISOString();
+    // 内存聚合（用于 /proxy-status 快速响应）
     this.byBackend = {};
     this.byModel = {};
     this.byDay = {};
+    // 加载已有统计
+    this._loadSummary();
   }
-  record(backendName, model, usage) {
+
+  _loadSummary() {
+    if (!db) return;
+    try {
+      // 从 aggregated_stats 恢复 byDay + totals
+      const dayRows = db.prepare(`
+        SELECT period_key as day, SUM(input_tokens) as input, SUM(output_tokens) as output,
+               SUM(cache_read_tokens) as cache_read, SUM(request_count) as requests
+        FROM aggregated_stats WHERE period_type = 'day' GROUP BY period_key ORDER BY period_key
+      `).all();
+      let totalInput = 0, totalOutput = 0, totalCache = 0, totalReqs = 0;
+      for (const r of dayRows) {
+        this.byDay[r.day] = {
+          input: r.input, output: r.output,
+          cache_read: r.cache_read,
+          total: r.input + r.output + r.cache_read,
+          requests: r.requests,
+        };
+        totalInput += r.input; totalOutput += r.output; totalCache += r.cache_read; totalReqs += r.requests;
+      }
+      if (totalReqs > 0) {
+        // 恢复 startedAt 到最早一天
+        if (dayRows.length > 0) this.startedAt = dayRows[0].day + 'T00:00:00.000Z';
+      }
+    } catch {}
+  }
+
+  record(backendName, model, usage, sessionId) {
     if (!usage) return;
     const input = usage.input_tokens || 0;
     const output = usage.output_tokens || 0;
     const cacheRead = usage.cache_read_input_tokens || 0;
     const total = input + output + cacheRead;
     if (total === 0) return;
+
+    // 内存聚合
     for (const store of [this.byBackend, this.byModel]) {
       const key = store === this.byBackend ? backendName : model;
       if (!store[key]) store[key] = { input: 0, output: 0, cache_read: 0, total: 0, requests: 0 };
       const b = store[key];
       b.input += input; b.output += output; b.cache_read += cacheRead; b.total += total; b.requests += 1;
     }
-    const day = new Date().toISOString().slice(0, 10);
-    if (!this.byDay[day]) this.byDay[day] = { input: 0, output: 0, cache_read: 0, total: 0, requests: 0 };
-    const d = this.byDay[day];
+    const dayKey = cnNow().slice(0, 10);
+    if (!this.byDay[dayKey]) this.byDay[dayKey] = { input: 0, output: 0, cache_read: 0, total: 0, requests: 0 };
+    const d = this.byDay[dayKey];
     d.input += input; d.output += output; d.cache_read += cacheRead; d.total += total; d.requests += 1;
+
+    // 写入 SQLite
+    if (!db) return;
+    try {
+      const ts = cnNow();
+      const insertRequest = db.prepare(`
+        INSERT INTO requests (backend_id, session_id, model_actual, input_tokens, output_tokens, cache_read_tokens, timestamp)
+        VALUES ((SELECT id FROM backends WHERE name = ?), ?, ?, ?, ?, ?, ?)
+      `);
+      insertRequest.run(backendName, sessionId || null, model, input, output, cacheRead, ts);
+
+      // 更新 aggregated_stats（day 级别）
+      const upsertDay = db.prepare(`
+        INSERT INTO aggregated_stats (period_type, period_key, input_tokens, output_tokens, cache_read_tokens, request_count)
+        VALUES ('day', ?, ?, ?, ?, 1)
+        ON CONFLICT(period_type, period_key, backend_id, model) DO UPDATE SET
+          input_tokens = input_tokens + ?, output_tokens = output_tokens + ?,
+          cache_read_tokens = cache_read_tokens + ?, request_count = request_count + 1
+      `);
+      upsertDay.run(dayKey, input, output, cacheRead, input, output, cacheRead);
+    } catch (err) {
+      console.warn('  ⚠ DB write error:', err.message);
+    }
   }
+
+  recordError(backendName, errorType, errorMessage, attempt, sessionId) {
+    if (!db) return;
+    try {
+      const ts = cnNow();
+      const insertError = db.prepare(`
+        INSERT INTO errors (backend_id, error_type, error_message, attempt, is_retryable, timestamp)
+        VALUES ((SELECT id FROM backends WHERE name = ?), ?, ?, ?, 1, ?)
+      `);
+      insertError.run(backendName, errorType, errorMessage || null, attempt || 1, ts);
+    } catch {}
+  }
+
+  upsertSession(sessionId, backendName, tokens) {
+    if (!db) return;
+    try {
+      const ts = cnNow();
+      const upsert = db.prepare(`
+        INSERT INTO sessions (session_id, backend_id, last_seen, request_count, total_tokens)
+        VALUES (?, (SELECT id FROM backends WHERE name = ?), ?, 1, ?)
+        ON CONFLICT(session_id) DO UPDATE SET
+          backend_id = (SELECT id FROM backends WHERE name = ?),
+          last_seen = ?, request_count = request_count + 1, total_tokens = total_tokens + ?
+      `);
+      upsert.run(sessionId, backendName, ts, tokens, backendName, ts, tokens);
+    } catch {}
+  }
+
+  getBackendId(name) {
+    if (!db) return null;
+    try {
+      const r = db.prepare('SELECT id FROM backends WHERE name = ?').get(name);
+      return r?.id || null;
+    } catch { return null; }
+  }
+
   summary() {
     const totals = { input: 0, output: 0, cache_read: 0, total: 0, requests: 0 };
+    // 从 byDay 聚合 totals（包含重启前已加载的历史数据）
+    for (const d of Object.values(this.byDay)) {
+      totals.input += d.input; totals.output += d.output;
+      totals.cache_read += d.cache_read; totals.total += d.total; totals.requests += d.requests;
+    }
+    // 从 byBackend 加上新增数据
     for (const b of Object.values(this.byBackend)) {
       totals.input += b.input; totals.output += b.output;
       totals.cache_read += b.cache_read; totals.total += b.total; totals.requests += b.requests;
     }
     return { startedAt: this.startedAt, totals, byBackend: this.byBackend, byModel: this.byModel, byDay: this.byDay };
   }
-  save() { try { writeFileSync(STATS_FILE, JSON.stringify(this.summary(), null, 2)); } catch {} }
-  static load() {
-    try {
-      if (existsSync(STATS_FILE)) {
-        const data = JSON.parse(readFileSync(STATS_FILE, 'utf-8'));
-        const t = new TokenTracker(); t.startedAt = data.startedAt;
-        t.byBackend = data.byBackend || {}; t.byModel = data.byModel || {}; t.byDay = data.byDay || {};
-        return t;
-      }
-    } catch {}
-    return new TokenTracker();
-  }
 }
-const tokenTracker = TokenTracker.load();
-setInterval(() => tokenTracker.save(), STATS_SAVE_INTERVAL);
+const tokenDB = new TokenDB();
 
 // ─── SSE 流处理器：提取 token + 检测错误 ─────────────────────
 class StreamProcessor extends Transform {
-  constructor(backendName, model) {
+  constructor(backendName, model, sessionId) {
     super();
     this.backendName = backendName;
     this.model = model;
+    this.sessionId = sessionId;
     this.buffer = '';
     this.usageFromStart = null;
+    this.totalTokens = 0;
     this.hadError = false;
     this.errorType = null;
     this.errorMessage = null;
@@ -119,8 +267,9 @@ class StreamProcessor extends Transform {
               output_tokens: data.usage.output_tokens || 0,
               cache_read_input_tokens: data.usage.cache_read_input_tokens || this.usageFromStart?.cache_read_input_tokens || 0,
             };
-            tokenTracker.record(this.backendName, this.model, usage);
+            tokenDB.record(this.backendName, this.model, usage, this.sessionId);
             const total = usage.input_tokens + usage.output_tokens + usage.cache_read_input_tokens;
+            this.totalTokens += total;
             console.log(`    📊 tokens: in=${usage.input_tokens} out=${usage.output_tokens} cache=${usage.cache_read_input_tokens} total=${total}`);
           }
         } catch {}
@@ -143,7 +292,7 @@ class StreamProcessor extends Transform {
             output_tokens: data.usage.output_tokens || 0,
             cache_read_input_tokens: data.usage.cache_read_input_tokens || this.usageFromStart?.cache_read_input_tokens || 0,
           };
-          tokenTracker.record(this.backendName, this.model, usage);
+          tokenDB.record(this.backendName, this.model, usage);
         }
       } catch {}
     }
@@ -164,6 +313,13 @@ function getSessionId(req) {
     const sid = `claude-${sessionCounter}`;
     socketSessions.set(socket, sid);
     console.log(`  🔗 新会话 ${sid} (port ${socket.remotePort})`);
+    // 持久化到 SQLite
+    if (db) {
+      try {
+        const ts = cnNow();
+        db.prepare('INSERT OR IGNORE INTO sessions (session_id, last_seen) VALUES (?, ?)').run(sid, ts);
+      } catch {}
+    }
   }
   return socketSessions.get(socket);
 }
@@ -183,6 +339,27 @@ class BackendPool {
       assigned: {}, // backendId → count of sources assigned
     };
     this.weights.forEach((_, i) => { this.routeStats.assigned[i] = 0; });
+    // 从 SQLite 恢复粘性路由
+    this._loadSourceMap();
+  }
+
+  _loadSourceMap() {
+    if (!db) return;
+    try {
+      const rows = db.prepare(`
+        SELECT s.session_id, b.name as backend_name
+        FROM sessions s JOIN backends b ON s.backend_id = b.id
+        WHERE s.backend_id IS NOT NULL
+      `).all();
+      for (const r of rows) {
+        const backendIdx = this.backends.findIndex(b => b.name === r.backend_name);
+        if (backendIdx >= 0) {
+          this.sourceMap.set(r.session_id, backendIdx);
+          this.routeStats.assigned[backendIdx] = (this.routeStats.assigned[backendIdx] || 0) + 1;
+        }
+      }
+      if (rows.length > 0) console.log(`  🔗 从数据库恢复 ${rows.length} 个会话路由`);
+    } catch {}
   }
 
   // 获取可用后端（未被冷却的）
@@ -530,11 +707,12 @@ async function handleRequest(req, res) {
         for (const chunk of buffered) {
           res.write(chunk);
         }
-        const processor = new StreamProcessor(backend.name, actualModel);
+        const processor = new StreamProcessor(backend.name, actualModel, sourceId);
         backendRes.pipe(processor).pipe(res);
 
         // 流结束后检测 mid-stream 错误，冷却后端
         processor.on('finish', () => {
+          tokenDB.upsertSession(sourceId, backend.name, processor.totalTokens || 0);
           if (processor.hadError && RETRYABLE_ERROR_TYPES.has(processor.errorType)) {
             backend.totalErrors++;
             pool.cooldown(backend, 15_000);
@@ -558,9 +736,10 @@ async function handleRequest(req, res) {
         try {
           const parsed = JSON.parse(respBody);
           if (parsed.usage) {
-            tokenTracker.record(backend.name, actualModel, parsed.usage);
             const u = parsed.usage;
             const total = (u.input_tokens || 0) + (u.output_tokens || 0) + (u.cache_read_input_tokens || 0);
+            tokenDB.record(backend.name, actualModel, parsed.usage, sourceId);
+            tokenDB.upsertSession(sourceId, backend.name, total);
             console.log(`    📊 tokens: in=${u.input_tokens || 0} out=${u.output_tokens || 0} cache=${u.cache_read_input_tokens || 0} total=${total}`);
           }
         } catch {}
@@ -600,10 +779,10 @@ function sendError(res, status, type, message) {
 // ─── 管理端点 ────────────────────────────────────────────────
 function handleStatus(req, res) {
   res.writeHead(200, { 'content-type': 'application/json' });
-  res.end(JSON.stringify({ status: 'ok', backends: pool.stats(), routing: pool.routingStats(), token_usage: tokenTracker.summary() }, null, 2));
+  res.end(JSON.stringify({ status: 'ok', backends: pool.stats(), routing: pool.routingStats(), token_usage: tokenDB.summary() }, null, 2));
 }
 function handleStats(req, res) {
-  const s = tokenTracker.summary();
+  const s = tokenDB.summary();
   const today = new Date().toISOString().slice(0, 10);
   let text = '';
   text += `═══ Token 用量统计 (从 ${s.startedAt} 起) ═══\n\n`;
@@ -647,7 +826,7 @@ const server = http.createServer(async (req, res) => {
   catch (err) { console.error('Unhandled error:', err); sendError(res, 500, 'internal_error', err.message); }
 });
 
-function shutdown() { console.log('\n保存统计数据...'); tokenTracker.save(); console.log('已保存。再见！'); process.exit(0); }
+function shutdown() { console.log('\n保存统计数据...'); db?.close(); console.log('已保存。再见！'); process.exit(0); }
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
