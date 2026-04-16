@@ -242,9 +242,36 @@ class FloatingBall: NSPanel {
 
   // ─── 鼠标事件 ──────────────────────────────────────
   override func mouseDown(with event: NSEvent) {
+    // 右键弹出菜单
+    if event.type == .rightMouseDown {
+      showContextMenu(with: event)
+      return
+    }
     isDragging = false
     let pos = event.locationInWindow
     dragOffset = NSPoint(x: pos.x, y: pos.y)
+  }
+
+  override func rightMouseDown(with event: NSEvent) {
+    showContextMenu(with: event)
+  }
+
+  private func showContextMenu(with event: NSEvent) {
+    let menu = NSMenu()
+    menu.addItem(NSMenuItem(title: "打开 Dashboard", action: #selector(openDashboardAction), keyEquivalent: ""))
+    menu.addItem(NSMenuItem.separator())
+    menu.addItem(NSMenuItem(title: "关闭悬浮球", action: #selector(quitAction), keyEquivalent: "q"))
+    if let view = self.contentView {
+      NSMenu.popUpContextMenu(menu, with: event, for: view)
+    }
+  }
+
+  @objc private func openDashboardAction() {
+    openDashboard()
+  }
+
+  @objc private func quitAction() {
+    NSApplication.shared.terminate(nil)
   }
 
   override func mouseDragged(with event: NSEvent) {
