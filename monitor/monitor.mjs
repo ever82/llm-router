@@ -88,6 +88,19 @@ function cnMonthKey(d = new Date()) {
   return `${c.getUTCFullYear()}-${String(c.getUTCMonth()+1).padStart(2,'0')}`;
 }
 
+// 将 requests 表中的 timestamp（中国时区字符串）转换为 period key
+function tsToPeriodKey(ts, period) {
+  // ts: '2026-04-16 09:13:17'
+  if (period === 'hour') return ts.slice(0, 13).replace(' ', 'T');
+  if (period === 'day') return ts.slice(0, 10);
+  if (period === 'month') return ts.slice(0, 7);
+  if (period === 'week') {
+    const d = new Date(ts.replace(' ', 'T') + '+08:00');
+    return cnWeekKey(d);
+  }
+  return ts;
+}
+
 // 生成连续的 key 列表（用于固定轴）
 function generateKeys(period, pageOffset) {
   const keys = [];
@@ -165,70 +178,46 @@ class TimeSeries {
   }
 
   flushToDB() {
-    if (!db) return;
-    try {
-      const upsert = db.prepare(`
-        INSERT INTO aggregated_stats (period_type, period_key, input_tokens, output_tokens, cache_read_tokens, request_count)
-        VALUES (?, ?, ?, ?, ?, 0)
-        ON CONFLICT(period_type, period_key, backend_id, model) DO UPDATE SET
-          input_tokens = input_tokens + ?, output_tokens = output_tokens + ?,
-          cache_read_tokens = cache_read_tokens + ?
-      `);
-      for (const period of ['hour', 'day', 'week', 'month']) {
-        const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
-        for (const [key, data] of Object.entries(this.buffer[storeKey])) {
-          upsert.run(period, key, data.input, data.output, data.cache, data.input, data.output, data.cache);
-        }
-      }
-      // 清空已刷新的缓冲区
-      this.buffer = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
-    } catch (err) {
-      console.warn('  ⚠ DB flush error:', err.message);
-    }
+    // 不再写入 aggregated_stats（原表因 SQLite UNIQUE 对 NULL 的特殊处理已积累大量重复脏数据，
+    // 且 requests 事实表已包含完整历史，monitor 直接按需从 requests 聚合即可）
+    this.buffer = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
   }
 
   getPeriodData(period, pageOffset) {
     const keys = generateKeys(period, pageOffset);
-    const results = [];
+    const results = keys.map(k => ({ key: k, label: formatPeriodLabel(k, period), input: 0, output: 0, cache: 0, total: 0 }));
+    const resultMap = Object.fromEntries(results.map(r => [r.key, r]));
 
     if (db) {
-      // 从 SQLite 查询 + 合并内存缓冲区
-      const periodTypeMap = { hour: 'hour', day: 'day', week: 'week', month: 'month' };
-      const pt = periodTypeMap[period];
-      const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
-      const query = db.prepare(`
-        SELECT period_key, input_tokens, output_tokens, cache_read_tokens
-        FROM aggregated_stats
-        WHERE period_type = ? AND period_key IN (${keys.map(() => '?').join(',')})
-      `);
-      const rows = query.all(pt, ...keys);
-      const rowMap = {};
-      for (const r of rows) rowMap[r.period_key] = r;
+      // 从 requests 事实表直接聚合（避免依赖已损坏的 aggregated_stats）
+      const startTs = keys[0] + (period === 'hour' ? ':00:00' : ' 00:00:00');
+      const endTs = keys[keys.length - 1] + (period === 'hour' ? ':59:59' : ' 23:59:59');
+      const rows = db.prepare(`
+        SELECT timestamp, input_tokens, output_tokens, cache_read_tokens
+        FROM requests
+        WHERE timestamp >= ? AND timestamp <= ?
+      `).all(startTs, endTs);
 
-      for (const k of keys) {
-        const dbRow = rowMap[k];
-        const bufData = this.buffer[storeKey]?.[k];
-        if (dbRow || bufData) {
-          results.push({
-            key: k,
-            label: formatPeriodLabel(k, period),
-            input: (dbRow?.input_tokens || 0) + (bufData?.input || 0),
-            output: (dbRow?.output_tokens || 0) + (bufData?.output || 0),
-            cache: (dbRow?.cache_read_tokens || 0) + (bufData?.cache || 0),
-            total: ((dbRow?.input_tokens || 0) + (dbRow?.output_tokens || 0) + (dbRow?.cache_read_tokens || 0))
-                 + ((bufData?.input || 0) + (bufData?.output || 0) + (bufData?.cache || 0)),
-          });
-        } else {
-          results.push({ key: k, label: formatPeriodLabel(k, period), input: 0, output: 0, cache: 0, total: 0 });
+      for (const r of rows) {
+        const key = tsToPeriodKey(r.timestamp, period);
+        if (resultMap[key]) {
+          resultMap[key].input += r.input_tokens || 0;
+          resultMap[key].output += r.output_tokens || 0;
+          resultMap[key].cache += r.cache_read_tokens || 0;
         }
       }
-    } else {
-      // 仅内存模式
-      const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
-      for (const k of keys) {
-        const data = this.buffer[storeKey]?.[k] || { input: 0, output: 0, cache: 0, total: 0 };
-        results.push({ key: k, label: formatPeriodLabel(k, period), ...data });
+    }
+
+    // 合并内存缓冲区中的实时数据
+    const storeKey = `per${period.charAt(0).toUpperCase() + period.slice(1)}`;
+    for (const r of results) {
+      const buf = this.buffer[storeKey]?.[r.key];
+      if (buf) {
+        r.input += buf.input;
+        r.output += buf.output;
+        r.cache += buf.cache;
       }
+      r.total = r.input + r.output + r.cache;
     }
 
     return results;
@@ -258,9 +247,11 @@ class TimeSeries {
     if (db) {
       const r = db.prepare(`
         SELECT SUM(input_tokens) as i, SUM(output_tokens) as o, SUM(cache_read_tokens) as c
-        FROM aggregated_stats WHERE period_type = 'day' AND period_key = ?
-      `).get(todayKey);
-      if (r) return (r.i || 0) + (r.o || 0) + (r.c || 0);
+        FROM requests WHERE timestamp >= ? AND timestamp <= ?
+      `).get(`${todayKey} 00:00:00`, `${todayKey} 23:59:59`);
+      const dbTotal = (r?.i || 0) + (r?.o || 0) + (r?.c || 0);
+      const bufTotal = this.buffer.perDay[todayKey]?.total || 0;
+      return dbTotal + bufTotal;
     }
     return this.buffer.perDay[todayKey]?.total || 0;
   }

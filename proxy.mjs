@@ -108,13 +108,13 @@ class TokenDB {
   _loadSummary() {
     if (!db) return;
     try {
-      // 从 aggregated_stats 恢复 byDay + totals
+      // 从 requests 事实表直接按天聚合（aggregated_stats 曾因 NULL 问题积累大量重复脏数据）
       const dayRows = db.prepare(`
-        SELECT period_key as day, SUM(input_tokens) as input, SUM(output_tokens) as output,
-               SUM(cache_read_tokens) as cache_read, SUM(request_count) as requests
-        FROM aggregated_stats WHERE period_type = 'day' GROUP BY period_key ORDER BY period_key
+        SELECT strftime('%Y-%m-%d', timestamp) as day,
+               SUM(input_tokens) as input, SUM(output_tokens) as output,
+               SUM(cache_read_tokens) as cache_read, COUNT(*) as requests
+        FROM requests GROUP BY day ORDER BY day
       `).all();
-      let totalInput = 0, totalOutput = 0, totalCache = 0, totalReqs = 0;
       for (const r of dayRows) {
         this.byDay[r.day] = {
           input: r.input, output: r.output,
@@ -122,11 +122,9 @@ class TokenDB {
           total: r.input + r.output + r.cache_read,
           requests: r.requests,
         };
-        totalInput += r.input; totalOutput += r.output; totalCache += r.cache_read; totalReqs += r.requests;
       }
-      if (totalReqs > 0) {
-        // 恢复 startedAt 到最早一天
-        if (dayRows.length > 0) this.startedAt = dayRows[0].day + 'T00:00:00.000Z';
+      if (dayRows.length > 0) {
+        this.startedAt = dayRows[0].day + 'T00:00:00.000Z';
       }
     } catch {}
   }
@@ -162,14 +160,24 @@ class TokenDB {
       insertRequest.run(backendName, sessionId || null, model, input, output, cacheRead, ts);
 
       // 更新 aggregated_stats（day 级别）
-      const upsertDay = db.prepare(`
-        INSERT INTO aggregated_stats (period_type, period_key, input_tokens, output_tokens, cache_read_tokens, request_count)
-        VALUES ('day', ?, ?, ?, ?, 1)
-        ON CONFLICT(period_type, period_key, backend_id, model) DO UPDATE SET
-          input_tokens = input_tokens + ?, output_tokens = output_tokens + ?,
-          cache_read_tokens = cache_read_tokens + ?, request_count = request_count + 1
-      `);
-      upsertDay.run(dayKey, input, output, cacheRead, input, output, cacheRead);
+      // 使用 INSERT OR REPLACE 避免 SQLite UNIQUE 对 NULL 的特殊处理导致重复插入
+      const existingDay = db.prepare(`
+        SELECT id, input_tokens, output_tokens, cache_read_tokens, request_count
+        FROM aggregated_stats
+        WHERE period_type = 'day' AND period_key = ? AND backend_id IS NULL AND model IS NULL
+        LIMIT 1
+      `).get(dayKey);
+      db.prepare(`
+        INSERT OR REPLACE INTO aggregated_stats
+          (id, period_type, period_key, backend_id, model, input_tokens, output_tokens, cache_read_tokens, request_count)
+        VALUES (?, ?, ?, NULL, NULL, ?, ?, ?, ?)
+      `).run(
+        existingDay?.id || null, 'day', dayKey,
+        (existingDay?.input_tokens || 0) + input,
+        (existingDay?.output_tokens || 0) + output,
+        (existingDay?.cache_read_tokens || 0) + cacheRead,
+        (existingDay?.request_count || 0) + 1
+      );
     } catch (err) {
       console.warn('  ⚠ DB write error:', err.message);
     }
@@ -217,11 +225,7 @@ class TokenDB {
       totals.input += d.input; totals.output += d.output;
       totals.cache_read += d.cache_read; totals.total += d.total; totals.requests += d.requests;
     }
-    // 从 byBackend 加上新增数据
-    for (const b of Object.values(this.byBackend)) {
-      totals.input += b.input; totals.output += b.output;
-      totals.cache_read += b.cache_read; totals.total += b.total; totals.requests += b.requests;
-    }
+    // byBackend / byModel 仅用于明细展示，不重复累加到 totals
     return { startedAt: this.startedAt, totals, byBackend: this.byBackend, byModel: this.byModel, byDay: this.byDay };
   }
 }
