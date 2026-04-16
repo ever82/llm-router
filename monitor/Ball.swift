@@ -291,7 +291,9 @@ class FloatingBall: NSPanel {
   }
 
   private func openDashboard() {
-    let script = "tell application \"Terminal\" to do script \"node \(NSHomeDirectory())/manage/llm-proxy/monitor/monitor.mjs\""
+    let exePath = Bundle.main.executablePath ?? ""
+    let monitorPath = (exePath as NSString).deletingLastPathComponent + "/monitor.mjs"
+    let script = "tell application \"Terminal\" to do script \"node \(monitorPath)\""
     let appleScript = NSAppleScript(source: script)
     appleScript?.executeAndReturnError(nil)
   }

@@ -9,10 +9,16 @@
  *   node init-db.mjs --db path/to.db    # 指定数据库路径
  */
 
+import { spawnSync } from 'node:child_process';
+
+if (!process.execArgv.includes('--experimental-sqlite')) {
+  const result = spawnSync(process.execPath, ['--experimental-sqlite', ...process.execArgv, process.argv[1], ...process.argv.slice(2)], { stdio: 'inherit' });
+  process.exit(result.status ?? 0);
+}
+
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DatabaseSync } from 'node:sqlite';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -30,6 +36,7 @@ const configPath = resolve(__dirname, 'config.json');
 // ─── 主流程 ────────────────────────────────────────────────
 console.log(`数据库路径: ${dbPath}`);
 
+const { DatabaseSync } = await import('node:sqlite');
 const db = new DatabaseSync(dbPath);
 db.exec('PRAGMA journal_mode = WAL');
 db.exec('PRAGMA foreign_keys = ON');

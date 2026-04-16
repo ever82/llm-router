@@ -14,11 +14,17 @@
  *   q        退出
  */
 
+import { spawnSync } from 'node:child_process';
+
+if (!process.execArgv.includes('--experimental-sqlite')) {
+  const result = spawnSync(process.execPath, ['--experimental-sqlite', ...process.execArgv, process.argv[1], ...process.argv.slice(2)], { stdio: 'inherit' });
+  process.exit(result.status ?? 0);
+}
+
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
-import { DatabaseSync } from 'node:sqlite';
 
 // ─── 配置 ──────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,6 +48,7 @@ const PERIOD_CONFIG = {
 // ─── SQLite ────────────────────────────────────────────
 let db = null;
 try {
+  const { DatabaseSync } = await import('node:sqlite');
   db = new DatabaseSync(DB_PATH, { create: true });
   db.exec('PRAGMA journal_mode = WAL');
 } catch {

@@ -3,12 +3,14 @@
 # macOS -> Swift (真圆透明)
 # Windows/Linux -> Python/Tkinter
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 os=$(uname -s)
 case "$os" in
   Darwin)
-    exec "$HOME/manage/llm-proxy/monitor/BallApp"
+    exec "$SCRIPT_DIR/BallApp"
     ;;
   *)
-    python3 "$HOME/manage/llm-proxy/monitor/ball.py"
+    python3 "$SCRIPT_DIR/ball.py"
     ;;
 esac

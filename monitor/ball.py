@@ -137,7 +137,9 @@ class FloatingBall:
             self._open_dashboard()
 
     def _open_dashboard(self, event=None):
-        script = 'tell application "Terminal" to do script "node %s/manage/llm-proxy/monitor/monitor.mjs"' % os.path.expanduser("~")
+        monitor_dir = os.path.dirname(os.path.abspath(__file__))
+        monitor_mjs = os.path.join(monitor_dir, "monitor.mjs")
+        script = 'tell application "Terminal" to do script "node %s"' % monitor_mjs
         subprocess.Popen(
             ["osascript", "-e", script],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL

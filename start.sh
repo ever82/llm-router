@@ -33,7 +33,7 @@ fi
 
 if [ "$1" = "bg" ]; then
   # 后台运行
-  nohup node "$PROXY_DIR/proxy.mjs" > "$LOG_FILE" 2>&1 &
+  nohup node --experimental-sqlite "$PROXY_DIR/proxy.mjs" > "$LOG_FILE" 2>&1 &
   echo $! > "$PID_FILE"
   sleep 1
   if kill -0 $(cat "$PID_FILE") 2>/dev/null; then
@@ -50,5 +50,5 @@ if [ "$1" = "bg" ]; then
   fi
 else
   # 前台运行
-  node "$PROXY_DIR/proxy.mjs"
+  node --experimental-sqlite "$PROXY_DIR/proxy.mjs"
 fi

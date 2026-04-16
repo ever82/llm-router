@@ -4,13 +4,19 @@
  * LLM Reverse Proxy v2 - 带 mid-stream 错误检测和自动 fallback
  */
 
+import { spawnSync } from 'node:child_process';
+
+if (!process.execArgv.includes('--experimental-sqlite')) {
+  const result = spawnSync(process.execPath, ['--experimental-sqlite', ...process.execArgv, process.argv[1], ...process.argv.slice(2)], { stdio: 'inherit' });
+  process.exit(result.status ?? 0);
+}
+
 import http from 'node:http';
 import https from 'node:https';
 import { Transform } from 'node:stream';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DatabaseSync } from 'node:sqlite';
 
 // ─── 配置加载 ────────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -34,8 +40,9 @@ const RETRYABLE_ERROR_TYPES = new Set([
 const DB_PATH = resolve(__dirname, 'proxy.db');
 let db = null;
 
-function initDB() {
+async function initDB() {
   try {
+    const { DatabaseSync } = await import('node:sqlite');
     db = new DatabaseSync(DB_PATH, { create: true });
     db.exec('PRAGMA journal_mode = WAL');
     db.exec('PRAGMA foreign_keys = ON');
@@ -87,7 +94,7 @@ function initDB() {
     db = null;
   }
 }
-initDB();
+await initDB();
 
 function cnNow() {
   return new Date(Date.now() + 8 * 3600000).toISOString().replace('T', ' ').slice(0, 19);
