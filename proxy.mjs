@@ -540,16 +540,42 @@ function isRetryableStatus(statusCode) {
 }
 
 // ─── 主请求处理 ──────────────────────────────────────────────
+// ─── 修复 thinking 模式下缺失 reasoning_content 的问题 ─────────
+function fixThinkingMessages(parsed) {
+  if (!parsed.thinking && !parsed.thinking_config) return false;
+  if (!Array.isArray(parsed.messages)) return false;
+
+  let fixed = false;
+  for (const msg of parsed.messages) {
+    if (msg.role !== 'assistant') continue;
+    // content 为字符串时跳过（无法插入 thinking block）
+    if (typeof msg.content === 'string') continue;
+    if (!Array.isArray(msg.content)) continue;
+    // 已有 thinking 或 reasoning_content 块则跳过
+    const hasThinking = msg.content.some(b => b && (b.type === 'thinking'));
+    if (hasThinking) continue;
+    // 在 content 开头插入一个最小 thinking 块
+    msg.content.unshift({ type: 'thinking', thinking: '.' });
+    fixed = true;
+  }
+  return fixed;
+}
+
 async function handleRequest(req, res) {
   const body = await readBody(req);
   const maxAttempts = pool.backends.length;
 
   let requestModel = null;
   let isStream = false;
+  let parsed = null;
   try {
-    const parsed = JSON.parse(body);
+    parsed = JSON.parse(body);
     requestModel = parsed.model || null;
     isStream = parsed.stream || false;
+    // 自动补全缺失的 thinking 内容块，防止 400 错误
+    if (fixThinkingMessages(parsed)) {
+      console.log('  ℹ 已为 assistant 消息补全 thinking 块');
+    }
   } catch {}
   const modelMap = config.model_map || {};
   const triedIds = new Set();
@@ -578,7 +604,14 @@ async function handleRequest(req, res) {
 
     let finalBody = body;
     let actualModel = requestModel;
-    if (requestModel && backend.model) {
+    if (parsed && backend.model) {
+      if (requestModel) {
+        const mappedModel = modelMap[requestModel] || backend.model;
+        actualModel = mappedModel;
+        parsed.model = mappedModel;
+      }
+      finalBody = JSON.stringify(parsed);
+    } else if (requestModel && backend.model) {
       const mappedModel = modelMap[requestModel] || backend.model;
       actualModel = mappedModel;
       finalBody = body.replace(`"model":"${requestModel}"`, `"model":"${mappedModel}"`);
