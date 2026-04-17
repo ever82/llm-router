@@ -197,8 +197,8 @@ class TimeSeries {
 
     if (db) {
       // 从 requests 事实表直接聚合（避免依赖已损坏的 aggregated_stats）
-      const startTs = keys[0] + (period === 'hour' ? ':00:00' : ' 00:00:00');
-      const endTs = keys[keys.length - 1] + (period === 'hour' ? ':59:59' : ' 23:59:59');
+      const startTs = (keys[0] + (period === 'hour' ? ':00:00' : ' 00:00:00')).replace('T', ' ');
+      const endTs = (keys[keys.length - 1] + (period === 'hour' ? ':59:59' : ' 23:59:59')).replace('T', ' ');
       const rows = db.prepare(`
         SELECT timestamp, input_tokens, output_tokens, cache_read_tokens
         FROM requests
