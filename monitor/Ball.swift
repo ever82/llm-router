@@ -4,8 +4,6 @@ import Foundation
 // ─── 配置 ──────────────────────────────────────────────
 let MONITOR_URL = "http://localhost:4000/proxy-status"
 let POLL_INTERVAL = 2.0
-let SMOOTH_ALPHA = 0.35
-let ACTIVE_WINDOW: Double = 15.0
 let BALL_SIZE: CGFloat = 82
 
 // ─── 颜色 ──────────────────────────────────────────────
@@ -36,13 +34,9 @@ class FloatingBall: NSPanel {
   private var isDragging = false
   private var dragOffset = NSPoint()
 
-  // 速度追踪
-  private var lastInput: Int = -1
-  private var lastOutput: Int = -1
-  private var lastPollTime: Date = Date()
-  private var smoothIn: Double = 0.0
-  private var smoothOut: Double = 0.0
-  private var lastActiveTime: Date?
+  // 速度追踪：60 秒滑动窗口
+  private let WINDOW_SEC: TimeInterval = 60.0
+  private var history: [(time: Date, input: Int, output: Int)] = []
 
   private var todayTotal: Int = 0
   private var hasError = false
@@ -146,22 +140,8 @@ class FloatingBall: NSPanel {
         let curOut = totals["output"] as? Int ?? 0
         let now = Date()
 
-        if self.lastInput >= 0 {
-          let dt = now.timeIntervalSince(self.lastPollTime)
-          if dt > 0 {
-            let rawIn = Double(curIn - self.lastInput) / dt
-            let rawOut = Double(curOut - self.lastOutput) / dt
-            self.smoothIn = SMOOTH_ALPHA * rawIn + (1 - SMOOTH_ALPHA) * self.smoothIn
-            self.smoothOut = SMOOTH_ALPHA * rawOut + (1 - SMOOTH_ALPHA) * self.smoothOut
-            if rawIn > 1 || rawOut > 1 {
-              self.lastActiveTime = now
-            }
-          }
-        }
-
-        self.lastInput = curIn
-        self.lastOutput = curOut
-        self.lastPollTime = now
+        self.history.append((time: now, input: curIn, output: curOut))
+        self.history.removeAll { now.timeIntervalSince($0.time) > 90 }
 
         let byDay = tokenUsage["byDay"] as? [String: Any]
         let todayKey = self.todayKey()
@@ -180,19 +160,44 @@ class FloatingBall: NSPanel {
     return f.string(from: Date())
   }
 
+  private func windowSpeeds(now: Date) -> (inSpeed: Double, outSpeed: Double) {
+    let cutoff = now.addingTimeInterval(-WINDOW_SEC)
+    // 优先找刚好在 60 秒前的记录
+    if let old = history.last(where: { $0.time <= cutoff }),
+       let cur = history.last {
+      let dt = now.timeIntervalSince(old.time)
+      if dt > 0 {
+        return (
+          max(0, Double(cur.input - old.input) / dt),
+          max(0, Double(cur.output - old.output) / dt)
+        )
+      }
+    }
+    // 不满 60 秒：用最早可用的记录
+    if let oldest = history.first, history.count >= 2,
+       let cur = history.last {
+      let dt = now.timeIntervalSince(oldest.time)
+      if dt > 0 {
+        return (
+          max(0, Double(cur.input - oldest.input) / dt),
+          max(0, Double(cur.output - oldest.output) / dt)
+        )
+      }
+    }
+    return (0, 0)
+  }
+
   private func updateDisplay() {
     if hasError { return }
 
-    let idleSec = lastActiveTime.map { Date().timeIntervalSince($0) } ?? Double.greatestFiniteMagnitude
-    let isActive = idleSec < ACTIVE_WINDOW
-    let speedActive = isActive && (smoothIn > 0.5 || smoothOut > 0.5)
+    let now = Date()
+    let (inSpeed, outSpeed) = windowSpeeds(now: now)
+    let isActive = inSpeed > 0.5 || outSpeed > 0.5
 
-    if speedActive {
+    if isActive {
       ringLayer?.strokeColor = BORDER_ON.cgColor
     } else {
       ringLayer?.strokeColor = BORDER_OFF.cgColor
-      smoothIn *= 0.5
-      smoothOut *= 0.5
     }
 
     // 第一行：今日总数（始终金色醒目）
@@ -202,7 +207,7 @@ class FloatingBall: NSPanel {
 
     // 第二行：输入速度
     if isActive {
-      line2.string = "+ \(fmtSpeed(smoothIn))"
+      line2.string = "+ \(fmtSpeed(inSpeed))"
       line2.foregroundColor = GREEN_IN.cgColor
     } else {
       line2.string = "--"
@@ -211,7 +216,7 @@ class FloatingBall: NSPanel {
 
     // 第三行：输出速度
     if isActive {
-      line3.string = "- \(fmtSpeed(smoothOut))"
+      line3.string = "- \(fmtSpeed(outSpeed))"
       line3.foregroundColor = BLUE_OUT.cgColor
     } else {
       line3.string = "--"
