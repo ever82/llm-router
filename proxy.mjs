@@ -630,6 +630,8 @@ async function handleRequest(req, res) {
     }
     delete fwdHeaders['host'];
     delete fwdHeaders['content-length'];
+    // 不转发压缩头，让后端返回未压缩数据，避免流式传输时解压错误
+    delete fwdHeaders['accept-encoding'];
     fwdHeaders['content-length'] = Buffer.byteLength(finalBody);
 
     console.log(`  → [${backend.name}] ${req.method} ${req.url} model=${actualModel} stream=${isStream} (attempt ${attempt + 1}/${maxAttempts} src=${sourceId})`);
@@ -670,7 +672,10 @@ async function handleRequest(req, res) {
           continue;
         }
         // 不可重试的 400 直接透传给客户端
-        res.writeHead(status, backendRes.headers);
+        const fwdHeaders = { ...backendRes.headers };
+        delete fwdHeaders['content-encoding'];
+        delete fwdHeaders['transfer-encoding'];
+        res.writeHead(status, fwdHeaders);
         res.end(respBody);
         return;
       }
@@ -747,7 +752,10 @@ async function handleRequest(req, res) {
         }
 
         // 正常：转发缓冲数据 + 后续流
-        res.writeHead(backendRes.statusCode, backendRes.headers);
+        const fwdHeaders = { ...backendRes.headers };
+        delete fwdHeaders['content-encoding']; // 防止客户端解压错误
+        delete fwdHeaders['transfer-encoding'];  // 避免分块编码问题
+        res.writeHead(backendRes.statusCode, fwdHeaders);
         for (const chunk of buffered) {
           res.write(chunk);
         }
@@ -787,7 +795,10 @@ async function handleRequest(req, res) {
             console.log(`    📊 tokens: in=${u.input_tokens || 0} out=${u.output_tokens || 0} cache=${u.cache_read_input_tokens || 0} total=${total}`);
           }
         } catch {}
-        res.writeHead(backendRes.statusCode, backendRes.headers);
+        const fwdHeaders = { ...backendRes.headers };
+        delete fwdHeaders['content-encoding'];
+        delete fwdHeaders['transfer-encoding'];
+        res.writeHead(backendRes.statusCode, fwdHeaders);
         res.end(respBody);
         return;
       }
