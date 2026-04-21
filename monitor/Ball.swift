@@ -207,7 +207,7 @@ class FloatingBall: NSPanel {
 
     // 第二行：输入速度
     if isActive {
-      line2.string = "+ \(fmtSpeed(inSpeed))"
+      line2.string = "↑ \(fmtSpeed(inSpeed))"
       line2.foregroundColor = GREEN_IN.cgColor
     } else {
       line2.string = "--"
@@ -216,7 +216,7 @@ class FloatingBall: NSPanel {
 
     // 第三行：输出速度
     if isActive {
-      line3.string = "- \(fmtSpeed(outSpeed))"
+      line3.string = "↓ \(fmtSpeed(outSpeed))"
       line3.foregroundColor = BLUE_OUT.cgColor
     } else {
       line3.string = "--"
