@@ -26,7 +26,7 @@ if (!existsSync(configPath)) {
   process.exit(1);
 }
 const config = JSON.parse(readFileSync(configPath, 'utf-8'));
-const PORT = config.port || 4000;
+const PORT = parseInt(process.env.PROXY_PORT, 10) || config.port || 4000;
 const PROXY_AUTH_TOKEN = config.proxy_auth_token || 'sk-proxy-change-me';
 
 // ─── 可重试的错误类型 ────────────────────────────────────────
@@ -253,6 +253,13 @@ class StreamProcessor extends Transform {
     this.errorMessage = null;
   }
 
+  // 解析 SSE data 行（兼容 "data: {...}" 和 "data:{...}" 两种格式）
+  static parseDataLine(line) {
+    if (line.startsWith('data: ')) return line.slice(6);
+    if (line.startsWith('data:')) return line.slice(5);
+    return null;
+  }
+
   _transform(chunk, encoding, callback) {
     this.push(chunk);
     this.buffer += chunk.toString();
@@ -260,9 +267,10 @@ class StreamProcessor extends Transform {
     this.buffer = lines.pop() || '';
 
     for (const line of lines) {
-      if (line.startsWith('data: ')) {
+      const jsonStr = StreamProcessor.parseDataLine(line);
+      if (jsonStr) {
         try {
-          const data = JSON.parse(line.slice(6));
+          const data = JSON.parse(jsonStr);
           // 检测错误事件
           if (data.type === 'error') {
             this.hadError = true;
@@ -290,9 +298,10 @@ class StreamProcessor extends Transform {
   }
 
   _flush(callback) {
-    if (this.buffer.startsWith('data: ')) {
+    const jsonStr = StreamProcessor.parseDataLine(this.buffer);
+    if (jsonStr) {
       try {
-        const data = JSON.parse(this.buffer.slice(6));
+        const data = JSON.parse(jsonStr);
         if (data.type === 'error') {
           this.hadError = true;
           this.errorType = data.error?.type || 'unknown';
@@ -338,7 +347,13 @@ function getSessionId(req) {
 class BackendPool {
   constructor(backends, routing) {
     this.backends = backends.map((b, i) => ({
-      ...b, id: i, cooldownUntil: 0, failCount: 0, totalRequests: 0, totalErrors: 0,
+      ...b,
+      id: i,
+      cooldownUntil: 0,
+      failCount: 0,
+      totalRequests: 0,
+      totalErrors: 0,
+      isAvailable: b.is_available !== false, // 默认为 true
     }));
     this.weights = routing?.weights || backends.map(() => 1);
     // 粘性路由：sourceId → backendId
@@ -350,8 +365,10 @@ class BackendPool {
       assigned: {}, // backendId → count of sources assigned
     };
     this.weights.forEach((_, i) => { this.routeStats.assigned[i] = 0; });
-    // 从 SQLite 恢复粘性路由
+    // 从 SQLite 恢复粘性路由（排除不可用的后端）
     this._loadSourceMap();
+    // 定期清理不活跃/不可用后端的粘性绑定
+    this._startCleanupTimer();
   }
 
   _loadSourceMap() {
@@ -364,10 +381,14 @@ class BackendPool {
       `).all();
       for (const r of rows) {
         const backendIdx = this.backends.findIndex(b => b.name === r.backend_name);
-        if (backendIdx >= 0) {
-          this.sourceMap.set(r.session_id, backendIdx);
-          this.routeStats.assigned[backendIdx] = (this.routeStats.assigned[backendIdx] || 0) + 1;
+        if (backendIdx < 0) continue;
+        // 跳过不可用的后端
+        if (!this.backends[backendIdx].isAvailable) {
+          console.log(`  ⏭ 跳过不可用后端 ${r.backend_name} 的会话 ${r.session_id}`);
+          continue;
         }
+        this.sourceMap.set(r.session_id, backendIdx);
+        this.routeStats.assigned[backendIdx] = (this.routeStats.assigned[backendIdx] || 0) + 1;
       }
       if (rows.length > 0) console.log(`  🔗 从数据库恢复 ${rows.length} 个会话路由`);
     } catch {}
@@ -389,8 +410,8 @@ class BackendPool {
     const preferredId = this.sourceMap.get(sourceId);
     if (preferredId !== undefined && !excludeIds.has(preferredId)) {
       const preferred = this.backends[preferredId];
-      if (preferred.cooldownUntil <= now) {
-        // 检查是否被来源标记为错误
+      // 后端必须未被禁用、未在冷却、且未被标记为错误
+      if (preferred?.isAvailable && preferred.cooldownUntil <= now) {
         const errors = this.sourceErrors.get(sourceId);
         if (!errors?.has(preferredId)) {
           return preferred;
@@ -401,20 +422,21 @@ class BackendPool {
     // 需要分配新后端
     const sourceErrors = this.sourceErrors.get(sourceId);
 
-    // 过滤可用后端
+    // 过滤可用后端（未禁用、未在冷却、未被当前来源标记为错误）
     const available = this.backends.filter(b =>
       !excludeIds.has(b.id) &&
+      b.isAvailable &&
       b.cooldownUntil <= now &&
       !sourceErrors?.has(b.id)
     );
 
     if (available.length === 0) {
-      // 放宽错误过滤
+      // 放宽错误过滤（但仍排除禁用的后端）
       const available2 = this.backends.filter(b =>
-        !excludeIds.has(b.id) && b.cooldownUntil <= now
+        !excludeIds.has(b.id) && b.isAvailable && b.cooldownUntil <= now
       );
       if (available2.length === 0) {
-        // 全部在冷却，选冷却最短的
+        // 全部在冷却或不可用，选冷却最短的（即使被禁用）
         const sorted = [...this.backends].filter(b => !excludeIds.has(b.id)).sort((a, b) => a.cooldownUntil - b.cooldownUntil);
         return sorted[0] || null;
       }
@@ -476,6 +498,46 @@ class BackendPool {
     }
   }
 
+  // 清理不可用/不活跃后端的粘性绑定
+  _cleanInactiveSourceMap() {
+    const now = Date.now();
+    let cleaned = 0;
+    for (const [sourceId, backendId] of this.sourceMap) {
+      const backend = this.backends[backendId];
+      if (!db) continue;
+      try {
+        // 检查会话是否不活跃（超过 5 分钟无请求）或者后端已不可用
+        // sessions 表存的是 cnNow() 格式 'YYYY-MM-DD HH:MM:SS'（中国时区），
+        // SQLite datetime() 也按本地时间解释，直接用 unixepoch 对比数字时间戳
+        const cutoffUnix = Math.floor((now - 5 * 60_000 + 8 * 3600_000) / 1000);
+        const row = db.prepare(
+          "SELECT last_seen, strftime('%s', last_seen) as ts FROM sessions WHERE session_id = ? LIMIT 1"
+        ).get(sourceId);
+
+        const isInactive = !row || (row.ts < cutoffUnix);
+        const isBackendUnavailable = !backend?.isAvailable;
+
+        if (isInactive || isBackendUnavailable) {
+          this.sourceMap.delete(sourceId);
+          if (backend) {
+            this.routeStats.assigned[backendId] = Math.max(0, (this.routeStats.assigned[backendId] || 0) - 1);
+          }
+          cleaned++;
+        }
+      } catch {}
+    }
+    if (cleaned > 0) {
+      console.log(`  🧹 清理了 ${cleaned} 个不活跃会话的粘性绑定（剩余 ${this.sourceMap.size} 个）`);
+    }
+  }
+
+  _startCleanupTimer() {
+    const interval = 30_000; // 每 30 秒检查一次
+    setInterval(() => {
+      this._cleanInactiveSourceMap();
+    }, interval);
+  }
+
   cooldown(backend, durationMs) {
     backend.cooldownUntil = Date.now() + durationMs;
     backend.failCount++;
@@ -487,6 +549,7 @@ class BackendPool {
   stats() {
     return this.backends.map(b => ({
       name: b.name, url: b.base_url, model: b.model,
+      isAvailable: b.isAvailable,
       requests: b.totalRequests, errors: b.totalErrors,
       cooldown: b.cooldownUntil > Date.now() ? Math.ceil((b.cooldownUntil - Date.now()) / 1000) + 's' : '-',
     }));
@@ -711,10 +774,11 @@ async function handleRequest(req, res) {
                 // 解析已缓冲的数据，检查是否有错误事件
                 const text = Buffer.concat(buffered).toString();
                 for (const line of text.split('\n')) {
-                  if (line.startsWith('data: ')) {
+                  const jsonStr = StreamProcessor.parseDataLine(line);
+                  if (jsonStr) {
                     eventCount++;
                     try {
-                      const data = JSON.parse(line.slice(6));
+                      const data = JSON.parse(jsonStr);
                       if (data.type === 'error') {
                         streamError = data.error?.type || 'unknown';
                         bufferDone = true;
@@ -884,6 +948,8 @@ const server = http.createServer(async (req, res) => {
 function shutdown() { console.log('\n保存统计数据...'); db?.close(); console.log('已保存。再见！'); process.exit(0); }
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+process.on('uncaughtException', (err) => { console.error('!!! uncaughtException:', err); db?.close(); process.exit(1); });
+process.on('unhandledRejection', (reason, promise) => { console.error('!!! unhandledRejection:', reason); });
 
 server.listen(PORT, () => {
   console.log('');

@@ -112,10 +112,24 @@ function tsToPeriodKey(ts, period) {
 function generateKeys(period, pageOffset) {
   const keys = [];
   const now = cnDate(new Date());
+
+  // 小时视图: 锚定到日历日 00:00-23:00（不是滑动窗口），pageOffset 按整天翻页
+  if (period === 'hour') {
+    const dayBase = new Date(now);
+    dayBase.setUTCHours(0, 0, 0, 0);
+    dayBase.setUTCDate(dayBase.getUTCDate() + pageOffset);
+    const yr = dayBase.getUTCFullYear();
+    const mo = String(dayBase.getUTCMonth() + 1).padStart(2, '0');
+    const dy = String(dayBase.getUTCDate()).padStart(2, '0');
+    for (let i = 0; i < 24; i++) {
+      keys.push(`${yr}-${mo}-${dy}T${String(i).padStart(2, '0')}`);
+    }
+    return keys;
+  }
+
   for (let i = 0; i < PERIOD_CONFIG[period].maxBars; i++) {
     const d = new Date(now.getTime() - (PERIOD_CONFIG[period].maxBars - 1 + pageOffset) * getPeriodMs(period) + i * getPeriodMs(period));
     switch (period) {
-      case 'hour':  keys.push(cnHourKey(d)); break;
       case 'day':   keys.push(cnDayKey(d)); break;
       case 'week':  keys.push(cnWeekKey(d)); break;
       case 'month': keys.push(cnMonthKey(d)); break;
@@ -150,7 +164,11 @@ function periodPageLabel(period, pageOffset) {
     return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
   }
   if (period === 'hour') {
-    return '今天 24 小时';
+    if (pageOffset === 0) return '今天 24 小时';
+    if (pageOffset === -1) return '昨天 24 小时';
+    const d = cnDate(new Date());
+    d.setUTCDate(d.getUTCDate() + pageOffset);
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')} 24小时`;
   }
   if (period === 'week') {
     return '今年 52 周';
@@ -168,6 +186,10 @@ class TimeSeries {
     this.buffer = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
     this.speedSamples = [];
     this.lastTotals = null;
+    // 按 backend 的内存缓冲与 speed 追踪
+    this.backendBuffers = {};
+    this.backendSpeedSamples = {};
+    this.backendLastTotals = {};
   }
 
   record(input, output, cache) {
@@ -184,10 +206,97 @@ class TimeSeries {
     }
   }
 
+  recordBackend(name, input, output, cache) {
+    const total = input + output + cache;
+    if (total <= 0) return;
+    if (!this.backendBuffers[name]) this.backendBuffers[name] = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
+    const buf = this.backendBuffers[name];
+    const now = new Date();
+    for (const [store, key] of [
+      ['perHour', cnHourKey(now)], ['perDay', cnDayKey(now)],
+      ['perWeek', cnWeekKey(now)], ['perMonth', cnMonthKey(now)],
+    ]) {
+      if (!buf[store][key]) buf[store][key] = { input: 0, output: 0, cache: 0, total: 0 };
+      const b = buf[store][key];
+      b.input += input; b.output += output; b.cache += cache; b.total += total;
+    }
+  }
+
+  updateBackendSpeed(name, currentTotal) {
+    if (!this.backendSpeedSamples[name]) this.backendSpeedSamples[name] = [];
+    this.backendSpeedSamples[name].push({ time: Date.now(), total: currentTotal });
+    if (this.backendSpeedSamples[name].length > 40) this.backendSpeedSamples[name] = this.backendSpeedSamples[name].slice(-40);
+  }
+
+  getBackendSpeed(name) {
+    const s = this.backendSpeedSamples[name];
+    if (!s || s.length < 2) return { perSec: 0, isIdle: true };
+    const last = s[s.length - 1], prev = s[s.length - 2];
+    const dt = (last.time - prev.time) / 1000;
+    const perSec = dt > 0 ? (last.total - prev.total) / dt : 0;
+    return { perSec: Math.round(perSec * 10) / 10, isIdle: perSec < 0.5 };
+  }
+
+  getBackendTodayStats() {
+    const todayKey = cnDayKey();
+    const resultMap = new Map();
+
+    if (db) {
+      const rows = db.prepare(`
+        SELECT b.name,
+               COALESCE(SUM(r.input_tokens), 0) as input,
+               COALESCE(SUM(r.output_tokens), 0) as output,
+               COALESCE(SUM(r.cache_read_tokens), 0) as cache,
+               COUNT(*) as requests
+        FROM requests r
+        JOIN backends b ON r.backend_id = b.id
+        WHERE r.timestamp >= ? AND r.timestamp <= ?
+        GROUP BY b.name
+      `).all(`${todayKey} 00:00:00`, `${todayKey} 23:59:59`);
+      for (const r of rows) {
+        resultMap.set(r.name, { name: r.name, input: r.input, output: r.output, cache: r.cache, requests: r.requests });
+      }
+    }
+
+    // 合并内存实时缓冲
+    for (const [name, buf] of Object.entries(this.backendBuffers)) {
+      const dayBuf = buf.perDay?.[todayKey];
+      if (dayBuf) {
+        const ex = resultMap.get(name) || { name, input: 0, output: 0, cache: 0, requests: 0 };
+        ex.input += dayBuf.input;
+        ex.output += dayBuf.output;
+        ex.cache += dayBuf.cache;
+        resultMap.set(name, ex);
+      }
+    }
+
+    // 确保 backends 列表中有的也显示（即使 0 数据）
+    for (const b of backends) {
+      if (!resultMap.has(b.name)) {
+        resultMap.set(b.name, { name: b.name, input: 0, output: 0, cache: 0, requests: 0 });
+      }
+    }
+
+    const results = [];
+    const now = new Date();
+    const cn = cnDate(now);
+    const secondsSinceMidnight = cn.getUTCHours() * 3600 + cn.getUTCMinutes() * 60 + cn.getUTCSeconds();
+
+    for (const r of resultMap.values()) {
+      r.total = r.input + r.output + r.cache;
+      const speed = this.getBackendSpeed(r.name);
+      r.perSec = speed.perSec;
+      r.avgPerSec = secondsSinceMidnight > 0 ? Math.round((r.total / secondsSinceMidnight) * 10) / 10 : 0;
+      results.push(r);
+    }
+    return results.sort((a, b) => b.total - a.total);
+  }
+
   flushToDB() {
     // 不再写入 aggregated_stats（原表因 SQLite UNIQUE 对 NULL 的特殊处理已积累大量重复脏数据，
     // 且 requests 事实表已包含完整历史，monitor 直接按需从 requests 聚合即可）
     this.buffer = { perHour: {}, perDay: {}, perWeek: {}, perMonth: {} };
+    this.backendBuffers = {};
   }
 
   getPeriodData(period, pageOffset) {
@@ -269,13 +378,16 @@ const ts = new TimeSeries();
 // ─── 代理轮询 ──────────────────────────────────────────
 let proxyOnline = false;
 let backends = [];
+let routingAssigned = {};
 
 async function poll() {
   try {
     const res = await fetch(`${PROXY_URL}/proxy-status`);
     const data = await res.json();
     const totals = data.token_usage?.totals;
+    const byBackend = data.token_usage?.byBackend || {};
     backends = data.backends || [];
+    routingAssigned = data.routing?.assigned || {};
     if (totals) {
       const currentTotal = totals.total || 0;
       if (ts.lastTotals !== null && currentTotal >= ts.lastTotals.total) {
@@ -286,6 +398,19 @@ async function poll() {
       }
       ts.lastTotals = { total: currentTotal, input: totals.input || 0, output: totals.output || 0, cache_read: totals.cache_read || 0 };
       ts.updateSpeed(currentTotal);
+    }
+    // 按 backend 追踪增量与 speed
+    for (const [name, b] of Object.entries(byBackend)) {
+      const currentTotal = b.total || 0;
+      const last = ts.backendLastTotals[name];
+      if (last && currentTotal >= last.total) {
+        const di = (b.input || 0) - last.input;
+        const dout = (b.output || 0) - last.output;
+        const dc = (b.cache_read || 0) - last.cache_read;
+        if (di > 0 || dout > 0 || dc > 0) ts.recordBackend(name, di, dout, dc);
+      }
+      ts.backendLastTotals[name] = { total: currentTotal, input: b.input || 0, output: b.output || 0, cache_read: b.cache_read || 0 };
+      ts.updateBackendSpeed(name, currentTotal);
     }
     proxyOnline = true;
   } catch { proxyOnline = false; }
@@ -353,6 +478,29 @@ function renderChart(period, pageOffset) {
   return { lines };
 }
 
+// ─── API Token 统计表 ──────────────────────────────────
+function renderApiStats() {
+  const stats = ts.getBackendTodayStats();
+  if (stats.length === 0) return ['  ' + clr('暂无 API 统计数据', C.dim)];
+
+  const lines = [];
+  // 列宽: Name(12) Input(7) Output(7) Cache(7) Total(7) Conn(4) t/s(5)
+  const header = `  ${clr('API', C.bold)}        ${clr('Input', C.bold)}   ${clr('Output', C.bold)}  ${clr('Cache', C.bold)}   ${clr('Total', C.bold)}   ${clr('Conn', C.bold)}  ${clr('t/s', C.bold)}`;
+  lines.push(header);
+  lines.push('  ' + '─'.repeat(62));
+  for (const s of stats) {
+    const name = s.name.slice(0, 12).padEnd(12);
+    const input  = fmtTokens(s.input).padStart(7);
+    const output = fmtTokens(s.output).padStart(7);
+    const cache  = fmtTokens(s.cache).padStart(7);
+    const total  = fmtTokens(s.total).padStart(7);
+    const conn   = String(routingAssigned[s.name] || 0).padStart(4);
+    const tps    = (s.perSec > 0 ? s.perSec.toFixed(1) : '0').padStart(5);
+    lines.push(`  ${name}  ${clr(input, C.green)}  ${clr(output, C.blue)}  ${clr(cache, C.yellow)}  ${total}  ${conn}  ${tps}`);
+  }
+  return lines;
+}
+
 // ─── 后端状态表 ────────────────────────────────────────
 function renderBackends() {
   if (backends.length === 0) return ['  ' + clr('无法获取后端状态', C.dim)];
@@ -414,6 +562,16 @@ function renderDashboard() {
   // 图例
   const legend = `  ${clr('■', C.green)} Input   ${clr('■', C.blue)} Output   ${clr('■', C.yellow)} Cache`;
   moveCursor(row++, 1); process.stdout.write(legend);
+
+  moveCursor(row++, 1); process.stdout.write(clr(`╠${hLine}╣`, C.dim));
+
+  // API Token 统计
+  moveCursor(row++, 1); process.stdout.write(clr('║', C.dim) + '  ' + clr('API Token Stats (Today):', C.bold) + ' '.repeat(w - 28) + clr('║', C.dim));
+  for (const line of renderApiStats()) {
+    moveCursor(row++, 1);
+    const padded = line.length > w - 2 ? line.slice(0, w - 2) : line.padEnd(w - 2);
+    process.stdout.write(clr('║', C.dim) + padded + clr('║', C.dim));
+  }
 
   moveCursor(row++, 1); process.stdout.write(clr(`╠${hLine}╣`, C.dim));
 
