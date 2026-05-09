@@ -22,7 +22,8 @@
       "base_url": "https://coding.dashscope.aliyuncs.com/apps/anthropic",
       "api_key": "你的DashScope-API-KEY",
       "model": "kimi-k2.5",
-      "cooldown_duration": 60000
+      "cooldown_duration": 60000,
+      "is_available": false
     },
     {
       "name": "MiniMax",

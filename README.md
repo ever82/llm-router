@@ -82,6 +82,7 @@ cp config.example.json config.json
 | `proxy_auth_token` | 访问代理的认证 token |
 | `model_map` | 模型名称映射，将请求的模型名转换为后端接受的模型名 |
 | `backends[].cooldown_duration` | 后端失败后冷却时间（毫秒） |
+| `backends[].is_available` | 是否启用该后端，设为 `false` 可暂停（不路由、不分配新会话），默认 `true` |
 
 ## API 端点
 
