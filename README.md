@@ -26,13 +26,33 @@ cp config.example.json config.json
 ./start.sh bg     # 后台运行
 ```
 
-### 3. 使用
+### 3. 配合 Claude Code 使用
 
-设置 Claude Code 的 API 地址为：
+编辑 `~/.claude/settings.json`，将 API 请求指向本代理：
 
+```json
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "sk-proxy-change-me",
+    "ANTHROPIC_BASE_URL": "http://localhost:4000",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5.1",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air"
+  }
+}
 ```
-ANTHROPIC_BASE_URL=http://localhost:4000/v1/messages
-```
+
+| 配置项 | 说明 |
+|--------|------|
+| `ANTHROPIC_AUTH_TOKEN` | 对应 config.json 中的 `proxy_auth_token` |
+| `ANTHROPIC_BASE_URL` | 代理地址，默认 `http://localhost:4000` |
+| `ANTHROPIC_DEFAULT_*_MODEL` | 模型映射，通过 config.json 的 `model_map` 转发到后端 |
+
+> **提示**：也可以通过环境变量设置，效果相同：
+> ```bash
+> export ANTHROPIC_BASE_URL=http://localhost:4000
+> export ANTHROPIC_AUTH_TOKEN=sk-proxy-change-me
+> ```
 
 ## 配置说明
 
