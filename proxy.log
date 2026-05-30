@@ -144533,3 +144533,18 @@ Token 统计: http://localhost:4000/proxy-stats
   🧹 清理了 8 个不活跃会话的粘性绑定（剩余 59 个）
   ✓ [Kimi2] 200 src=claude-3750
     📊 tokens: in=4055 out=122 cache=67840 total=72017
+  🔗 新会话 claude-3751 (port 63168)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3751)
+  🔗 新会话 claude-3752 (port 63170)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3752)
+  ✓ [Kimi2] 200 src=claude-3752
+  ✓ [Kimi] 200 src=claude-3751
+    📊 tokens: in=3267 out=131 cache=71680 total=75078
+  🔗 新会话 claude-3753 (port 63193)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3753)
+    📊 tokens: in=876 out=734 cache=107264 total=108874
+  🔗 新会话 claude-3754 (port 63204)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3754)
+  ✓ [Kimi2] 200 src=claude-3754
+    📊 tokens: in=1581 out=24 cache=108032 total=109637
+  🧹 清理了 10 个不活跃会话的粘性绑定（剩余 53 个）
