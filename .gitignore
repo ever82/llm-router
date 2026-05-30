@@ -1,4 +1,5 @@
 config.json
+config0.json
 data/
 stats.json
 *.pid

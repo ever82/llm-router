@@ -28,6 +28,8 @@ if (!existsSync(configPath)) {
 const config = JSON.parse(readFileSync(configPath, 'utf-8'));
 const PORT = parseInt(process.env.PROXY_PORT, 10) || config.port || 4000;
 const PROXY_AUTH_TOKEN = config.proxy_auth_token || 'sk-proxy-change-me';
+const lightModels = new Set(config.light_models || []);
+const mediumModels = new Set(config.medium_models || []);
 
 // ─── 可重试的错误类型 ────────────────────────────────────────
 const RETRYABLE_ERROR_TYPES = new Set([
@@ -88,6 +90,17 @@ async function initDB() {
       CREATE INDEX IF NOT EXISTS idx_sessions_last_seen ON sessions(last_seen);
       CREATE INDEX IF NOT EXISTS idx_aggregated_lookup ON aggregated_stats(period_type, period_key, backend_id, model);
     `);
+    // 为 requests 表添加 model_type 列（兼容旧表）
+    try { db.exec('ALTER TABLE requests ADD COLUMN model_type TEXT DEFAULT \'heavy\''); } catch {}
+    // 自动同步 config 后端到 backends 表（避免依赖手动 init-db.mjs）
+    const insertBackend = db.prepare(`
+      INSERT OR IGNORE INTO backends (name, base_url, model, weight, cooldown_secs)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+    const routingWeights = config.routing?.weights || config.backends.map(() => 1);
+    config.backends.forEach((b, i) => {
+      insertBackend.run(b.name, b.base_url, b.model, routingWeights[i] ?? 1, (b.cooldown_duration ?? config.cooldown_duration ?? 60000) / 1000);
+    });
     console.log('  📦 SQLite 数据库已就绪');
   } catch (err) {
     console.warn('  ⚠ SQLite 初始化失败，统计将仅存于内存:', err.message);
@@ -108,6 +121,7 @@ class TokenDB {
     this.byBackend = {};
     this.byModel = {};
     this.byDay = {};
+    this.byBackendModel = {};
     // 加载已有统计
     this._loadSummary();
   }
@@ -115,7 +129,7 @@ class TokenDB {
   _loadSummary() {
     if (!db) return;
     try {
-      // 从 requests 事实表直接按天聚合（aggregated_stats 曾因 NULL 问题积累大量重复脏数据）
+      // 从 requests 事实表按天聚合
       const dayRows = db.prepare(`
         SELECT strftime('%Y-%m-%d', timestamp) as day,
                SUM(input_tokens) as input, SUM(output_tokens) as output,
@@ -133,16 +147,66 @@ class TokenDB {
       if (dayRows.length > 0) {
         this.startedAt = dayRows[0].day + 'T00:00:00.000Z';
       }
+      // 按后端聚合
+      const backendRows = db.prepare(`
+        SELECT b.name as backend_name,
+               SUM(r.input_tokens) as input, SUM(r.output_tokens) as output,
+               SUM(r.cache_read_tokens) as cache_read, COUNT(*) as requests
+        FROM requests r JOIN backends b ON r.backend_id = b.id
+        GROUP BY b.name
+      `).all();
+      for (const row of backendRows) {
+        this.byBackend[row.backend_name] = {
+          input: row.input, output: row.output,
+          cache_read: row.cache_read,
+          total: row.input + row.output + row.cache_read,
+          requests: row.requests,
+        };
+      }
+      // 按模型聚合
+      const modelRows = db.prepare(`
+        SELECT model_actual as model,
+               SUM(input_tokens) as input, SUM(output_tokens) as output,
+               SUM(cache_read_tokens) as cache_read, COUNT(*) as requests
+        FROM requests GROUP BY model_actual
+      `).all();
+      for (const row of modelRows) {
+        this.byModel[row.model] = {
+          input: row.input, output: row.output,
+          cache_read: row.cache_read,
+          total: row.input + row.output + row.cache_read,
+          requests: row.requests,
+        };
+      }
+      // 按后端+模型类型聚合（heavy/light）
+      const backendModelRows = db.prepare(`
+        SELECT b.name as backend_name, r.model_type,
+               SUM(r.input_tokens) as input, SUM(r.output_tokens) as output,
+               SUM(r.cache_read_tokens) as cache_read, COUNT(*) as requests
+        FROM requests r JOIN backends b ON r.backend_id = b.id
+        GROUP BY b.name, r.model_type
+      `).all();
+      for (const row of backendModelRows) {
+        const key = `${row.backend_name}:${row.model_type || 'heavy'}`;
+        this.byBackendModel[key] = {
+          input: row.input, output: row.output,
+          cache_read: row.cache_read,
+          total: row.input + row.output + row.cache_read,
+          requests: row.requests,
+        };
+      }
     } catch {}
   }
 
-  record(backendName, model, usage, sessionId) {
+  record(backendName, model, usage, sessionId, modelTier) {
     if (!usage) return;
     const input = usage.input_tokens || 0;
     const output = usage.output_tokens || 0;
     const cacheRead = usage.cache_read_input_tokens || 0;
     const total = input + output + cacheRead;
     if (total === 0) return;
+
+    const modelType = modelTier || 'heavy';
 
     // 内存聚合
     for (const store of [this.byBackend, this.byModel]) {
@@ -151,6 +215,12 @@ class TokenDB {
       const b = store[key];
       b.input += input; b.output += output; b.cache_read += cacheRead; b.total += total; b.requests += 1;
     }
+    // 按后端+模型类型聚合
+    const bmKey = `${backendName}:${modelType}`;
+    if (!this.byBackendModel[bmKey]) this.byBackendModel[bmKey] = { input: 0, output: 0, cache_read: 0, total: 0, requests: 0 };
+    const bm = this.byBackendModel[bmKey];
+    bm.input += input; bm.output += output; bm.cache_read += cacheRead; bm.total += total; bm.requests += 1;
+
     const dayKey = cnNow().slice(0, 10);
     if (!this.byDay[dayKey]) this.byDay[dayKey] = { input: 0, output: 0, cache_read: 0, total: 0, requests: 0 };
     const d = this.byDay[dayKey];
@@ -161,10 +231,10 @@ class TokenDB {
     try {
       const ts = cnNow();
       const insertRequest = db.prepare(`
-        INSERT INTO requests (backend_id, session_id, model_actual, input_tokens, output_tokens, cache_read_tokens, timestamp)
-        VALUES ((SELECT id FROM backends WHERE name = ?), ?, ?, ?, ?, ?, ?)
+        INSERT INTO requests (backend_id, session_id, model_actual, model_type, input_tokens, output_tokens, cache_read_tokens, timestamp)
+        VALUES ((SELECT id FROM backends WHERE name = ?), ?, ?, ?, ?, ?, ?, ?)
       `);
-      insertRequest.run(backendName, sessionId || null, model, input, output, cacheRead, ts);
+      insertRequest.run(backendName, sessionId || null, model, modelType, input, output, cacheRead, ts);
 
       // 更新 aggregated_stats（day 级别）
       // 使用 INSERT OR REPLACE 避免 SQLite UNIQUE 对 NULL 的特殊处理导致重复插入
@@ -233,18 +303,19 @@ class TokenDB {
       totals.cache_read += d.cache_read; totals.total += d.total; totals.requests += d.requests;
     }
     // byBackend / byModel 仅用于明细展示，不重复累加到 totals
-    return { startedAt: this.startedAt, totals, byBackend: this.byBackend, byModel: this.byModel, byDay: this.byDay };
+    return { startedAt: this.startedAt, totals, byBackend: this.byBackend, byModel: this.byModel, byDay: this.byDay, byBackendModel: this.byBackendModel };
   }
 }
 const tokenDB = new TokenDB();
 
 // ─── SSE 流处理器：提取 token + 检测错误 ─────────────────────
 class StreamProcessor extends Transform {
-  constructor(backendName, model, sessionId) {
+  constructor(backendName, model, sessionId, modelTier) {
     super();
     this.backendName = backendName;
     this.model = model;
     this.sessionId = sessionId;
+    this.modelTier = modelTier || 'heavy';
     this.buffer = '';
     this.usageFromStart = null;
     this.totalTokens = 0;
@@ -312,7 +383,7 @@ class StreamProcessor extends Transform {
             output_tokens: data.usage.output_tokens || 0,
             cache_read_input_tokens: data.usage.cache_read_input_tokens || this.usageFromStart?.cache_read_input_tokens || 0,
           };
-          tokenDB.record(this.backendName, this.model, usage);
+          tokenDB.record(this.backendName, this.model, usage, null, this.modelTier);
         }
       } catch {}
     }
@@ -436,8 +507,10 @@ class BackendPool {
         !excludeIds.has(b.id) && b.isAvailable && b.cooldownUntil <= now
       );
       if (available2.length === 0) {
-        // 全部在冷却或不可用，选冷却最短的（即使被禁用）
-        const sorted = [...this.backends].filter(b => !excludeIds.has(b.id)).sort((a, b) => a.cooldownUntil - b.cooldownUntil);
+        // 全部在冷却或不可用，只在 isAvailable 的后端里选冷却最短的
+        const sorted = [...this.backends]
+          .filter(b => !excludeIds.has(b.id) && b.isAvailable)
+          .sort((a, b) => a.cooldownUntil - b.cooldownUntil);
         return sorted[0] || null;
       }
       return this._weightedSelect(available2);
@@ -652,6 +725,7 @@ async function handleRequest(req, res) {
     }
   } catch {}
   const modelMap = config.model_map || {};
+  const modelTier = lightModels.has(requestModel) ? 'light' : mediumModels.has(requestModel) ? 'medium' : 'heavy';
   const triedIds = new Set();
   // 来源识别：基于 TCP 连接（同一 Claude 进程的多个请求用同一连接）
   const sourceId = getSessionId(req);
@@ -680,13 +754,21 @@ async function handleRequest(req, res) {
     let actualModel = requestModel;
     if (parsed && backend.model) {
       if (requestModel) {
-        const mappedModel = modelMap[requestModel] || backend.model;
+        const mappedModel = lightModels.has(requestModel)
+          ? (backend.light_model || modelMap[requestModel] || backend.model)
+          : mediumModels.has(requestModel)
+            ? (backend.medium_model || modelMap[requestModel] || backend.model)
+            : (modelMap[requestModel] || backend.model);
         actualModel = mappedModel;
         parsed.model = mappedModel;
       }
       finalBody = JSON.stringify(parsed);
     } else if (requestModel && backend.model) {
-      const mappedModel = modelMap[requestModel] || backend.model;
+      const mappedModel = lightModels.has(requestModel)
+        ? (backend.light_model || modelMap[requestModel] || backend.model)
+        : mediumModels.has(requestModel)
+          ? (backend.medium_model || modelMap[requestModel] || backend.model)
+          : (modelMap[requestModel] || backend.model);
       actualModel = mappedModel;
       finalBody = body.replace(`"model":"${requestModel}"`, `"model":"${mappedModel}"`);
       finalBody = finalBody.replace(`"model": "${requestModel}"`, `"model": "${mappedModel}"`);
@@ -823,7 +905,7 @@ async function handleRequest(req, res) {
         for (const chunk of buffered) {
           res.write(chunk);
         }
-        const processor = new StreamProcessor(backend.name, actualModel, sourceId);
+        const processor = new StreamProcessor(backend.name, actualModel, sourceId, modelTier);
         backendRes.pipe(processor).pipe(res);
 
         // 流结束后检测 mid-stream 错误，冷却后端
@@ -848,15 +930,15 @@ async function handleRequest(req, res) {
           console.log(`  ✗ [${backend.name}] body error: ${check.type} → fallback`);
           continue;
         }
-        // 记录 token
+        // 记录 token（兼容 usage 嵌套和根层级两种格式）
         try {
           const parsed = JSON.parse(respBody);
-          if (parsed.usage) {
-            const u = parsed.usage;
-            const total = (u.input_tokens || 0) + (u.output_tokens || 0) + (u.cache_read_input_tokens || 0);
-            tokenDB.record(backend.name, actualModel, parsed.usage, sourceId);
+          const usage = parsed.usage || (parsed.input_tokens != null ? parsed : null);
+          if (usage) {
+            const total = (usage.input_tokens || 0) + (usage.output_tokens || 0) + (usage.cache_read_input_tokens || 0);
+            tokenDB.record(backend.name, actualModel, usage, sourceId, modelTier);
             tokenDB.upsertSession(sourceId, backend.name, total);
-            console.log(`    📊 tokens: in=${u.input_tokens || 0} out=${u.output_tokens || 0} cache=${u.cache_read_input_tokens || 0} total=${total}`);
+            console.log(`    📊 tokens: in=${usage.input_tokens || 0} out=${usage.output_tokens || 0} cache=${usage.cache_read_input_tokens || 0} total=${total}`);
           }
         } catch {}
         const fwdHeaders = { ...backendRes.headers };
@@ -959,7 +1041,13 @@ server.listen(PORT, () => {
   console.log('╚══════════════════════════════════════════╝');
   console.log('');
   console.log('后端列表:');
-  pool.backends.forEach((b, i) => { console.log(`  ${i + 1}. [${b.name}] ${b.base_url} → ${b.model}`); });
+  pool.backends.forEach((b, i) => {
+    const parts = [];
+    if (b.medium_model) parts.push(`中: ${b.medium_model}`);
+    if (b.light_model) parts.push(`轻: ${b.light_model}`);
+    const tierInfo = parts.length > 0 ? ` (${parts.join(', ')})` : '';
+    console.log(`  ${i + 1}. [${b.name}] ${b.base_url} → ${b.model}${tierInfo}`);
+  });
   console.log('');
   console.log(`状态面板:   http://localhost:${PORT}/proxy-status`);
   console.log(`Token 统计: http://localhost:${PORT}/proxy-stats`);

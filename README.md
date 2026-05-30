@@ -61,6 +61,7 @@ cp config.example.json config.json
   "port": 4000,
   "proxy_auth_token": "sk-proxy-change-me-to-anything",
   "cooldown_duration": 60000,
+  "light_models": ["claude-haiku-4-5-20251001"],
   "model_map": {
     "claude-sonnet-4-20250514": "glm-5.1"
   },
@@ -70,6 +71,7 @@ cp config.example.json config.json
       "base_url": "https://api.z.ai/api/anthropic",
       "api_key": "你的API-KEY",
       "model": "glm-5.1",
+      "light_model": "glm-4.5-air",
       "cooldown_duration": 60000
     }
   ]
@@ -80,9 +82,30 @@ cp config.example.json config.json
 |--------|------|
 | `port` | 代理监听端口 |
 | `proxy_auth_token` | 访问代理的认证 token |
+| `light_models` | 轻量模型列表，匹配到的请求将使用各后端的 `light_model` |
 | `model_map` | 模型名称映射，将请求的模型名转换为后端接受的模型名 |
+| `backends[].light_model` | 轻量模型名称，当请求命中 `light_models` 时替代 `model` 发送给上游 |
 | `backends[].cooldown_duration` | 后端失败后冷却时间（毫秒） |
 | `backends[].is_available` | 是否启用该后端，设为 `false` 可暂停（不路由、不分配新会话），默认 `true` |
+
+### LM Studio 本地模型
+
+在 LM Studio 的 **Developer → Server** 设置中，将 **API** 格式切换为 **Anthropic**，然后在 `config.json` 中添加：
+
+```json
+{
+  "name": "LM-Studio",
+  "base_url": "http://localhost:1234",
+  "api_key": "lm-studio",
+  "model": "local",
+  "light_model": "local",
+  "medium_model": "local",
+  "cooldown_duration": 30000,
+  "is_available": true
+}
+```
+
+> `base_url` 不要带 `/v1` 后缀，proxy 会自动拼接 Anthropic 的请求路径 `/v1/messages`。
 
 ## API 端点
 

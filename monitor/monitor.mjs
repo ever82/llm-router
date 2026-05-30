@@ -190,6 +190,9 @@ class TimeSeries {
     this.backendBuffers = {};
     this.backendSpeedSamples = {};
     this.backendLastTotals = {};
+    // 按后端+模型类型的内存缓冲与 speed 追踪
+    this.backendModelBuffers = {};
+    this.backendModelLastTotals = {};
   }
 
   record(input, output, cache) {
@@ -222,6 +225,16 @@ class TimeSeries {
     }
   }
 
+  recordBackendModel(name, modelType, input, output, cache) {
+    const total = input + output + cache;
+    if (total <= 0) return;
+    const key = `${name}:${modelType}`;
+    if (!this.backendModelBuffers[key]) {
+      this.backendModelBuffers[key] = { name, modelType, total: 0 };
+    }
+    this.backendModelBuffers[key].total += total;
+  }
+
   updateBackendSpeed(name, currentTotal) {
     if (!this.backendSpeedSamples[name]) this.backendSpeedSamples[name] = [];
     this.backendSpeedSamples[name].push({ time: Date.now(), total: currentTotal });
@@ -240,10 +253,12 @@ class TimeSeries {
   getBackendTodayStats() {
     const todayKey = cnDayKey();
     const resultMap = new Map();
+    // 收集所有出现的 modelType，用于确保每个 backend 都有 heavy 和 light 两行
+    const modelTypesPerBackend = new Map();
 
     if (db) {
       const rows = db.prepare(`
-        SELECT b.name,
+        SELECT b.name, COALESCE(r.model_type, 'heavy') as model_type,
                COALESCE(SUM(r.input_tokens), 0) as input,
                COALESCE(SUM(r.output_tokens), 0) as output,
                COALESCE(SUM(r.cache_read_tokens), 0) as cache,
@@ -251,29 +266,31 @@ class TimeSeries {
         FROM requests r
         JOIN backends b ON r.backend_id = b.id
         WHERE r.timestamp >= ? AND r.timestamp <= ?
-        GROUP BY b.name
+        GROUP BY b.name, r.model_type
       `).all(`${todayKey} 00:00:00`, `${todayKey} 23:59:59`);
       for (const r of rows) {
-        resultMap.set(r.name, { name: r.name, input: r.input, output: r.output, cache: r.cache, requests: r.requests });
+        const key = `${r.name}:${r.model_type}`;
+        resultMap.set(key, { name: r.name, modelType: r.model_type, input: r.input, output: r.output, cache: r.cache, requests: r.requests });
+        if (!modelTypesPerBackend.has(r.name)) modelTypesPerBackend.set(r.name, new Set());
+        modelTypesPerBackend.get(r.name).add(r.model_type);
       }
     }
 
-    // 合并内存实时缓冲
-    for (const [name, buf] of Object.entries(this.backendBuffers)) {
-      const dayBuf = buf.perDay?.[todayKey];
-      if (dayBuf) {
-        const ex = resultMap.get(name) || { name, input: 0, output: 0, cache: 0, requests: 0 };
-        ex.input += dayBuf.input;
-        ex.output += dayBuf.output;
-        ex.cache += dayBuf.cache;
-        resultMap.set(name, ex);
+    // 合并内存实时缓冲（byBackendModel）
+    for (const [key, buf] of Object.entries(this.backendModelBuffers)) {
+      const ex = resultMap.get(key);
+      if (ex) {
+        ex.total = (ex.input + ex.output + ex.cache) + buf.total;
       }
     }
 
-    // 确保 backends 列表中有的也显示（即使 0 数据）
+    // 确保 backends 列表中有的也显示（heavy/medium/light 各一行，即使 0 数据）
     for (const b of backends) {
-      if (!resultMap.has(b.name)) {
-        resultMap.set(b.name, { name: b.name, input: 0, output: 0, cache: 0, requests: 0 });
+      for (const mt of ['heavy', 'medium', 'light']) {
+        const key = `${b.name}:${mt}`;
+        if (!resultMap.has(key)) {
+          resultMap.set(key, { name: b.name, modelType: mt, input: 0, output: 0, cache: 0, requests: 0 });
+        }
       }
     }
 
@@ -283,13 +300,13 @@ class TimeSeries {
     const secondsSinceMidnight = cn.getUTCHours() * 3600 + cn.getUTCMinutes() * 60 + cn.getUTCSeconds();
 
     for (const r of resultMap.values()) {
-      r.total = r.input + r.output + r.cache;
+      r.total = r.total || (r.input + r.output + r.cache);
       const speed = this.getBackendSpeed(r.name);
       r.perSec = speed.perSec;
       r.avgPerSec = secondsSinceMidnight > 0 ? Math.round((r.total / secondsSinceMidnight) * 10) / 10 : 0;
       results.push(r);
     }
-    return results.sort((a, b) => b.total - a.total);
+    return results.sort((a, b) => (b.name === a.name ? 0 : b.name.localeCompare(a.name)));
   }
 
   flushToDB() {
@@ -412,6 +429,23 @@ async function poll() {
       ts.backendLastTotals[name] = { total: currentTotal, input: b.input || 0, output: b.output || 0, cache_read: b.cache_read || 0 };
       ts.updateBackendSpeed(name, currentTotal);
     }
+    // 按 backend+模型类型追踪增量
+    const byBackendModel = data.token_usage?.byBackendModel || {};
+    for (const [key, b] of Object.entries(byBackendModel)) {
+      const currentTotal = b.total || 0;
+      const last = ts.backendModelLastTotals[key];
+      if (last && currentTotal >= last) {
+        const diff = currentTotal - last;
+        if (diff > 0) {
+          // 从 key 解析 name 和 modelType（key 格式: "name:modelType"）
+          const colonIdx = key.lastIndexOf(':');
+          const name = key.slice(0, colonIdx);
+          const modelType = key.slice(colonIdx + 1);
+          ts.recordBackendModel(name, modelType, 0, 0, diff);
+        }
+      }
+      ts.backendModelLastTotals[key] = currentTotal;
+    }
     proxyOnline = true;
   } catch { proxyOnline = false; }
 }
@@ -483,20 +517,36 @@ function renderApiStats() {
   const stats = ts.getBackendTodayStats();
   if (stats.length === 0) return ['  ' + clr('暂无 API 统计数据', C.dim)];
 
+  // 按后端名分组
+  const byBackend = new Map();
+  for (const s of stats) {
+    if (!byBackend.has(s.name)) byBackend.set(s.name, {});
+    byBackend.get(s.name)[s.modelType] = s;
+  }
+
   const lines = [];
-  // 列宽: Name(12) Input(7) Output(7) Cache(7) Total(7) Conn(4) t/s(5)
   const header = `  ${clr('API', C.bold)}        ${clr('Input', C.bold)}   ${clr('Output', C.bold)}  ${clr('Cache', C.bold)}   ${clr('Total', C.bold)}   ${clr('Conn', C.bold)}  ${clr('t/s', C.bold)}`;
   lines.push(header);
   lines.push('  ' + '─'.repeat(62));
-  for (const s of stats) {
-    const name = s.name.slice(0, 12).padEnd(12);
-    const input  = fmtTokens(s.input).padStart(7);
-    const output = fmtTokens(s.output).padStart(7);
-    const cache  = fmtTokens(s.cache).padStart(7);
-    const total  = fmtTokens(s.total).padStart(7);
-    const conn   = String(routingAssigned[s.name] || 0).padStart(4);
-    const tps    = (s.perSec > 0 ? s.perSec.toFixed(1) : '0').padStart(5);
-    lines.push(`  ${name}  ${clr(input, C.green)}  ${clr(output, C.blue)}  ${clr(cache, C.yellow)}  ${total}  ${conn}  ${tps}`);
+
+  const backendOrder = [...new Set(stats.map(s => s.name))];
+  for (const name of backendOrder) {
+    const heavy  = byBackend.get(name)?.heavy  || { input: 0, output: 0, cache: 0, total: 0, requests: 0 };
+    const medium = byBackend.get(name)?.medium || { input: 0, output: 0, cache: 0, total: 0, requests: 0 };
+    const light  = byBackend.get(name)?.light  || { input: 0, output: 0, cache: 0, total: 0, requests: 0 };
+    const conn = String(routingAssigned[name] || 0).padStart(4);
+
+    // heavy 行
+    const hName = (name.slice(0, 9) + ' H').padEnd(12);
+    lines.push(`  ${hName}  ${clr(fmtTokens(heavy.input).padStart(7), C.green)}  ${clr(fmtTokens(heavy.output).padStart(7), C.blue)}  ${clr(fmtTokens(heavy.cache).padStart(7), C.yellow)}  ${fmtTokens(heavy.total).padStart(7)}  ${conn}  ----`);
+
+    // medium 行
+    const mName = (''.padEnd(9) + ' M').padEnd(12);
+    lines.push(`  ${mName}  ${clr(fmtTokens(medium.input).padStart(7), C.green)}  ${clr(fmtTokens(medium.output).padStart(7), C.blue)}  ${clr(fmtTokens(medium.cache).padStart(7), C.yellow)}  ${fmtTokens(medium.total).padStart(7)}  ----  ----`);
+
+    // light 行
+    const lName = (''.padEnd(9) + ' L').padEnd(12);
+    lines.push(`  ${clr(lName, C.dim)}  ${clr(fmtTokens(light.input).padStart(7), C.dim)}  ${clr(fmtTokens(light.output).padStart(7), C.dim)}  ${clr(fmtTokens(light.cache).padStart(7), C.dim)}  ${clr(fmtTokens(light.total).padStart(7), C.dim)}  ----  ----`);
   }
   return lines;
 }
