@@ -144548,3 +144548,44 @@ Token 统计: http://localhost:4000/proxy-stats
   ✓ [Kimi2] 200 src=claude-3754
     📊 tokens: in=1581 out=24 cache=108032 total=109637
   🧹 清理了 10 个不活跃会话的粘性绑定（剩余 53 个）
+  🔗 新会话 claude-3755 (port 63228)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3755)
+  ✓ [Kimi2] 200 src=claude-3755
+    📊 tokens: in=790 out=56 cache=109568 total=110414
+  🔗 新会话 claude-3756 (port 63244)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3756)
+  ✓ [Kimi] 200 src=claude-3753
+  ✓ [Kimi2] 200 src=claude-3756
+    📊 tokens: in=113 out=72 cache=110336 total=110521
+  🔗 新会话 claude-3757 (port 63246)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3757)
+  ✓ [Kimi2] 200 src=claude-3757
+    📊 tokens: in=259 out=79 cache=110336 total=110674
+  🔗 新会话 claude-3758 (port 63267)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3758)
+  ✓ [Kimi2] 200 src=claude-3758
+    📊 tokens: in=3536 out=645 cache=74752 total=78933
+  🔗 新会话 claude-3759 (port 63281)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3759)
+  🧹 清理了 9 个不活跃会话的粘性绑定（剩余 49 个）
+  ✓ [Kimi] 200 src=claude-3759
+    📊 tokens: in=1168 out=92 cache=78080 total=79340
+  🔗 新会话 claude-3760 (port 63283)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3760)
+    📊 tokens: in=409 out=542 cache=110592 total=111543
+  ✓ [Kimi] 200 src=claude-3760
+  🔗 新会话 claude-3761 (port 63285)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3761)
+    📊 tokens: in=532 out=143 cache=79104 total=79779
+  🔗 新会话 claude-3762 (port 63297)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3762)
+  ✓ [Kimi] 200 src=claude-3761
+    📊 tokens: in=1042 out=24 cache=110848 total=111914
+  ✓ [Kimi2] 200 src=claude-3762
+    📊 tokens: in=196 out=43 cache=79616 total=79855
+  🔗 新会话 claude-3763 (port 63299)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3763)
+  ✓ [Kimi] 200 src=claude-3763
+    📊 tokens: in=563 out=293 cache=79616 total=80472
+  🔗 新会话 claude-3764 (port 63326)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3764)
