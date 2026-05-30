@@ -143808,3 +143808,27 @@ Token 统计: http://localhost:4000/proxy-stats
   ✓ [Kimi2] 200 src=claude-3572
   🔗 新会话 claude-3573 (port 61464)
   → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3573)
+  ✓ [Kimi] 200 src=claude-3573
+  🔗 新会话 claude-3574 (port 61471)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3574)
+    📊 tokens: in=661 out=382 cache=90624 total=91667
+  🔗 新会话 claude-3575 (port 61474)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3575)
+    📊 tokens: in=490 out=230 cache=82688 total=83408
+  ✓ [Kimi] 200 src=claude-3574
+  ✓ [Kimi] 200 src=claude-3575
+  🔗 新会话 claude-3576 (port 61476)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3576)
+    📊 tokens: in=16160 out=263 cache=18432 total=34855
+  🔗 新会话 claude-3577 (port 61488)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3577)
+  ✓ [Kimi] 200 src=claude-3576
+    📊 tokens: in=561 out=39 cache=82944 total=83544
+  ✓ [Kimi2] 200 src=claude-3577
+    📊 tokens: in=547 out=24 cache=34560 total=35131
+  🔗 新会话 claude-3578 (port 61496)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3578)
+    📊 tokens: in=913 out=551 cache=91136 total=92600
+  ✓ [Kimi2] 200 src=claude-3578
+  🔗 新会话 claude-3579 (port 61503)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-3579)
