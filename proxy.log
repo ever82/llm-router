@@ -152269,3 +152269,459 @@ Token 统计: http://localhost:4000/proxy-stats
   ✓ [Kimi] 200 src=claude-4967
     📊 tokens: in=3645 out=487 cache=119552 total=123684
   🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-4973 (port 51586)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4973)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-4973
+    📊 tokens: in=1097 out=1680 cache=0 total=2777
+  🔗 新会话 claude-4974 (port 51701)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4974)
+  ✓ [Kimi2] 200 src=claude-4974
+    📊 tokens: in=1452 out=32 cache=0 total=1484
+  🔗 新会话 claude-4975 (port 51725)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4975)
+  ✓ [Kimi] 200 src=claude-4975
+    📊 tokens: in=222 out=29 cache=1280 total=1531
+  🔗 新会话 claude-4976 (port 51764)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4976)
+  ✓ [Kimi2] 200 src=claude-4976
+    📊 tokens: in=271 out=386 cache=1280 total=1937
+  🔗 新会话 claude-4977 (port 51821)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4977)
+  🔗 新会话 claude-4978 (port 51822)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4978)
+  ✓ [Kimi] 200 src=claude-4977
+    📊 tokens: in=0 out=30 cache=1452 total=1482
+  ✓ [Kimi] 200 src=claude-4978
+    📊 tokens: in=199 out=39 cache=1280 total=1518
+  🔗 新会话 claude-4979 (port 51852)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4979)
+  🔗 新会话 claude-4980 (port 51854)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4980)
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 5 个）
+  ✓ [Kimi2] 200 src=claude-4979
+    📊 tokens: in=223 out=31 cache=1280 total=1534
+  ✓ [Kimi] 200 src=claude-4980
+    📊 tokens: in=256 out=31 cache=1280 total=1567
+  🔗 新会话 claude-4981 (port 51892)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4981)
+  🔗 新会话 claude-4982 (port 51894)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4982)
+  ✓ [Kimi2] 200 src=claude-4981
+    📊 tokens: in=274 out=324 cache=1280 total=1878
+  ✓ [Kimi] 200 src=claude-4982
+    📊 tokens: in=51 out=308 cache=1536 total=1895
+  🔗 新会话 claude-4983 (port 51922)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4983)
+  🔗 新会话 claude-4984 (port 51923)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4984)
+  ✓ [Kimi] 200 src=claude-4983
+    📊 tokens: in=0 out=29 cache=1452 total=1481
+  ✓ [Kimi2] 200 src=claude-4984
+    📊 tokens: in=0 out=36 cache=1479 total=1515
+  🔗 新会话 claude-4985 (port 51948)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4985)
+  🔗 新会话 claude-4986 (port 51950)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4986)
+  ✓ [Kimi] 200 src=claude-4985
+    📊 tokens: in=222 out=30 cache=1280 total=1532
+  ✓ [Kimi2] 200 src=claude-4986
+    📊 tokens: in=0 out=31 cache=1536 total=1567
+  🔗 新会话 claude-4987 (port 51996)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4987)
+  🔗 新会话 claude-4988 (port 51998)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4988)
+  ✓ [Kimi] 200 src=claude-4987
+    📊 tokens: in=273 out=395 cache=1280 total=1948
+  ✓ [Kimi] 200 src=claude-4988
+    📊 tokens: in=51 out=378 cache=1536 total=1965
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 11 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 10 个）
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 8 个）
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 6 个）
+  🧹 清理了 3 个不活跃会话的粘性绑定（剩余 3 个）
+  🧹 清理了 3 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-4989 (port 52573)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=100259 out=779 cache=14336 total=115374
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1054 out=120 cache=114432 total=115606
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=172 out=235 cache=115456 total=115863
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=6165 out=462 cache=115456 total=122083
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3159 out=150 cache=121600 total=124909
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=482 out=103 cache=124672 total=125257
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=4464 out=115 cache=124928 total=129507
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=6703 out=701 cache=129280 total=136684
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1486 out=225 cache=135936 total=137647
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=533 out=39 cache=137216 total=137788
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=5114 out=3826 cache=137728 total=146668
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2945 out=63 cache=143872 total=146880
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=701 out=879 cache=146688 total=148268
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1119 out=83 cache=147200 total=148402
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=382 out=728 cache=148224 total=149334
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=876 out=402 cache=148480 total=149758
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=532 out=181 cache=149248 total=149961
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=465 out=250 cache=149760 total=150475
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=496 out=232 cache=150016 total=150744
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3107 out=308 cache=150272 total=153687
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=384 out=117 cache=153344 total=153845
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=293 out=187 cache=153600 total=154080
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=269 out=45 cache=153856 total=154170
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1995 out=1029 cache=154112 total=157136
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1298 out=203 cache=155904 total=157405
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=447 out=357 cache=157184 total=157988
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=586 out=269 cache=157440 total=158295
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=380 out=92 cache=157952 total=158424
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2876 out=1303 cache=158208 total=162387
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1422 out=1479 cache=161024 total=163925
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1717 out=63 cache=162304 total=164084
+  🔗 新会话 claude-4990 (port 53958)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4990)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi] 200 src=claude-4990
+    📊 tokens: in=95 out=100 cache=0 total=195
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=910 out=240 cache=163840 total=164990
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=558 out=322 cache=164608 total=165488
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=405 out=617 cache=165120 total=166142
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1050 out=59 cache=165376 total=166485
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1817 out=4837 cache=166400 total=173054
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4989)
+  🔗 新会话 claude-4991 (port 54388)
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4991)
+  🔗 新会话 claude-4992 (port 54389)
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4992)
+  🔗 新会话 claude-4993 (port 54390)
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4993)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2065 out=0 cache=0 total=2065
+  ✓ [Kimi2] 200 src=claude-4991
+    📊 tokens: in=1909 out=0 cache=0 total=1909
+  ✓ [Kimi2] 200 src=claude-4992
+    📊 tokens: in=3004 out=0 cache=0 total=3004
+  ✓ [Kimi2] 200 src=claude-4993
+    📊 tokens: in=2699 out=0 cache=0 total=2699
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=16261 out=75 cache=25600 total=41936
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=252 out=882 cache=41728 total=42862
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1409 out=62 cache=41728 total=43199
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3622 out=1303 cache=43008 total=47933
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1506 out=61 cache=46592 total=48159
+  🔗 新会话 claude-4994 (port 54527)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4994)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 5 个）
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+  ✓ [Kimi] 200 src=claude-4994
+    📊 tokens: in=0 out=100 cache=95 total=195
+    📊 tokens: in=670 out=258 cache=47872 total=48800
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=474 out=109 cache=48384 total=48967
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=444 out=82 cache=48640 total=49166
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=396 out=108 cache=48896 total=49400
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 4 个）
+    📊 tokens: in=4436 out=1480 cache=49152 total=55068
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2788 out=134 cache=53504 total=56426
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=11306 out=0 cache=0 total=11306
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=17046 out=305 cache=56064 total=73415
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=4687 out=412 cache=72960 total=78059
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3730 out=853 cache=77568 total=82151
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2652 out=431 cache=81152 total=84235
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=875 out=192 cache=83712 total=84779
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2263 out=441 cache=84480 total=87184
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=6699 out=0 cache=0 total=6699
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=8249 out=240 cache=86528 total=95017
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=319 out=1663 cache=94720 total=96702
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+  🧹 清理了 3 个不活跃会话的粘性绑定（剩余 1 个）
+    📊 tokens: in=1977 out=2121 cache=94976 total=99074
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2262 out=112 cache=97024 total=99398
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=370 out=644 cache=99072 total=100086
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=842 out=301 cache=99328 total=100471
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=601 out=276 cache=100096 total=100973
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=401 out=467 cache=100608 total=101476
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=666 out=430 cache=100864 total=101960
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=626 out=77 cache=101376 total=102079
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=547 out=543 cache=101888 total=102978
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=637 out=51 cache=102400 total=103088
+  → [Kimi2] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=7886 out=0 cache=0 total=7886
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=9037 out=272 cache=102912 total=112221
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=406 out=408 cache=111872 total=112686
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=615 out=120 cache=112128 total=112863
+  🔗 新会话 claude-4995 (port 55866)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4995)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [Kimi] 200 src=claude-4995
+    📊 tokens: in=0 out=100 cache=95 total=195
+    📊 tokens: in=427 out=227 cache=112640 total=113294
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=640 out=61 cache=112896 total=113597
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=233 out=209 cache=113408 total=113850
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=512 out=349 cache=113408 total=114269
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=435 out=1002 cache=113920 total=115357
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1255 out=605 cache=114176 total=116036
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=956 out=146 cache=115200 total=116302
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2346 out=2636 cache=115968 total=120950
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3416 out=116 cache=118272 total=121804
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=421 out=286 cache=121600 total=122307
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=511 out=207 cache=121856 total=122574
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=259 out=208 cache=122368 total=122835
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=249 out=259 cache=122624 total=123132
+  🔗 新会话 claude-4996 (port 56511)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4996)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [Kimi2] 200 src=claude-4989
+  ✓ [Kimi] 200 src=claude-4996
+    📊 tokens: in=0 out=100 cache=95 total=195
+    📊 tokens: in=712 out=136 cache=122624 total=123472
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=432 out=1484 cache=123136 total=125052
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=1765 out=68 cache=123392 total=125225
+  🔗 新会话 claude-4997 (port 56612)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4997)
+  🔗 新会话 claude-4998 (port 56614)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4998)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [Kimi] 200 src=claude-4997
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi2] 200 src=claude-4989
+  ✓ [Kimi2] 200 src=claude-4998
+    📊 tokens: in=0 out=100 cache=95 total=195
+    📊 tokens: in=793 out=475 cache=124928 total=126196
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3196 out=3241 cache=125696 total=132133
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3230 out=53 cache=129024 total=132307
+  🔗 新会话 claude-4999 (port 57071)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-4999)
+  🔗 新会话 claude-5000 (port 57073)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5000)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [Kimi] 200 src=claude-4999
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi] 200 src=claude-5000
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=903 out=527 cache=132096 total=133526
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=702 out=51 cache=132864 total=133617
+  🔗 新会话 claude-5001 (port 57146)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5001)
+  🔗 新会话 claude-5002 (port 57148)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5002)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [Kimi] 200 src=claude-5001
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi] 200 src=claude-5002
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=445 out=69 cache=133376 total=133890
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=437 out=53 cache=133632 total=134122
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=388 out=77 cache=133888 total=134353
+  🔗 新会话 claude-5003 (port 57184)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5003)
+  🔗 新会话 claude-5004 (port 57186)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5004)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi] 200 src=claude-5003
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi] 200 src=claude-5004
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3082 out=254 cache=134144 total=137480
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=3070 out=1646 cache=137216 total=141932
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=2004 out=67 cache=140032 total=142103
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=614 out=93 cache=141824 total=142531
+  🔗 新会话 claude-5005 (port 57466)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5005)
+  🔗 新会话 claude-5006 (port 57468)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5006)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi] 200 src=claude-5005
+    📊 tokens: in=0 out=52 cache=95 total=147
+  ✓ [Kimi] 200 src=claude-5006
+    📊 tokens: in=0 out=100 cache=95 total=195
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=416 out=42 cache=142336 total=142794
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-4989)
+  ✓ [Kimi2] 200 src=claude-4989
+    📊 tokens: in=224 out=427 cache=142592 total=143243
