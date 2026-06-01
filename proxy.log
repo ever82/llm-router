@@ -154144,3 +154144,8 @@ Token 统计: http://localhost:4000/proxy-stats
     📊 tokens: in=995 out=91 cache=69888 total=70974
   🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
   🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-5154 (port 55558)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-5154)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-5154
+    📊 tokens: in=179 out=654 cache=0 total=833
