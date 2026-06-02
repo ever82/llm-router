@@ -169775,3 +169775,45 @@ Token 统计: http://localhost:4000/proxy-stats
   → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-310)
   🔗 新会话 claude-311 (port 60071)
   → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-311)
+  ✓ [Kimi2] 200 src=claude-310
+    📊 tokens: in=416 out=319 cache=0 total=735
+  🔗 新会话 claude-312 (port 60081)
+  → [Kimi] POST /api/show model=null stream=false (attempt 1/3 src=claude-312)
+  ✓ [Kimi] 404 src=claude-312
+  🔗 新会话 claude-313 (port 60093)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-313)
+  ✓ [MiniMax] 200 src=claude-311
+    📊 tokens: in=14 out=535 cache=472 total=1021
+  ✓ [MiniMax] 200 src=claude-313
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 2 个）
+    📊 tokens: in=14349 out=1405 cache=626 total=16380
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-314 (port 60856)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-314)
+  ✓ [Kimi2] 200 src=claude-314
+    📊 tokens: in=0 out=185 cache=324 total=509
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-315 (port 61644)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-315)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-315
+    📊 tokens: in=0 out=208 cache=324 total=532
+  🔗 新会话 claude-316 (port 62496)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-316)
+  ✓ [Kimi] 200 src=claude-316
+    📊 tokens: in=0 out=178 cache=324 total=502
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-317 (port 63421)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-317)
+  ✓ [Kimi2] 200 src=claude-317
+    📊 tokens: in=0 out=201 cache=324 total=525
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-318 (port 64332)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-318)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [MiniMax] 200 src=claude-318
+    📊 tokens: in=372 out=410 cache=114 total=896
+  🔗 新会话 claude-319 (port 65173)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-319)
+  🔗 新会话 claude-320 (port 65175)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-320)
