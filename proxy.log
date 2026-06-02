@@ -169385,3 +169385,11 @@ Token 统计: http://localhost:4000/proxy-stats
   🔗 新会话 claude-235 (port 51443)
   → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-235)
   ✓ [Kimi2] 200 src=claude-235
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 0 个）
+    📊 tokens: in=4129 out=911 cache=9216 total=14256
+  🔗 新会话 claude-236 (port 56266)
+  → [Kimi] POST /api/show model=null stream=false (attempt 1/3 src=claude-236)
+  ✓ [Kimi] 404 src=claude-236
+  🔗 新会话 claude-237 (port 56279)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-237)
+  ✓ [MiniMax] 200 src=claude-237
