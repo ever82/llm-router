@@ -63,6 +63,7 @@ async function initDB() {
         status_code INTEGER, attempt INTEGER DEFAULT 1,
         input_tokens INTEGER DEFAULT 0, output_tokens INTEGER DEFAULT 0, cache_read_tokens INTEGER DEFAULT 0,
         error_type TEXT DEFAULT NULL, is_fallback INTEGER DEFAULT 0, duration_ms INTEGER DEFAULT NULL,
+        client_name TEXT DEFAULT NULL, client_cwd TEXT DEFAULT NULL,
         timestamp TEXT NOT NULL DEFAULT (datetime('now')), created_at TEXT DEFAULT (datetime('now'))
       );
       CREATE TABLE IF NOT EXISTS sessions (
@@ -87,11 +88,16 @@ async function initDB() {
       CREATE INDEX IF NOT EXISTS idx_requests_timestamp ON requests(timestamp);
       CREATE INDEX IF NOT EXISTS idx_requests_backend_id ON requests(backend_id);
       CREATE INDEX IF NOT EXISTS idx_requests_model ON requests(model_actual);
+      CREATE INDEX IF NOT EXISTS idx_requests_client_name ON requests(client_name);
+      CREATE INDEX IF NOT EXISTS idx_requests_client_cwd ON requests(client_cwd);
       CREATE INDEX IF NOT EXISTS idx_sessions_last_seen ON sessions(last_seen);
       CREATE INDEX IF NOT EXISTS idx_aggregated_lookup ON aggregated_stats(period_type, period_key, backend_id, model);
     `);
     // 为 requests 表添加 model_type 列（兼容旧表）
     try { db.exec('ALTER TABLE requests ADD COLUMN model_type TEXT DEFAULT \'heavy\''); } catch {}
+    // 为 requests 表添加 client_name / client_cwd 列（兼容旧表）
+    try { db.exec('ALTER TABLE requests ADD COLUMN client_name TEXT DEFAULT NULL'); } catch {}
+    try { db.exec('ALTER TABLE requests ADD COLUMN client_cwd TEXT DEFAULT NULL'); } catch {}
     // 自动同步 config 后端到 backends 表（避免依赖手动 init-db.mjs）
     const insertBackend = db.prepare(`
       INSERT OR IGNORE INTO backends (name, base_url, model, weight, cooldown_secs)
@@ -198,7 +204,7 @@ class TokenDB {
     } catch {}
   }
 
-  record(backendName, model, usage, sessionId, modelTier) {
+  record(backendName, model, usage, sessionId, modelTier, clientName, clientCwd) {
     if (!usage) return;
     const input = usage.input_tokens || 0;
     const output = usage.output_tokens || 0;
@@ -231,10 +237,10 @@ class TokenDB {
     try {
       const ts = cnNow();
       const insertRequest = db.prepare(`
-        INSERT INTO requests (backend_id, session_id, model_actual, model_type, input_tokens, output_tokens, cache_read_tokens, timestamp)
-        VALUES ((SELECT id FROM backends WHERE name = ?), ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO requests (backend_id, session_id, model_actual, model_type, input_tokens, output_tokens, cache_read_tokens, client_name, client_cwd, timestamp)
+        VALUES ((SELECT id FROM backends WHERE name = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
-      insertRequest.run(backendName, sessionId || null, model, modelType, input, output, cacheRead, ts);
+      insertRequest.run(backendName, sessionId || null, model, modelType, input, output, cacheRead, clientName || null, clientCwd || null, ts);
 
       // 更新 aggregated_stats（day 级别）
       // 使用 INSERT OR REPLACE 避免 SQLite UNIQUE 对 NULL 的特殊处理导致重复插入
@@ -310,12 +316,14 @@ const tokenDB = new TokenDB();
 
 // ─── SSE 流处理器：提取 token + 检测错误 ─────────────────────
 class StreamProcessor extends Transform {
-  constructor(backendName, model, sessionId, modelTier) {
+  constructor(backendName, model, sessionId, modelTier, clientName, clientCwd) {
     super();
     this.backendName = backendName;
     this.model = model;
     this.sessionId = sessionId;
     this.modelTier = modelTier || 'heavy';
+    this.clientName = clientName || null;
+    this.clientCwd = clientCwd || null;
     this.buffer = '';
     this.usageFromStart = null;
     this.totalTokens = 0;
@@ -357,7 +365,7 @@ class StreamProcessor extends Transform {
               output_tokens: data.usage.output_tokens || 0,
               cache_read_input_tokens: data.usage.cache_read_input_tokens || this.usageFromStart?.cache_read_input_tokens || 0,
             };
-            tokenDB.record(this.backendName, this.model, usage, this.sessionId);
+            tokenDB.record(this.backendName, this.model, usage, this.sessionId, this.modelTier, this.clientName, this.clientCwd);
             const total = usage.input_tokens + usage.output_tokens + usage.cache_read_input_tokens;
             this.totalTokens += total;
             console.log(`    📊 tokens: in=${usage.input_tokens} out=${usage.output_tokens} cache=${usage.cache_read_input_tokens} total=${total}`);
@@ -383,7 +391,7 @@ class StreamProcessor extends Transform {
             output_tokens: data.usage.output_tokens || 0,
             cache_read_input_tokens: data.usage.cache_read_input_tokens || this.usageFromStart?.cache_read_input_tokens || 0,
           };
-          tokenDB.record(this.backendName, this.model, usage, null, this.modelTier);
+          tokenDB.record(this.backendName, this.model, usage, null, this.modelTier, this.clientName, this.clientCwd);
         }
       } catch {}
     }
@@ -414,6 +422,44 @@ function getSessionId(req) {
   }
   return socketSessions.get(socket);
 }
+
+// ─── 客户端识别：软件名 + 项目目录 ─────────────────────────
+// client_name 来自 User-Agent（去掉版本号）；client_cwd 三层兜底：
+//   1) 自定义 header（X-Client-Cwd / X-Cwd / X-Project-Cwd，客户端主动报）
+//   2) Anthropic metadata.user_id（官方字段，有时含项目路径）
+//   3) 请求体 system 字段里的绝对路径（Claude Code 会把 cwd 注入 system）
+function extractClientName(req) {
+  const ua = (req.headers['user-agent'] || '').trim();
+  if (!ua) return 'unknown';
+  // 取第一个 "产品/版本" 或 "产品 版本" 段，去掉版本号
+  const first = ua.split(/[\s,()]+/)[0] || '';
+  const product = first.split(/[\/v]/)[0] || first;
+  return product.toLowerCase() || 'unknown';
+}
+
+function extractClientCwd(req, parsed) {
+  const headers = req.headers || {};
+  // 1) 自定义 header
+  const hdrCwd = headers['x-client-cwd'] || headers['x-cwd'] || headers['x-project-cwd'];
+  if (hdrCwd && typeof hdrCwd === 'string' && hdrCwd.trim()) {
+    return hdrCwd.trim();
+  }
+  // 2) Anthropic metadata.user_id
+  const metaUid = parsed && parsed.metadata && parsed.metadata.user_id;
+  if (typeof metaUid === 'string' && metaUid.includes('/')) {
+    return metaUid;
+  }
+  // 3) 从 system 字段正则匹配绝对路径
+  if (parsed && parsed.system) {
+    const sysText = Array.isArray(parsed.system)
+      ? parsed.system.map(s => (typeof s === 'string' ? s : (s?.text || ''))).join('\n')
+      : (typeof parsed.system === 'string' ? parsed.system : '');
+    const m = sysText.match(/\/(?:Users|home|root|workspace|project|repo)\/[^\s'"<>)\]]+/);
+    if (m) return m[0].replace(/[.,;:]+$/, '');
+  }
+  return null;
+}
+
 // ─── 后端管理 + 粘性加权路由 ──────────────────────────────────
 class BackendPool {
   constructor(backends, routing) {
@@ -729,6 +775,9 @@ async function handleRequest(req, res) {
   const triedIds = new Set();
   // 来源识别：基于 TCP 连接（同一 Claude 进程的多个请求用同一连接）
   const sourceId = getSessionId(req);
+  // 客户端识别：软件名 + 项目目录
+  const clientName = extractClientName(req);
+  const clientCwd = extractClientCwd(req, parsed);
   let currentBackend = null;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
@@ -905,7 +954,7 @@ async function handleRequest(req, res) {
         for (const chunk of buffered) {
           res.write(chunk);
         }
-        const processor = new StreamProcessor(backend.name, actualModel, sourceId, modelTier);
+        const processor = new StreamProcessor(backend.name, actualModel, sourceId, modelTier, clientName, clientCwd);
         backendRes.pipe(processor).pipe(res);
 
         // 流结束后检测 mid-stream 错误，冷却后端
@@ -936,7 +985,7 @@ async function handleRequest(req, res) {
           const usage = parsed.usage || (parsed.input_tokens != null ? parsed : null);
           if (usage) {
             const total = (usage.input_tokens || 0) + (usage.output_tokens || 0) + (usage.cache_read_input_tokens || 0);
-            tokenDB.record(backend.name, actualModel, usage, sourceId, modelTier);
+            tokenDB.record(backend.name, actualModel, usage, sourceId, modelTier, clientName, clientCwd);
             tokenDB.upsertSession(sourceId, backend.name, total);
             console.log(`    📊 tokens: in=${usage.input_tokens || 0} out=${usage.output_tokens || 0} cache=${usage.cache_read_input_tokens || 0} total=${total}`);
           }
