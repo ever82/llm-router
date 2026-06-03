@@ -1135,9 +1135,11 @@ const server = http.createServer(async (req, res) => {
   if (req.url === '/proxy-status') return handleStatus(req, res);
   if (req.url === '/proxy-stats') return handleStats(req, res);
   if (req.url.startsWith('/logs')) return handleLogs(req, res);
+  const remoteAddr = req.socket.remoteAddress;
+  const isLocal = remoteAddr === '127.0.0.1' || remoteAddr === '::1' || remoteAddr === '::ffff:127.0.0.1';
   const authHeader = req.headers['authorization'] || req.headers['x-api-key'] || '';
   const token = authHeader.replace('Bearer ', '').replace('bearer ', '');
-  if (token !== PROXY_AUTH_TOKEN) { sendError(res, 401, 'authentication_error', 'Invalid proxy auth token'); return; }
+  if (!isLocal && token !== PROXY_AUTH_TOKEN) { sendError(res, 401, 'authentication_error', 'Invalid proxy auth token'); return; }
   if (req.method !== 'POST') {
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ status: 'ok', proxy: 'llm-proxy', version: '2.0' }));
