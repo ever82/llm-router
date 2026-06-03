@@ -182652,3 +182652,45 @@ Token 统计: http://localhost:4000/proxy-stats
   ℹ 已为 assistant 消息补全 thinking 块
   → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-382)
   ✓ [MiniMax] 200 src=claude-382
+    📊 tokens: in=288 out=325 cache=135767 total=136380
+  ✓ [MiniMax] 200 src=claude-386
+    📊 tokens: in=1324 out=1024 cache=114 total=2462
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-387 (port 58367)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-387)
+  ✓ [Kimi2] 200 src=claude-387
+    📊 tokens: in=53105 out=189 cache=11264 total=64558
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-388 (port 58538)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-388)
+  ✓ [Kimi2] 200 src=claude-388
+    📊 tokens: in=156 out=173 cache=64256 total=64585
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-389 (port 58571)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-389)
+  ✓ [MiniMax] 200 src=claude-389
+    📊 tokens: in=66004 out=8 cache=626 total=66638
+  🔗 新会话 claude-390 (port 58949)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-390)
+  ✓ [MiniMax] 200 src=claude-390
+    📊 tokens: in=1289 out=1024 cache=114 total=2427
+  🔗 新会话 claude-391 (port 60727)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-391)
+  ✓ [Kimi] 200 src=claude-391
+    📊 tokens: in=1253 out=303 cache=0 total=1556
+  🔗 新会话 claude-392 (port 62563)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-392)
+  ✓ [Kimi2] 200 src=claude-392
+    📊 tokens: in=997 out=209 cache=256 total=1462
+  🔗 新会话 claude-393 (port 64231)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-393)
+  ✓ [Kimi] 200 src=claude-393
+    📊 tokens: in=997 out=442 cache=256 total=1695
+  🔗 新会话 claude-394 (port 49721)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-394)
+  ✓ [MiniMax] 200 src=claude-394
+    📊 tokens: in=1279 out=1024 cache=114 total=2417
+  🔗 新会话 claude-395 (port 51534)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-395)
+  🔗 新会话 claude-396 (port 51535)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-396)
