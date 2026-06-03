@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LLM Router · 请求日志</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #161a22;
+    --border: #232a36;
+    --text: #e6e8eb;
+    --muted: #8b94a3;
+    --accent: #6ea8ff;
+    --err: #ff6b6b;
+    --ok: #57c98a;
+    --cache: #c39bff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font: 13px/1.5 -apple-system, "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif; }
+  header { position: sticky; top: 0; background: rgba(15,17,21,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border); padding: 12px 20px; z-index: 10; }
+  h1 { font-size: 15px; font-weight: 600; margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
+  h1 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+  h1 .count { color: var(--muted); font-weight: 400; font-size: 12px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filters select, .filters input { background: var(--panel); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; font-size: 12px; min-width: 0; }
+  .filters select { min-width: 110px; }
+  .filters input[type=text] { flex: 1; min-width: 160px; }
+  .filters button { background: var(--panel); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; cursor: pointer; font-size: 12px; }
+  .filters button:hover { border-color: var(--accent); }
+  .filters .spacer { flex: 1; }
+  .filters label.toggle { display: flex; gap: 5px; align-items: center; cursor: pointer; user-select: none;
+    color: var(--muted); font-size: 11px; }
+  main { padding: 0 20px 40px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  th { text-align: left; font-weight: 500; color: var(--muted); padding: 8px 8px; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); position: sticky; top: 90px;
+    background: var(--bg); }
+  td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: rgba(110,168,255,0.04); }
+  .ts { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 12px; }
+  .tok { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tok .in  { color: var(--accent); }
+  .tok .out { color: var(--ok); }
+  .tok .ca  { color: var(--cache); }
+  .tok .tot { color: var(--text); font-weight: 600; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 11px;
+    font-weight: 500; line-height: 1.5; white-space: nowrap; }
+  .cwd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--muted); }
+  .cwd .short { color: var(--text); }
+  .err { color: var(--err); font-size: 11px; }
+  .empty { padding: 60px 20px; text-align: center; color: var(--muted); }
+  .empty code { background: var(--panel); padding: 2px 6px; border-radius: 3px; }
+  .footer { padding: 20px 0; text-align: center; color: var(--muted); font-size: 11px; }
+  .footer button { background: var(--panel); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 14px; cursor: pointer; font-size: 12px; }
+  .badge-mt { font-size: 10px; opacity: 0.7; margin-left: 4px; }
+  details summary { cursor: pointer; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="dot"></span>LLM Router · 请求日志 <span class="count" id="count">—</span></h1>
+  <div class="filters">
+    <select id="f-backend"><option value="">全部后端</option></select>
+    <select id="f-client"><option value="">全部客户端</option></select>
+    <select id="f-cwd"><option value="">全部项目</option></select>
+    <input type="text" id="f-search" placeholder="搜索 模型 / session / 路径 / 客户端…" />
+    <button id="apply">应用</button>
+    <button id="reset">清除</button>
+    <span class="spacer"></span>
+    <label class="toggle"><input type="checkbox" id="autoref" /> 每 5s 自动刷新</label>
+  </div>
+</header>
+<main>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:150px">时间</th>
+        <th style="width:110px">后端</th>
+        <th style="width:200px">模型</th>
+        <th style="width:130px">客户端</th>
+        <th>项目目录</th>
+        <th style="width:180px">Tokens (in / out / cache)</th>
+        <th style="width:160px">Session</th>
+        <th style="width:120px">错误</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div id="empty" class="empty" style="display:none">暂无日志</div>
+  <div class="footer">
+    <button id="more">加载更多</button>
+  </div>
+</main>
+
+<script>
+'use strict';
+
+const $ = (id) => document.getElementById(id);
+const rowsEl = $('rows');
+const countEl = $('count');
+const emptyEl = $('empty');
+const moreBtn = $('more');
+
+let state = { offset: 0, total: 0, loading: false, endReached: false };
+let autoTimer = null;
+
+// ─── 颜色 hash（标签背景） ───
+function tagColor(seed) {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  const hue = Math.abs(h) % 360;
+  return `hsl(${hue}, 55%, 22%)`;
+}
+function tagStyle(seed) {
+  const bg = tagColor(seed || '?');
+  return `background:${bg};color:hsl(${Math.abs((seed||'').split('').reduce((a,c)=>a*31+c.charCodeAt(0),0))%360}, 70%, 80%);`;
+}
+function tag(label, seed) {
+  if (!label) return '<span class="tag" style="background:#1d2230;color:#5b6473">—</span>';
+  return `<span class="tag" style="${tagStyle(seed||label)}" title="${escapeHtml(label)}">${escapeHtml(label)}</span>`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function fmtTime(iso) {
+  if (!iso) return '';
+  // 形如 2026-06-03 12:34:56
+  return iso.replace('T', ' ').replace('Z', '').slice(0, 19);
+}
+
+function fmtTokens(r) {
+  const inT = r.input_tokens || 0, outT = r.output_tokens || 0, caT = r.cache_read_tokens || 0;
+  const tot = inT + outT + caT;
+  return `<span class="tok">
+    <span class="in">${inT}</span> /
+    <span class="out">${outT}</span> /
+    <span class="ca">${caT}</span>
+    &nbsp; <span class="tot">${tot}</span>
+  </span>`;
+}
+
+function shortCwd(p) {
+  if (!p) return '';
+  const parts = p.split('/').filter(Boolean);
+  if (parts.length <= 2) return p;
+  return '…/' + parts.slice(-2).join('/');
+}
+
+function renderRow(r) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="ts">${fmtTime(r.timestamp)}</td>
+    <td>${tag(r.backend_name, r.backend_name)}</td>
+    <td>${escapeHtml(r.model_actual || '—')}${r.model_type ? `<span class="badge-mt">${r.model_type}</span>` : ''}</td>
+    <td>${tag(r.client_name, r.client_name)}</td>
+    <td class="cwd" title="${escapeHtml(r.client_cwd || '')}">${r.client_cwd ? `<span class="short">${escapeHtml(shortCwd(r.client_cwd))}</span>` : '<span style="color:#5b6473">—</span>'}</td>
+    <td>${fmtTokens(r)}</td>
+    <td class="ts" title="${escapeHtml(r.session_id || '')}">${escapeHtml((r.session_id || '—').slice(0, 18))}</td>
+    <td>${r.error_type ? `<span class="err">${escapeHtml(r.error_type)}</span>` : ''}</td>
+  `;
+  return tr;
+}
+
+// ─── 查询 ───
+function buildQuery(extra = {}) {
+  const p = new URLSearchParams({ format: 'json', limit: 50, offset: state.offset, ...extra });
+  for (const [k, v] of [['backend', $('f-backend').value], ['client', $('f-client').value], ['cwd', $('f-cwd').value], ['search', $('f-search').value.trim()]]) {
+    if (v) p.set(k, v);
+  }
+  return p.toString();
+}
+
+async function load({ reset = false } = {}) {
+  if (state.loading) return;
+  state.loading = true;
+  if (reset) {
+    state.offset = 0;
+    state.endReached = false;
+    rowsEl.innerHTML = '';
+  }
+  try {
+    const res = await fetch('/logs?' + buildQuery());
+    const data = await res.json();
+    state.total = data.total;
+    if (data.filters) populateFilters(data.filters);
+    for (const r of data.logs) rowsEl.appendChild(renderRow(r));
+    state.offset += data.logs.length;
+    state.endReached = state.offset >= state.total || data.logs.length === 0;
+    countEl.textContent = `${state.total} 条 · 已显示 ${Math.min(state.offset, state.total)}`;
+    emptyEl.style.display = state.total === 0 ? 'block' : 'none';
+    moreBtn.style.display = state.endReached ? 'none' : 'inline-block';
+  } catch (err) {
+    console.error(err);
+    countEl.textContent = '加载失败: ' + err.message;
+  } finally {
+    state.loading = false;
+  }
+}
+
+function populateFilters(f) {
+  const set = (sel, vals) => {
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">' + sel.options[0].textContent + '</option>' +
+      vals.map(v => `<option value="${escapeHtml(v)}"${v === cur ? ' selected' : ''}>${escapeHtml(v)}</option>`).join('');
+    sel.value = cur;
+  };
+  set($('f-backend'), f.backends || []);
+  set($('f-client'),  f.clients  || []);
+  set($('f-cwd'),     f.cwds     || []);
+}
+
+// ─── 事件 ───
+moreBtn.onclick = () => load();
+$('apply').onclick = () => load({ reset: true });
+$('reset').onclick = () => {
+  for (const id of ['f-backend','f-client','f-cwd','f-search']) $(id).value = '';
+  load({ reset: true });
+};
+$('f-search').addEventListener('keydown', e => { if (e.key === 'Enter') load({ reset: true }); });
+for (const id of ['f-backend','f-client','f-cwd']) {
+  $(id).addEventListener('change', () => load({ reset: true }));
+}
+$('autoref').onchange = (e) => {
+  if (e.target.checked) {
+    autoTimer = setInterval(() => load({ reset: true }), 5000);
+  } else {
+    clearInterval(autoTimer);
+    autoTimer = null;
+  }
+};
+
+// 首次加载
+load();
+</script>
+</body>
+</html>

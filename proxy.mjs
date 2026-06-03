@@ -1027,9 +1027,79 @@ function sendError(res, status, type, message) {
 }
 
 // ─── 管理端点 ────────────────────────────────────────────────
+const LOGS_HTML_PATH = resolve(__dirname, 'public', 'logs.html');
+
 function handleStatus(req, res) {
   res.writeHead(200, { 'content-type': 'application/json' });
   res.end(JSON.stringify({ status: 'ok', backends: pool.stats(), routing: pool.routingStats(), token_usage: tokenDB.summary() }, null, 2));
+}
+
+// /logs        → HTML 页面
+// /logs?format=json[&backend=&client=&cwd=&search=&limit=&offset=] → JSON 数据
+function handleLogs(req, res) {
+  const url = new URL(req.url, 'http://localhost');
+  const isJson = url.searchParams.get('format') === 'json';
+
+  if (!isJson) {
+    try {
+      const html = readFileSync(LOGS_HTML_PATH, 'utf-8');
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+      res.end(html);
+    } catch (err) {
+      sendError(res, 500, 'template_error', `无法读取 ${LOGS_HTML_PATH}: ${err.message}`);
+    }
+    return;
+  }
+
+  if (!db) {
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ logs: [], total: 0, filters: { backends: [], clients: [], cwds: [] } }));
+    return;
+  }
+
+  const backend = url.searchParams.get('backend') || '';
+  const client  = url.searchParams.get('client')  || '';
+  const cwd     = url.searchParams.get('cwd')     || '';
+  const search  = url.searchParams.get('search')  || '';
+  const limit   = Math.min(Math.max(parseInt(url.searchParams.get('limit')  || '50',  10) || 50,  1), 200);
+  const offset  = Math.max(parseInt(url.searchParams.get('offset') || '0',   10) || 0,   0);
+
+  const where = [];
+  const params = [];
+  if (backend) { where.push('b.name = ?');          params.push(backend); }
+  if (client)  { where.push('r.client_name = ?');   params.push(client); }
+  if (cwd)     { where.push('r.client_cwd = ?');    params.push(cwd); }
+  if (search)  {
+    where.push('(r.model_actual LIKE ? OR r.session_id LIKE ? OR r.client_cwd LIKE ? OR r.client_name LIKE ? OR r.error_type LIKE ?)');
+    params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+  }
+  const whereSql = where.length ? 'WHERE ' + where.join(' AND ') : '';
+
+  try {
+    const total = db.prepare(`
+      SELECT COUNT(*) as c FROM requests r JOIN backends b ON r.backend_id = b.id ${whereSql}
+    `).get(...params).c;
+
+    const rows = db.prepare(`
+      SELECT r.id, r.timestamp, b.name as backend_name, r.model_actual, r.model_type,
+             r.input_tokens, r.output_tokens, r.cache_read_tokens,
+             r.client_name, r.client_cwd, r.session_id, r.error_type
+      FROM requests r JOIN backends b ON r.backend_id = b.id
+      ${whereSql}
+      ORDER BY r.id DESC
+      LIMIT ? OFFSET ?
+    `).all(...params, limit, offset);
+
+    // 下拉选项（distinct 全量）
+    const backends = db.prepare(`SELECT DISTINCT name FROM backends ORDER BY name`).all().map(r => r.name);
+    const clients  = db.prepare(`SELECT DISTINCT client_name as v FROM requests WHERE client_name IS NOT NULL ORDER BY v`).all().map(r => r.v);
+    const cwds     = db.prepare(`SELECT DISTINCT client_cwd  as v FROM requests WHERE client_cwd  IS NOT NULL ORDER BY v`).all().map(r => r.v);
+
+    res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ logs: rows, total, filters: { backends, clients, cwds } }));
+  } catch (err) {
+    sendError(res, 500, 'db_error', err.message);
+  }
 }
 function handleStats(req, res) {
   const s = tokenDB.summary();
@@ -1064,6 +1134,7 @@ function handleStats(req, res) {
 const server = http.createServer(async (req, res) => {
   if (req.url === '/proxy-status') return handleStatus(req, res);
   if (req.url === '/proxy-stats') return handleStats(req, res);
+  if (req.url.startsWith('/logs')) return handleLogs(req, res);
   const authHeader = req.headers['authorization'] || req.headers['x-api-key'] || '';
   const token = authHeader.replace('Bearer ', '').replace('bearer ', '');
   if (token !== PROXY_AUTH_TOKEN) { sendError(res, 401, 'authentication_error', 'Invalid proxy auth token'); return; }
@@ -1076,7 +1147,51 @@ const server = http.createServer(async (req, res) => {
   catch (err) { console.error('Unhandled error:', err); sendError(res, 500, 'internal_error', err.message); }
 });
 
-function shutdown() { console.log('\n保存统计数据...'); db?.close(); console.log('已保存。再见！'); process.exit(0); }
+// ─── 菜单栏图标（macOS）──────────────────────────────────────
+let trayProcess = null;
+
+function launchTray(port) {
+  if (process.platform !== 'darwin') return;
+  const { spawn, spawnSync } = require('node:child_process');
+  const { existsSync, statSync } = require('node:fs');
+  const { resolve } = require('node:path');
+
+  const swiftPath = resolve(__dirname, 'tray.swift');
+  const binPath = resolve(__dirname, '.tray-bin');
+
+  // 检查 swiftc 是否可用
+  const which = spawnSync('which', ['swiftc'], { encoding: 'utf-8' });
+  if (which.status !== 0) {
+    console.log('  ℹ swiftc 不可用，跳过菜单栏图标');
+    return;
+  }
+
+  // 检查是否需要编译
+  const needCompile = !existsSync(binPath) ||
+    (existsSync(swiftPath) && statSync(swiftPath).mtime > statSync(binPath).mtime);
+
+  if (needCompile) {
+    console.log('  🔨 编译菜单栏图标...');
+    const compile = spawnSync('swiftc', [swiftPath, '-o', binPath], { encoding: 'utf-8' });
+    if (compile.status !== 0) {
+      console.log('  ⚠ 编译失败:', compile.stderr || compile.stdout);
+      return;
+    }
+  }
+
+  // 启动 tray
+  trayProcess = spawn(binPath, [String(port)], { detached: true, stdio: 'ignore' });
+  trayProcess.unref();
+  console.log(`  📊 菜单栏图标已启动（点击 🤖 打开日志）`);
+}
+
+function shutdown() {
+  console.log('\n保存统计数据...');
+  if (trayProcess) { try { trayProcess.kill(); } catch {} }
+  db?.close();
+  console.log('已保存。再见！');
+  process.exit(0);
+}
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 process.on('uncaughtException', (err) => { console.error('!!! uncaughtException:', err); db?.close(); process.exit(1); });
@@ -1102,4 +1217,6 @@ server.listen(PORT, () => {
   console.log(`Token 统计: http://localhost:${PORT}/proxy-stats`);
   console.log('按 Ctrl+C 停止');
   console.log('');
+  // 启动菜单栏图标
+  launchTray(PORT);
 });
