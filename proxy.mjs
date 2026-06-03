@@ -4,7 +4,7 @@
  * LLM Reverse Proxy v2 - 带 mid-stream 错误检测和自动 fallback
  */
 
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 
 if (!process.execArgv.includes('--experimental-sqlite')) {
   const result = spawnSync(process.execPath, ['--experimental-sqlite', ...process.execArgv, process.argv[1], ...process.argv.slice(2)], { stdio: 'inherit' });
@@ -14,7 +14,7 @@ if (!process.execArgv.includes('--experimental-sqlite')) {
 import http from 'node:http';
 import https from 'node:https';
 import { Transform } from 'node:stream';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, statSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -85,6 +85,13 @@ async function initDB() {
         request_count INTEGER DEFAULT 0,
         UNIQUE(period_type, period_key, backend_id, model)
       );
+    `);
+    // 为 requests 表添加 model_type 列（兼容旧表）
+    try { db.exec('ALTER TABLE requests ADD COLUMN model_type TEXT DEFAULT \'heavy\''); } catch {}
+    // 为 requests 表添加 client_name / client_cwd 列（兼容旧表）
+    try { db.exec('ALTER TABLE requests ADD COLUMN client_name TEXT DEFAULT NULL'); } catch {}
+    try { db.exec('ALTER TABLE requests ADD COLUMN client_cwd TEXT DEFAULT NULL'); } catch {}
+    db.exec(`
       CREATE INDEX IF NOT EXISTS idx_requests_timestamp ON requests(timestamp);
       CREATE INDEX IF NOT EXISTS idx_requests_backend_id ON requests(backend_id);
       CREATE INDEX IF NOT EXISTS idx_requests_model ON requests(model_actual);
@@ -93,11 +100,6 @@ async function initDB() {
       CREATE INDEX IF NOT EXISTS idx_sessions_last_seen ON sessions(last_seen);
       CREATE INDEX IF NOT EXISTS idx_aggregated_lookup ON aggregated_stats(period_type, period_key, backend_id, model);
     `);
-    // 为 requests 表添加 model_type 列（兼容旧表）
-    try { db.exec('ALTER TABLE requests ADD COLUMN model_type TEXT DEFAULT \'heavy\''); } catch {}
-    // 为 requests 表添加 client_name / client_cwd 列（兼容旧表）
-    try { db.exec('ALTER TABLE requests ADD COLUMN client_name TEXT DEFAULT NULL'); } catch {}
-    try { db.exec('ALTER TABLE requests ADD COLUMN client_cwd TEXT DEFAULT NULL'); } catch {}
     // 自动同步 config 后端到 backends 表（避免依赖手动 init-db.mjs）
     const insertBackend = db.prepare(`
       INSERT OR IGNORE INTO backends (name, base_url, model, weight, cooldown_secs)
@@ -1154,9 +1156,6 @@ let trayProcess = null;
 
 function launchTray(port) {
   if (process.platform !== 'darwin') return;
-  const { spawn, spawnSync } = require('node:child_process');
-  const { existsSync, statSync } = require('node:fs');
-  const { resolve } = require('node:path');
 
   const swiftPath = resolve(__dirname, 'tray.swift');
   const binPath = resolve(__dirname, '.tray-bin');

@@ -24,7 +24,7 @@ find_free_port() {
   local p=$1
   local candidates=("$p" "${FALLBACK_PORTS[@]}")
   for cand in "${candidates[@]}"; do
-    if ! lsof -i :$cand >/dev/null 2>&1; then
+    if ! lsof -i :$cand -sTCP:LISTEN >/dev/null 2>&1; then
       echo $cand
       return 0
     fi
