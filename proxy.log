@@ -182822,3 +182822,256 @@ Token 统计: http://localhost:4000/proxy-stats
     📊 tokens: in=1279 out=249 cache=114 total=1642
   ✓ [Kimi2] 200 src=claude-425
     📊 tokens: in=997 out=214 cache=256 total=1467
+  🔗 新会话 claude-426 (port 57020)
+  → [Kimi2] POST /api/show model=null stream=false (attempt 1/3 src=claude-426)
+  ✓ [Kimi2] 404 src=claude-426
+  🔗 新会话 claude-427 (port 57035)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-427)
+  ✓ [Kimi] 200 src=claude-427
+    📊 tokens: in=189 out=208 cache=13056 total=13453
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-428 (port 57078)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-428)
+  ✓ [Kimi] 200 src=claude-428
+    📊 tokens: in=1774 out=48 cache=13056 total=14878
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-429 (port 57084)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-429)
+  ✓ [Kimi2] 200 src=claude-429
+    📊 tokens: in=3653 out=95 cache=14592 total=18340
+  🔗 新会话 claude-430 (port 57112)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-430)
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-431 (port 57192)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-431)
+  ✓ [Kimi] 200 src=claude-431
+    📊 tokens: in=11752 out=141 cache=18176 total=30069
+  🔗 新会话 claude-432 (port 57235)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-432)
+  ✓ [MiniMax] 200 src=claude-432
+    📊 tokens: in=1279 out=1024 cache=114 total=2417
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-433 (port 57293)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-433)
+  ✓ [MiniMax] 200 src=claude-433
+    📊 tokens: in=34077 out=443 cache=626 total=35146
+  🔗 新会话 claude-434 (port 57313)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-434)
+  ✓ [Kimi2] 200 src=claude-434
+    📊 tokens: in=0 out=12 cache=8 total=20
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-435 (port 57324)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-435)
+  ✓ [Kimi2] 200 src=claude-435
+    📊 tokens: in=5589 out=614 cache=29696 total=35899
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-436 (port 57376)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-436)
+  ✓ [Kimi2] 200 src=claude-436
+    📊 tokens: in=2624 out=500 cache=35072 total=38196
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-437 (port 57420)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-437)
+  ✓ [Kimi] 200 src=claude-437
+    📊 tokens: in=1510 out=2383 cache=37632 total=41525
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-438 (port 57564)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-438)
+  ✓ [MiniMax] 200 src=claude-438
+    📊 tokens: in=6952 out=47 cache=34689 total=41688
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-439 (port 57573)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-439)
+  ✓ [Kimi] 200 src=claude-439
+    📊 tokens: in=2524 out=42 cache=38912 total=41478
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-440 (port 57581)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-440)
+  ✓ [Kimi2] 200 src=claude-440
+  ⏳ [MiniMax] 冷却 30s
+  ✗ [MiniMax] 500 Server Error → fallback
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 2/3 src=claude-430)
+  ✓ [Kimi] 200 src=claude-430
+    📊 tokens: in=997 out=287 cache=256 total=1540
+    📊 tokens: in=840 out=2765 cache=41216 total=44821
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-441 (port 57817)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-441)
+  ✓ [Kimi2] 200 src=claude-441
+    📊 tokens: in=382 out=186 cache=41984 total=42552
+  🔗 新会话 claude-442 (port 57840)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-442)
+  ✓ [MiniMax] 200 src=claude-442
+    📊 tokens: in=14 out=32 cache=163 total=209
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-443 (port 57849)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-443)
+  ✓ [Kimi] 200 src=claude-443
+    📊 tokens: in=473 out=296 cache=42240 total=43009
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-444 (port 57879)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-444)
+  ✓ [Kimi] 200 src=claude-444
+    📊 tokens: in=1086 out=716 cache=42496 total=44298
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-445 (port 57927)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-445)
+  ✓ [Kimi] 200 src=claude-445
+    📊 tokens: in=1350 out=354 cache=43520 total=45224
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-446 (port 57961)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-446)
+  ✓ [Kimi] 200 src=claude-446
+    📊 tokens: in=509 out=647 cache=44800 total=45956
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-447 (port 58001)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-447)
+  ✓ [Kimi2] 200 src=claude-447
+    📊 tokens: in=1696 out=743 cache=45056 total=47495
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-448 (port 58056)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-448)
+  ✓ [Kimi2] 200 src=claude-448
+    📊 tokens: in=1472 out=283 cache=46592 total=48347
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-449 (port 58086)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-449)
+  ✓ [Kimi2] 200 src=claude-449
+    📊 tokens: in=744 out=219 cache=47872 total=48835
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-450 (port 58109)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-450)
+  ✓ [Kimi] 200 src=claude-450
+    📊 tokens: in=604 out=29 cache=48384 total=49017
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-451 (port 58117)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-451)
+  ✓ [MiniMax] 200 src=claude-451
+    📊 tokens: in=9355 out=243 cache=41627 total=51225
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-452 (port 58153)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-452)
+  ✓ [MiniMax] 200 src=claude-452
+    📊 tokens: in=350 out=124 cache=50930 total=51404
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-453 (port 58207)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-453)
+  ✓ [MiniMax] 200 src=claude-453
+    📊 tokens: in=130 out=491 cache=51390 total=52011
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-454 (port 58230)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-454)
+  ✓ [Kimi] 200 src=claude-454
+    📊 tokens: in=1828 out=410 cache=48896 total=51134
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-455 (port 58262)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-455)
+  ✓ [Kimi] 200 src=claude-455
+    📊 tokens: in=508 out=107 cache=50688 total=51303
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-456 (port 58285)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-456)
+  ✓ [Kimi2] 200 src=claude-456
+    📊 tokens: in=456 out=87 cache=50944 total=51487
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-457 (port 58301)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-457)
+  ✓ [MiniMax] 200 src=claude-457
+    📊 tokens: in=2426 out=123 cache=50968 total=53517
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-458 (port 58320)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-458)
+  ✓ [Kimi2] 200 src=claude-458
+    📊 tokens: in=684 out=288 cache=51200 total=52172
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-459 (port 58346)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-459)
+  ✓ [MiniMax] 200 src=claude-459
+    📊 tokens: in=691 out=137 cache=53503 total=54331
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-460 (port 58364)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-460)
+  ✓ [Kimi2] 200 src=claude-460
+    📊 tokens: in=938 out=70 cache=51712 total=52720
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-461 (port 58373)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-461)
+  ✓ [Kimi] 200 src=claude-461
+    📊 tokens: in=356 out=329 cache=52480 total=53165
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-462 (port 58410)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-462)
+  ✓ [Kimi] 200 src=claude-462
+    📊 tokens: in=581 out=792 cache=52736 total=54109
+  🔗 新会话 claude-463 (port 58447)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-463)
+  ✓ [MiniMax] 200 src=claude-463
+    📊 tokens: in=14 out=16 cache=163 total=193
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-464 (port 58460)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-464)
+  ✓ [Kimi2] 200 src=claude-464
+    📊 tokens: in=866 out=777 cache=53248 total=54891
+  🔗 新会话 claude-465 (port 58517)
+  → [Kimi2] POST /api/show model=null stream=false (attempt 1/3 src=claude-465)
+  ✓ [Kimi2] 404 src=claude-465
+  🔗 新会话 claude-466 (port 58529)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-466)
+  ✓ [MiniMax] 200 src=claude-466
+    📊 tokens: in=57116 out=147 cache=626 total=57889
+  🔗 新会话 claude-467 (port 58542)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-467)
+  ✓ [Kimi2] 200 src=claude-467
+    📊 tokens: in=48510 out=39 cache=13056 total=61605
+  🔗 新会话 claude-468 (port 58616)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-468)
+  ✓ [Kimi] 200 src=claude-468
+    📊 tokens: in=4860 out=39 cache=61440 total=66339
+  🔗 新会话 claude-469 (port 58628)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-469)
+  ✓ [MiniMax] 200 src=claude-469
+    📊 tokens: in=10969 out=867 cache=57728 total=69564
+  🔗 新会话 claude-470 (port 58677)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-470)
+  ✓ [Kimi] 200 src=claude-470
+  🔗 新会话 claude-471 (port 58741)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-471)
+    📊 tokens: in=1887 out=1480 cache=66048 total=69415
+  🔗 新会话 claude-472 (port 58768)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-472)
+  ✓ [MiniMax] 200 src=claude-472
+  ✓ [MiniMax] 200 src=claude-471
+    📊 tokens: in=1279 out=1024 cache=114 total=2417
+    📊 tokens: in=2385 out=4237 cache=68683 total=75305
+  🔗 新会话 claude-473 (port 58948)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-473)
+  ✓ [Kimi] 200 src=claude-473
+    📊 tokens: in=6365 out=4484 cache=67840 total=78689
+  🔗 新会话 claude-474 (port 59195)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-474)
+  ✓ [Kimi] 200 src=claude-474
+    📊 tokens: in=4843 out=149 cache=73984 total=78976
+  🔗 新会话 claude-475 (port 59211)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-475)
+  ✓ [MiniMax] 200 src=claude-475
+    📊 tokens: in=8740 out=534 cache=71054 total=80328
+  🔗 新会话 claude-476 (port 60320)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-476)
+  ✓ [Kimi] 200 src=claude-476
+    📊 tokens: in=997 out=379 cache=256 total=1632
+  🔗 新会话 claude-477 (port 62175)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-477)
+  ✓ [Kimi] 200 src=claude-477
+    📊 tokens: in=229 out=223 cache=1024 total=1476
+  🔗 新会话 claude-478 (port 63845)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-478)
+  ✓ [Kimi] 200 src=claude-478
+    📊 tokens: in=997 out=261 cache=256 total=1514
+  🔗 新会话 claude-479 (port 49252)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-479)
+  ✓ [MiniMax] 200 src=claude-479
+    📊 tokens: in=1279 out=1024 cache=114 total=2417
+  🔗 新会话 claude-480 (port 51046)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-480)
+  🔗 新会话 claude-481 (port 51047)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-481)
