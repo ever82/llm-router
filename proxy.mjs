@@ -456,8 +456,16 @@ function extractClientCwd(req, parsed) {
     const sysText = Array.isArray(parsed.system)
       ? parsed.system.map(s => (typeof s === 'string' ? s : (s?.text || ''))).join('\n')
       : (typeof parsed.system === 'string' ? parsed.system : '');
-    const m = sysText.match(/\/(?:Users|home|root|workspace|project|repo)\/[^\s'"<>)\]]+/);
-    if (m) return m[0].replace(/[.,;:]+$/, '');
+    const re = /\/(?:Users|home|root|workspace|project|repo)\/[^\s'"<>)\]]+/g;
+    const candidates = [];
+    let m;
+    while ((m = re.exec(sysText)) !== null) {
+      candidates.push(m[0].replace(/[.,;:`]+$/, ''));
+    }
+    // 优先排除 .claude 等系统配置目录，选择真正的项目路径
+    const realProject = candidates.find(p => !p.includes('/.claude/'));
+    if (realProject) return realProject;
+    if (candidates.length) return candidates[0];
   }
   return null;
 }

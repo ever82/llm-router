@@ -150,8 +150,7 @@ function fmtTokens(r) {
 function shortCwd(p) {
   if (!p) return '';
   const parts = p.split('/').filter(Boolean);
-  if (parts.length <= 2) return p;
-  return '…/' + parts.slice(-2).join('/');
+  return parts[parts.length - 1] || p;
 }
 
 function renderRow(r) {
