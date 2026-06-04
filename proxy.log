@@ -197835,3 +197835,20 @@ Token 统计: http://localhost:4000/proxy-stats
   → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-184)
   ✓ [Kimi2] 200 src=claude-184
   🧹 清理了 2 个不活跃会话的粘性绑定（剩余 1 个）
+    📊 tokens: in=733 out=1433 cache=79616 total=81782
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-184)
+  ✓ [Kimi2] 200 src=claude-184
+    📊 tokens: in=1730 out=419 cache=80128 total=82277
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-208 (port 56767)
+  → [MiniMax] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-208)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [MiniMax] 200 src=claude-208
+    📊 tokens: in=109907 out=216 cache=626 total=110749
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-209 (port 60345)
+  → [Kimi] POST /v1/messages model=k2.6 stream=true (attempt 1/3 src=claude-209)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-209
+    📊 tokens: in=97208 out=531 cache=11776 total=109515
