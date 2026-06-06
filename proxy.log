@@ -224661,3 +224661,43 @@ Token 统计: http://localhost:4000/proxy-stats
   ✓ [Kimi] 200 src=claude-2213
     📊 tokens: in=4725 out=1162 cache=114 total=6001
     📊 tokens: in=494 out=1213 cache=3840 total=5547
+  🔗 新会话 claude-2215 (port 54893)
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-2215)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-2215
+    📊 tokens: in=868 out=791 cache=0 total=1659
+  🔗 新会话 claude-2216 (port 58115)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2216)
+  ✓ [MiniMax] 200 src=claude-2216
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+    📊 tokens: in=4721 out=1155 cache=114 total=5990
+  🔗 新会话 claude-2217 (port 54874)
+  → [Kimi2] POST /v1/messages model=k2.6 stream=false (attempt 1/3 src=claude-2217)
+  ⏳ [Kimi2] 冷却 300s
+  ✗ [Kimi2] 403 Auth Error → fallback
+  → [Kimi] POST /v1/messages model=k2.6 stream=false (attempt 2/3 src=claude-2217)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-2217
+    📊 tokens: in=942 out=782 cache=768 total=2492
+  🔗 新会话 claude-2218 (port 62093)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2218)
+  ⏳ [Kimi2] 冷却 300s
+  ✗ [Kimi2] 403 Auth Error → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2218)
+  ✓ [MiniMax] 200 src=claude-2218
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+    📊 tokens: in=4730 out=1434 cache=114 total=6278
+  🔗 新会话 claude-2219 (port 55621)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2219)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ✓ [Kimi] 200 src=claude-2219
+  🔗 新会话 claude-2220 (port 64022)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2220)
+  ✓ [Kimi] 200 src=claude-2220
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+    📊 tokens: in=2830 out=2575 cache=1536 total=6941
+  🔗 新会话 claude-2221 (port 54062)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2221)
+  ✓ [MiniMax] 200 src=claude-2221
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+    📊 tokens: in=4757 out=536 cache=114 total=5407
