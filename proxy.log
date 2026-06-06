@@ -224185,3 +224185,37 @@ Token 统计: http://localhost:4000/proxy-stats
   ✓ [MiniMax] 200 src=claude-2193
     📊 tokens: in=497 out=1269 cache=156105 total=157871
   🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-2197 (port 55487)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2197)
+  ✓ [MiniMax] 200 src=claude-2197
+    📊 tokens: in=34919 out=74 cache=754 total=35747
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2197)
+  ✓ [MiniMax] 200 src=claude-2197
+    📊 tokens: in=125 out=60 cache=35659 total=35844
+  🔗 新会话 claude-2198 (port 51726)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ⏳ [Kimi2] 冷却 300s
+  ✗ [Kimi2] 403 Auth Error → fallback
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=31550 out=93 cache=256 total=31899
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=945 out=235 cache=31744 total=32924
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=519 out=121 cache=32512 total=33152
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=763 out=196 cache=33024 total=33983
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=633 out=212 cache=33536 total=34381
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=455 out=240 cache=34048 total=34743
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2198)
+  ✓ [Kimi] 200 src=claude-2198
+    📊 tokens: in=585 out=351 cache=34304 total=35240
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
