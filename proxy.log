@@ -236789,3 +236789,647 @@ Token 统计: http://localhost:4000/proxy-stats
   🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
     📊 tokens: in=1112 out=1033 cache=68352 total=70497
   → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=1282 out=95 cache=69376 total=70753
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=638 out=241 cache=70656 total=71535
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=400 out=143 cache=71168 total=71711
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=321 out=148 cache=71424 total=71893
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=309 out=954 cache=71680 total=72943
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=1272 out=75 cache=71936 total=73283
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=345 out=41 cache=72960 total=73346
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=174 out=113 cache=73216 total=73503
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=391 out=149 cache=73216 total=73756
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=335 out=1267 cache=73472 total=75074
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=1721 out=457 cache=73728 total=75906
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=758 out=1218 cache=75264 total=77240
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=1849 out=184 cache=75776 total=77809
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=281 out=40 cache=77568 total=77889
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=87 out=30 cache=77824 total=77941
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=139 out=329 cache=77824 total=78292
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=559 out=258 cache=77824 total=78641
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=342 out=138 cache=78336 total=78816
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=283 out=209 cache=78592 total=79084
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=301 out=97 cache=78848 total=79246
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=189 out=430 cache=79104 total=79723
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=713 out=165 cache=79104 total=79982
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=401 out=114 cache=79616 total=80131
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=3832 out=184 cache=79872 total=83888
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=454 out=95 cache=83456 total=84005
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=5172 out=348 cache=83712 total=89232
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+    📊 tokens: in=500 out=1290 cache=88832 total=90622
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=2493 out=69 cache=89088 total=91650
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=1960 out=129 cache=91392 total=93481
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=359 out=149 cache=93184 total=93692
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=302 out=845 cache=93440 total=94587
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=1127 out=88 cache=93696 total=94911
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=2664 out=46 cache=94720 total=97430
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=3109 out=321 cache=97280 total=100710
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=468 out=465 cache=100352 total=101285
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2673)
+  ✓ [Kimi2] 200 src=claude-2673
+    📊 tokens: in=830 out=67 cache=100608 total=101505
+  🔗 新会话 claude-2676 (port 54957)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=103597 out=99 cache=1138 total=104834
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=101 out=91 cache=104818 total=105010
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=31 out=66 cache=104996 total=105093
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=88 out=52 cache=105074 total=105214
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=84 out=53 cache=105200 total=105337
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=62 out=41 cache=105323 total=105426
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=278 out=55 cache=105330 total=105663
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=83 out=37 cache=105649 total=105769
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=1474 out=100 cache=104721 total=106295
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=57 out=84 cache=106281 total=106422
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2676)
+  ✓ [MiniMax] 200 src=claude-2676
+    📊 tokens: in=101 out=68 cache=106408 total=106577
+  🔗 新会话 claude-2677 (port 55894)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2677)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2677)
+  ✓ [Kimi2] 200 src=claude-2677
+    📊 tokens: in=17515 out=173 cache=34816 total=52504
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2677)
+  ✓ [Kimi2] 200 src=claude-2677
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2678 (port 55992)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2678)
+    📊 tokens: in=2122 out=214 cache=52283 total=54619
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2677)
+  ✓ [Kimi2] 200 src=claude-2678
+  ✓ [Kimi2] 200 src=claude-2677
+    📊 tokens: in=3219 out=66 cache=101376 total=104661
+    📊 tokens: in=438 out=163 cache=54272 total=54873
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2677)
+  ✓ [Kimi2] 200 src=claude-2677
+    📊 tokens: in=471 out=387 cache=54528 total=55386
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2677)
+  ✓ [Kimi2] 200 src=claude-2677
+    📊 tokens: in=630 out=89 cache=54784 total=55503
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2677)
+  ✓ [Kimi2] 200 src=claude-2677
+    📊 tokens: in=267 out=97 cache=55296 total=55660
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2679 (port 56681)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2679)
+  ✓ [MiniMax] 200 src=claude-2679
+    📊 tokens: in=644 out=58 cache=106181 total=106883
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2680 (port 57705)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2680)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2680)
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 2 个）
+  ✓ [MiniMax] 200 src=claude-2680
+    📊 tokens: in=188 out=85 cache=106811 total=107084
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  🔗 新会话 claude-2681 (port 58067)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2681)
+  ✓ [Kimi2] 200 src=claude-2681
+    📊 tokens: in=7273 out=330 cache=52283 total=59886
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2681)
+  ✓ [Kimi2] 200 src=claude-2681
+    📊 tokens: in=1478 out=487 cache=59508 total=61473
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2681)
+  ✓ [Kimi2] 200 src=claude-2681
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2682 (port 58316)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2682)
+  ✓ [MiniMax] 200 src=claude-2682
+    📊 tokens: in=100 out=60 cache=107070 total=107230
+    📊 tokens: in=2271 out=1376 cache=60928 total=64575
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2681)
+  ✓ [Kimi2] 200 src=claude-2681
+    📊 tokens: in=1670 out=111 cache=62976 total=64757
+  🔗 新会话 claude-2683 (port 58547)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2683)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+  ✓ [MiniMax] 200 src=claude-2683
+    📊 tokens: in=75021 out=177 cache=754 total=75952
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2683)
+  ✓ [Kimi2] 200 src=claude-2683
+    📊 tokens: in=1301 out=104 cache=64512 total=65917
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2684 (port 59325)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2684)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2684)
+  ✓ [Kimi2] 200 src=claude-2684
+    📊 tokens: in=1478 out=145 cache=104448 total=106071
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2684)
+  ✓ [Kimi2] 200 src=claude-2684
+    📊 tokens: in=554 out=143 cache=105728 total=106425
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2684)
+  ✓ [Kimi2] 200 src=claude-2684
+    📊 tokens: in=269 out=70 cache=106240 total=106579
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  🔗 新会话 claude-2685 (port 62497)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2685)
+  ✓ [MiniMax] 200 src=claude-2685
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+    📊 tokens: in=36304 out=705 cache=2674 total=39683
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  🔗 新会话 claude-2686 (port 62578)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=35843 out=238 cache=754 total=36835
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=167 out=157 cache=36821 total=37145
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=1161 out=168 cache=37131 total=38460
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=141 out=150 cache=38446 total=38737
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=378 out=99 cache=38514 total=38991
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=6145 out=357 cache=36583 total=43085
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=2247 out=300 cache=42714 total=45261
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=2344 out=72 cache=44947 total=47363
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=1589 out=318 cache=47277 total=49184
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=429 out=83 cache=49170 total=49682
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=5920 out=560 cache=48852 total=55332
+  → [MiniMax] POST /v1/messages/count_tokens?beta=true model=k2.6 stream=false (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=10952 out=0 cache=0 total=10952
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=12502 out=148 cache=54758 total=67408
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=3611 out=159 cache=67246 total=71016
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+  🔗 新会话 claude-2687 (port 62734)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2687)
+    📊 tokens: in=162 out=131 cache=71002 total=71295
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=1182 out=98 cache=71026 total=72306
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=912 out=136 cache=72292 total=73340
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [Kimi2] 200 src=claude-2687
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=3809 out=66 cache=70843 total=74718
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+    📊 tokens: in=33862 out=158 cache=512 total=34532
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2687)
+  ✓ [MiniMax] 200 src=claude-2686
+  ✓ [Kimi2] 200 src=claude-2687
+    📊 tokens: in=3441 out=132 cache=74638 total=78211
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+    📊 tokens: in=309 out=90 cache=34304 total=34703
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2687)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=7944 out=108 cache=78065 total=86117
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+  ✓ [Kimi2] 200 src=claude-2687
+    📊 tokens: in=7473 out=78 cache=85995 total=93546
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+    📊 tokens: in=314 out=94 cache=34560 total=34968
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2687)
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2688 (port 62795)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2688)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2688)
+  🔗 新会话 claude-2689 (port 62803)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2689)
+  ✓ [MiniMax] 200 src=claude-2686
+  ✓ [Kimi2] 200 src=claude-2687
+    📊 tokens: in=234 out=91 cache=34816 total=35141
+  ✓ [MiniMax] 200 src=claude-2688
+    📊 tokens: in=2117 out=154 cache=93454 total=95725
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [Kimi2] 200 src=claude-2689
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=108582 out=173 cache=754 total=109509
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2688)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2687)
+  ✓ [MiniMax] 200 src=claude-2688
+  ✓ [Kimi2] 200 src=claude-2687
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+    📊 tokens: in=511 out=153 cache=34816 total=35480
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2687)
+  ✓ [Kimi2] 200 src=claude-2687
+    📊 tokens: in=142 out=400 cache=109495 total=110037
+    📊 tokens: in=1043 out=106 cache=34304 total=35453
+    📊 tokens: in=689 out=1630 cache=95711 total=98030
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+  🔗 新会话 claude-2690 (port 62845)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2690)
+  ✓ [MiniMax] 200 src=claude-2690
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+    📊 tokens: in=75069 out=1034 cache=2674 total=78777
+  🔗 新会话 claude-2691 (port 62896)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+    📊 tokens: in=1138 out=4934 cache=98016 total=104088
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2686)
+  ✓ [MiniMax] 200 src=claude-2686
+    📊 tokens: in=26 out=2998 cache=78763 total=81787
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=8575 out=1236 cache=95557 total=105368
+    📊 tokens: in=6667 out=646 cache=77729 total=85042
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=1002 out=595 cache=85028 total=86625
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=4271 out=1045 cache=84382 total=89698
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=413 out=195 cache=89684 total=90292
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=68 out=288 cache=90278 total=90634
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=35 out=142 cache=90620 total=90797
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 2 个）
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=3529 out=1575 cache=88639 total=93743
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=607 out=1527 cache=93170 total=95304
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=110 out=1029 cache=95218 total=96357
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=48 out=120 cache=96343 total=96511
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+  🔗 新会话 claude-2692 (port 63547)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2692)
+  ✓ [Kimi2] 200 src=claude-2692
+    📊 tokens: in=7948 out=93 cache=28160 total=36201
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2692)
+    📊 tokens: in=1138 out=678 cache=96497 total=98313
+  ✓ [Kimi2] 200 src=claude-2692
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2691)
+  ✓ [MiniMax] 200 src=claude-2691
+    📊 tokens: in=208 out=204 cache=98299 total=98711
+  🔗 新会话 claude-2693 (port 63616)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2693)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2693)
+  ✓ [MiniMax] 200 src=claude-2693
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+    📊 tokens: in=71 out=227 cache=98697 total=98995
+    📊 tokens: in=1025 out=1559 cache=36096 total=38680
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2692)
+  ✓ [Kimi2] 200 src=claude-2692
+    📊 tokens: in=2037 out=99 cache=37120 total=39256
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2692)
+  ✓ [Kimi2] 200 src=claude-2692
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+    📊 tokens: in=1311 out=163 cache=38912 total=40386
+  🔗 新会话 claude-2694 (port 63728)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2694)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+  ✓ [MiniMax] 200 src=claude-2694
+    📊 tokens: in=8446 out=496 cache=92154 total=101096
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2694)
+  ✓ [Kimi2] 200 src=claude-2694
+    📊 tokens: in=24043 out=140 cache=64512 total=88695
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2694)
+  ✓ [Kimi2] 200 src=claude-2694
+    📊 tokens: in=475 out=174 cache=88320 total=88969
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2694)
+  ✓ [Kimi2] 200 src=claude-2694
+    📊 tokens: in=568 out=113 cache=88576 total=89257
+  🔗 新会话 claude-2695 (port 63931)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2695)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+  ✓ [MiniMax] 200 src=claude-2695
+    📊 tokens: in=937 out=187 cache=101082 total=102206
+  🔗 新会话 claude-2696 (port 64316)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2696)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+  ✓ [MiniMax] 200 src=claude-2696
+    📊 tokens: in=48929 out=219 cache=754 total=49902
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2696)
+  ✓ [MiniMax] 200 src=claude-2696
+    📊 tokens: in=287 out=40 cache=49888 total=50215
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2696)
+  ✓ [MiniMax] 200 src=claude-2696
+    📊 tokens: in=1029 out=824 cache=50034 total=51887
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2696)
+  ✓ [MiniMax] 200 src=claude-2696
+    📊 tokens: in=736 out=76 cache=51186 total=51998
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2696)
+  ✓ [MiniMax] 200 src=claude-2696
+    📊 tokens: in=208 out=47 cache=51826 total=52081
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2696)
+  🔗 新会话 claude-2697 (port 64597)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2697)
+  ✓ [MiniMax] 200 src=claude-2696
+    📊 tokens: in=1045 out=60 cache=52067 total=53172
+  ✓ [Kimi2] 200 src=claude-2697
+    📊 tokens: in=691 out=81 cache=89088 total=89860
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 4 个）
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2697)
+  ✓ [Kimi2] 200 src=claude-2697
+    📊 tokens: in=457 out=162 cache=89600 total=90219
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2698 (port 64743)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2698)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2698)
+  ✓ [Kimi2] 200 src=claude-2698
+    📊 tokens: in=15408 out=67 cache=36096 total=51571
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2698)
+  ✓ [Kimi2] 200 src=claude-2698
+    📊 tokens: in=1082 out=484 cache=51456 total=53022
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2698)
+  ✓ [Kimi2] 200 src=claude-2698
+    📊 tokens: in=643 out=71 cache=52480 total=53194
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 4 个）
+  🔗 新会话 claude-2699 (port 65039)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2699)
+  ✓ [Kimi2] 200 src=claude-2699
+    📊 tokens: in=560 out=165 cache=89856 total=90581
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 4 个）
+  🔗 新会话 claude-2700 (port 65371)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2700)
+  ✓ [MiniMax] 200 src=claude-2700
+    📊 tokens: in=2761 out=145 cache=100586 total=103492
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2700)
+  ✓ [MiniMax] 200 src=claude-2700
+    📊 tokens: in=36 out=82 cache=103478 total=103596
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2700)
+  ✓ [MiniMax] 200 src=claude-2700
+    📊 tokens: in=49 out=172 cache=103582 total=103803
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2700)
+  ✓ [MiniMax] 200 src=claude-2700
+    📊 tokens: in=334 out=274 cache=103789 total=104397
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2700)
+  ✓ [MiniMax] 200 src=claude-2700
+    📊 tokens: in=43 out=128 cache=104383 total=104554
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2700)
+  ✓ [MiniMax] 200 src=claude-2700
+    📊 tokens: in=329 out=125 cache=104434 total=104888
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 4 个）
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2701 (port 49545)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2701)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2701)
+  ✓ [Kimi2] 200 src=claude-2701
+  🧹 清理了 2 个不活跃会话的粘性绑定（剩余 3 个）
+    📊 tokens: in=2374 out=229 cache=51456 total=54059
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2701)
+  ✓ [Kimi2] 200 src=claude-2701
+    📊 tokens: in=354 out=41 cache=53782 total=54177
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 3 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2702 (port 49890)
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [Kimi2] 200 src=claude-2702
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 0 个）
+    📊 tokens: in=4564 out=165 cache=53782 total=58511
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [Kimi2] 200 src=claude-2702
+    📊 tokens: in=250 out=90 cache=58298 total=58638
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [Kimi2] 200 src=claude-2702
+    📊 tokens: in=348 out=51 cache=58368 total=58767
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  🔗 新会话 claude-2703 (port 49949)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2703)
+  ✓ [Kimi2] 200 src=claude-2702
+    📊 tokens: in=163 out=71 cache=58624 total=58858
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 1 个）
+  ✓ [Kimi2] 200 src=claude-2702
+  ✓ [MiniMax] 200 src=claude-2703
+    📊 tokens: in=565 out=86 cache=58624 total=59275
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [Kimi2] 200 src=claude-2702
+    📊 tokens: in=3787 out=355 cache=59136 total=63278
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [Kimi2] 200 src=claude-2702
+    📊 tokens: in=109127 out=840 cache=754 total=110721
+    📊 tokens: in=614 out=176 cache=62720 total=63510
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [Kimi2] 200 src=claude-2702
+  🔗 新会话 claude-2704 (port 50007)
+  → [Kimi] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ⏳ [Kimi] 冷却 300s
+  ✗ [Kimi] 403 Auth Error → fallback
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 2/3 src=claude-2704)
+    📊 tokens: in=333 out=164 cache=63232 total=63729
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [Kimi2] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2702)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=122 out=159 cache=110706 total=110987
+  ✓ [Kimi2] 200 src=claude-2702
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+    📊 tokens: in=276 out=61 cache=63488 total=63825
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=90 out=777 cache=110973 total=111840
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=62 out=164 cache=111826 total=112052
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=80 out=1057 cache=112038 total=113175
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=1046 out=1601 cache=113161 total=115808
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+  ℹ 已为 assistant 消息补全 thinking 块
+  🔗 新会话 claude-2705 (port 50365)
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2705)
+  🧹 清理了 1 个不活跃会话的粘性绑定（剩余 2 个）
+  ✓ [MiniMax] 200 src=claude-2705
+    📊 tokens: in=75836 out=338 cache=754 total=76928
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2705)
+  ✓ [MiniMax] 200 src=claude-2705
+    📊 tokens: in=6717 out=317 cache=76576 total=83610
+  ℹ 已为 assistant 消息补全 thinking 块
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2705)
+  ✓ [MiniMax] 200 src=claude-2705
+    📊 tokens: in=48 out=99 cache=83596 total=83743
+    📊 tokens: in=151 out=5621 cache=115794 total=121566
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=76 out=135 cache=121552 total=121763
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=89 out=133 cache=121749 total=121971
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
+    📊 tokens: in=60 out=227 cache=121957 total=122244
+  → [MiniMax] POST /v1/messages?beta=true model=k2.6 stream=true (attempt 1/3 src=claude-2704)
+  ✓ [MiniMax] 200 src=claude-2704
