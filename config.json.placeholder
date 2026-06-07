@@ -1,0 +1,52 @@
+{
+  "port": 4000,
+  "proxy_auth_token": "PLACEHOLDER_REPLACE_ME_AFTER_ROTATION",
+  "cooldown_duration": 60000,
+  "routing": {
+    "weights": [
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "light_models": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "medium_models": [
+    "claude-sonnet-4-20250514"
+  ],
+  "model_map": {
+    "deepseek-v4-flash": "k2.6",
+    "deepseek-chat": "k2.6",
+    "k2.6": "k2.6",
+    "kimi-k2.6": "k2.6"
+  },
+  "backends": [
+    {
+      "name": "MiniMax",
+      "base_url": "https://api.minimaxi.com/anthropic",
+      "api_key": "PLACEHOLDER_REPLACE_ME_AFTER_ROTATION",
+      "model": "MiniMax-M3",
+      "is_available": true,
+      "cooldown_duration": 60000
+    },
+    {
+      "name": "Kimi2",
+      "base_url": "https://api.kimi.com/coding/",
+      "api_key": "PLACEHOLDER_REPLACE_ME_AFTER_ROTATION",
+      "model": "k2.6",
+      "is_available": true,
+      "cooldown_duration": 60000
+    },
+    {
+      "name": "Kimi",
+      "base_url": "https://api.kimi.com/coding/",
+      "api_key": "PLACEHOLDER_REPLACE_ME_AFTER_ROTATION",
+      "model": "k2.6",
+      "is_available": true,
+      "cooldown_duration": 60000
+    }
+  ],
+  "_comment": "临时占位配置：所有 API key 在 2026-06-06 ECS 入侵时已泄露，请用户去 MiniMax/Kimi 重新生成后填入"
+}
