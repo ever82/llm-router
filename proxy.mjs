@@ -1206,7 +1206,7 @@ process.on('SIGTERM', shutdown);
 process.on('uncaughtException', (err) => { console.error('!!! uncaughtException:', err); db?.close(); process.exit(1); });
 process.on('unhandledRejection', (reason, promise) => { console.error('!!! unhandledRejection:', reason); });
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
   console.log('');
   console.log('╔══════════════════════════════════════════╗');
   console.log('║     LLM Reverse Proxy v2.0 已启动         ║');
