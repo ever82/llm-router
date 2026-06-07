@@ -708,7 +708,7 @@ function forwardRequest(targetUrl, headers, body) {
     const url = new URL(targetUrl);
     const mod = url.protocol === 'https:' ? https : http;
     const req = mod.request(url, {
-      method: 'POST', headers: { ...headers, host: url.host }, timeout: 600_000,
+      method: 'POST', headers: { ...headers, host: url.host }, timeout: 30_000,
     }, (res) => { resolve(res); });
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('Backend request timeout')); });
